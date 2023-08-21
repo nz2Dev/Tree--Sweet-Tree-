@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     private NavMeshAgent navMeshAgent;
 
     private void Awake() {
+        // Testing git workflow
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
