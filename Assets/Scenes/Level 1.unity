@@ -8665,14 +8665,6 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6725145376099102764, guid: 6a7385c13272548a481f783635ada894, type: 3}
-      propertyPath: jumpDuration
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6725145376099102764, guid: 6a7385c13272548a481f783635ada894, type: 3}
-      propertyPath: jumpMaxHight
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8431472499714721353, guid: 6a7385c13272548a481f783635ada894, type: 3}
       propertyPath: m_RootOrder
       value: 5
