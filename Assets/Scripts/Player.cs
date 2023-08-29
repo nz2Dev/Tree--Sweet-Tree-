@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,11 +14,14 @@ public class Player : MonoBehaviour {
 
     private NavMeshAgent navMeshAgent;
     private bool flying;
-    private float jumpStartTime;
     private float jumpStartY;
+    private bool jumpStarted;
+    private float jumpStartTime;
+    private Vector3 jumpStartPosition;
 
     private void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.autoTraverseOffMeshLink = false;
     }
 
     private void Update() {
@@ -40,40 +42,84 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            StartJump();
+        Debug.Log("EndPosition: " + navMeshAgent.pathEndPosition
+                + " Status: " + navMeshAgent.path.status
+                + " Destination: " + navMeshAgent.destination
+                + " isOnOffmeshLink: " + navMeshAgent.isOnOffMeshLink);
+        
+        if (navMeshAgent.isOnOffMeshLink) {
+            // navMeshAgent.transform.position = navMeshAgent.currentOffMeshLinkData.endPos;
+            // navMeshAgent.CompleteOffMeshLink();
+            StartLinkJump();
         }
+        UpdateLinkJump();
 
-        if (flying) {
+        // if (Input.GetKeyDown(KeyCode.Space)) {
+        //     StartJump();
+        // }
+
+
+        // if (flying) {
+        //     if (jumpStartTime + jumpDuration > Time.time) {
+        //         var jumpTime = Time.time - jumpStartTime;
+        //         var jumpProgress = jumpTime / jumpDuration;
+        //         var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight;
+        //         var desiredPosition = new Vector3(transform.position.x, jumpStartY + jumpHightDelta, transform.position.z);
+        //         transform.position = desiredPosition;
+        //         if (jumpProgress > 0.5f && Physics.CheckSphere(desiredPosition, 0.2f, solidObjectsMask)) {
+        //             GroundJump();
+        //         }
+        //     } else {
+        //         GroundJump();
+        //     }
+        // }
+    }
+
+    private void StartLinkJump() {
+        if (!jumpStarted) {
+            jumpStarted = true;
+            jumpStartTime = Time.time;   
+            jumpStartPosition = transform.position;
+        }
+    }
+
+    private void UpdateLinkJump() {
+        if (navMeshAgent.isOnOffMeshLink) {
             if (jumpStartTime + jumpDuration > Time.time) {
                 var jumpTime = Time.time - jumpStartTime;
                 var jumpProgress = jumpTime / jumpDuration;
-                var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight;
-                var desiredPosition = new Vector3(transform.position.x, jumpStartY + jumpHightDelta, transform.position.z);
+                
+                var jumpStart = jumpStartPosition;
+                var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight * Vector3.up;
+                var jumpDistanceVector = navMeshAgent.currentOffMeshLinkData.endPos - jumpStart;
+                var jumpWidthDelta = jumpDistanceVector * jumpProgress;
+                var desiredPosition = jumpStart + jumpHightDelta + jumpWidthDelta;
                 transform.position = desiredPosition;
-                if (jumpProgress > 0.5f && Physics.CheckSphere(desiredPosition, 0.2f, solidObjectsMask)) {
-                    GroundJump();
-                }
             } else {
-                GroundJump();
+                navMeshAgent.transform.position = navMeshAgent.currentOffMeshLinkData.endPos;
+                // if (NavMesh.SamplePosition(transform.position, out var hit, 2f, NavMesh.AllAreas)) {
+                //     navMeshAgent.Warp(hit.position);
+                // }
+                navMeshAgent.CompleteOffMeshLink();
+                jumpStarted = false;
             }
         }
     }
 
-    private void StartJump() {
-        flying = true;
-        navMeshAgent.updatePosition = false;
-        jumpStartTime = Time.time;
-        jumpStartY = transform.position.y;
-    }
+    // private void StartJump() {
+    //     flying = true;
+    //     navMeshAgent.updatePosition = false;
+    //     jumpStartTime = Time.time;
+    //     jumpStartY = transform.position.y;
+    // }
 
-    private void GroundJump() {
-        flying = false;
-        if (NavMesh.SamplePosition(transform.position, out var hit, 2f, NavMesh.AllAreas)) {
-            navMeshAgent.Warp(hit.position);
-        } else {
-            navMeshAgent.Warp(transform.position);
-        }
-        navMeshAgent.updatePosition = true;
-    }
+    // private void GroundJump() {
+    //     flying = false;
+    //     if (NavMesh.SamplePosition(transform.position, out var hit, 2f, NavMesh.AllAreas)) {
+    //         navMeshAgent.Warp(hit.position);
+    //     } else {
+    //         navMeshAgent.Warp(transform.position);
+    //     }
+    //     navMeshAgent.updatePosition = true;
+    // }
 }
