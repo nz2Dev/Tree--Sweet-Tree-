@@ -47,6 +47,11 @@ public class AutomaticMovement : MonoBehaviour {
             if (jumpStartTime + jumpDuration > Time.time) {
                 var jumpTime = Time.time - jumpStartTime;
                 var jumpProgress = jumpTime / jumpDuration;
+                if (jumpProgress < 0.2f) {
+                    jumpProgress = 0;
+                } else {
+                    jumpProgress = 1 - ((1 - jumpProgress) / 0.8f); // remapping progress from 0.2 - 1.0 to 0.0 - 1.0
+                }
                 
                 var jumpStart = jumpStartPosition;
                 var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight * Vector3.up;
