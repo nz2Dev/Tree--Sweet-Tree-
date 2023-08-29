@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,12 +29,19 @@ public class AutomaticMovement : MonoBehaviour {
             }
         }
         
-        UpdateLinkJump();        
+        UpdateLinkJump();
+        DrawDestinationDebug();
     }
 
     public void MoveTo(Vector3 destination) {
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(destination);
+    }
+
+    private void DrawDestinationDebug() {
+        if (navMeshAgent.hasPath) {
+            Debug.DrawRay(navMeshAgent.destination, Vector3.up, Color.red);
+        }
     }
 
     private void UpdateLinkJump() {
