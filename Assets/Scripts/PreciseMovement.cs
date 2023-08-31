@@ -1,12 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Player : MonoBehaviour {
-    
-    [SerializeField] private LayerMask groundMask;
+[RequireComponent(typeof(NavMeshAgent))]
+public class PreciseMovement : MonoBehaviour {
     [SerializeField] private LayerMask solidObjectsMask;
     [SerializeField] private float speed = 3f;
     [SerializeField] private float jumpMaxHight = 1f;
@@ -15,35 +13,39 @@ public class Player : MonoBehaviour {
 
     private NavMeshAgent navMeshAgent;
     private bool flying;
-    private float jumpStartTime;
     private float jumpStartY;
-
+    private float jumpStartTime;
+    
     private void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     private void Update() {
-        var horizontalInput = Input.GetAxis("Horizontal");
-        var verticalInput = Input.GetAxis("Vertical");
-        var inputVector = new Vector3(horizontalInput, 0, verticalInput);
-
-        if (inputVector.sqrMagnitude > 0f) {
-            navMeshAgent.isStopped = true;
-            transform.position = transform.position + inputVector * speed * Time.deltaTime;
-        }
-
-        if (Input.GetMouseButtonDown(0)) {
-            navMeshAgent.isStopped = false;
-            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(mouseRay, out var hit, groundMask)) {
-                navMeshAgent.SetDestination(hit.point);
-            }
-        }
+        var inputMoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Move(inputMoveDirection);
 
         if (Input.GetKeyDown(KeyCode.Space)) {
-            StartJump();
+            Jump();
         }
 
+        UpdateJump();
+    }
+
+    public void Move(Vector3 direction) {
+        if (direction.sqrMagnitude > 0f) {
+            navMeshAgent.isStopped = true;
+            transform.position = transform.position + direction * speed * Time.deltaTime;
+        }
+    }
+
+    public void Jump() {
+        flying = true;
+        navMeshAgent.updatePosition = false;
+        jumpStartTime = Time.time;
+        jumpStartY = transform.position.y;
+    }
+
+    private void UpdateJump() {
         if (flying) {
             if (jumpStartTime + jumpDuration > Time.time) {
                 var jumpTime = Time.time - jumpStartTime;
@@ -58,13 +60,6 @@ public class Player : MonoBehaviour {
                 GroundJump();
             }
         }
-    }
-
-    private void StartJump() {
-        flying = true;
-        navMeshAgent.updatePosition = false;
-        jumpStartTime = Time.time;
-        jumpStartY = transform.position.y;
     }
 
     private void GroundJump() {
