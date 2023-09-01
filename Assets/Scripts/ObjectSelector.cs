@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,8 +9,30 @@ public class ObjectSelector : MonoBehaviour {
     [SerializeField] private LayerMask selectableObjectsMask;
 
     private SelectableObject selectedObject;
+    private bool selectionLocked;
+
+    public GameObject Selected => selectedObject == null ? null : selectedObject.gameObject;
 
     private void Update() {
+        UpdateSelection();
+    }
+
+    public void LockSelection() {
+        if (selectedObject == null) {
+            Debug.LogWarning("Selected Object is null!");
+        }
+        selectionLocked = true;
+    }
+
+    public void UnlockSelection() {
+        selectionLocked = false;
+    }
+
+    private void UpdateSelection() {
+        if (selectionLocked) {
+            return;
+        }
+
         if (TryRaycastNextSelectableObject(out var raycastedSelectable)) {
             var isRaycastedNewSelectable = raycastedSelectable != selectedObject;
             if (isRaycastedNewSelectable) {

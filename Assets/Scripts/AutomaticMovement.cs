@@ -6,7 +6,6 @@ using UnityEngine.AI;
 
 public class AutomaticMovement : MonoBehaviour {
     
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private float jumpMaxHight = 1f;
     [SerializeField] private float jumpDuration = 1f;
     [SerializeField] private AnimationCurve jumpCurve;
@@ -22,13 +21,6 @@ public class AutomaticMovement : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetMouseButtonDown(0)) {
-            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(mouseRay, out var hit, groundMask)) {
-                MoveTo(hit.point);
-            }
-        }
-        
         UpdateLinkJump();
         DrawDestinationDebug();
     }
