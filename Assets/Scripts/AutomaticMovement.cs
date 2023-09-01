@@ -25,9 +25,30 @@ public class AutomaticMovement : MonoBehaviour {
         DrawDestinationDebug();
     }
 
+    public void PrintDebug() {
+        Debug.Log("path - has?: " + navMeshAgent.hasPath
+            + " isPending?: " + navMeshAgent.pathPending
+            + " isStale?: " + navMeshAgent.isPathStale
+            + " status:" + navMeshAgent.pathStatus
+            + " remaining distance: " + navMeshAgent.remainingDistance
+            + " nextLink: " + navMeshAgent.nextOffMeshLinkData);
+    }
+
     public void MoveTo(Vector3 destination) {
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(destination);
+    }
+
+    public float GetRemainingDistance() {
+        if (navMeshAgent.pathPending) {
+            return float.PositiveInfinity;
+        } else {
+            return navMeshAgent.remainingDistance;
+        }
+    }
+
+    public void StopMovement() {
+        navMeshAgent.destination = navMeshAgent.nextPosition;
     }
 
     private void DrawDestinationDebug() {
