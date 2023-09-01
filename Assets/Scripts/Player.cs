@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
@@ -33,6 +34,9 @@ public class Player : MonoBehaviour {
             } else {
                 StartNavigation();
             }
+        }
+        if (Input.GetMouseButtonDown(1)) {
+            DropObject();
         }
 
         UpdatePickUpMovement();
@@ -99,6 +103,12 @@ public class Player : MonoBehaviour {
                 pickUpObject = null;
             }
         }
+    }
+
+    private void DropObject() {
+        var handledObject = pickUpHolder.transform.GetChild(0);
+        handledObject.transform.SetParent(null, true);
+        handledObject.GetComponent<PickUpable>().Release();
     }
 
     private void StartNavigation() {

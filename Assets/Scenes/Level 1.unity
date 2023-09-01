@@ -21219,7 +21219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1198220638277149157, guid: 8af6e1e38b0c64d499f86be5b671ea1a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1198220638277149157, guid: 8af6e1e38b0c64d499f86be5b671ea1a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -21257,6 +21257,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Egg Part
       objectReference: {fileID: 0}
+    - target: {fileID: 6262792430367568125, guid: 8af6e1e38b0c64d499f86be5b671ea1a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 6469258347801402803, guid: 8af6e1e38b0c64d499f86be5b671ea1a, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -21268,6 +21272,10 @@ PrefabInstance:
     - target: {fileID: 7237761976991211079, guid: 8af6e1e38b0c64d499f86be5b671ea1a, type: 3}
       propertyPath: pickUpRadius
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7828448858093985324, guid: 8af6e1e38b0c64d499f86be5b671ea1a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
