@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 6508246678505389040}
   - component: {fileID: 7237761976991211079}
   m_Layer: 0
-  m_Name: Egg Part
+  m_Name: PickUpable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
