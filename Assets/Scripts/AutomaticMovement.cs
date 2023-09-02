@@ -9,6 +9,7 @@ public class AutomaticMovement : MonoBehaviour {
     [SerializeField] private float jumpMaxHight = 1f;
     [SerializeField] private float jumpDuration = 1f;
     [SerializeField] private AnimationCurve jumpCurve;
+    [SerializeField] private float rotationSpeed = 5;
 
     private NavMeshAgent navMeshAgent;
     private bool jumpStarted;
@@ -18,9 +19,11 @@ public class AutomaticMovement : MonoBehaviour {
     private void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.autoTraverseOffMeshLink = false;
+        navMeshAgent.updateRotation = false;
     }
 
     private void Update() {
+        UpdateRotation();
         UpdateLinkJump();
         DrawDestinationDebug();
     }
@@ -49,6 +52,14 @@ public class AutomaticMovement : MonoBehaviour {
 
     public void StopMovement() {
         navMeshAgent.destination = navMeshAgent.nextPosition;
+    }
+
+    private void UpdateRotation() {
+        if (navMeshAgent.velocity.sqrMagnitude > 0) {
+            transform.rotation = Quaternion.Lerp(transform.rotation, 
+                    Quaternion.LookRotation(navMeshAgent.velocity, Vector3.up), 
+                    Time.deltaTime * rotationSpeed);
+        }
     }
 
     private void DrawDestinationDebug() {
