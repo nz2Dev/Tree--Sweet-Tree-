@@ -14,6 +14,8 @@ public class Player : MonoBehaviour {
 
     private AutomaticMovement movement;
     private ObjectSelector selector;
+    private PopUpNotifications notifications;
+    private Inventory inventory;
 
     private PickUpable pickUpTarget;
     private PickUpable pickUpDelayObject;
@@ -25,6 +27,8 @@ public class Player : MonoBehaviour {
     private void Awake() {
         movement = GetComponent<AutomaticMovement>();
         selector = GetComponent<ObjectSelector>();
+        notifications = GetComponent<PopUpNotifications>();
+        inventory = GetComponent<Inventory>();
     }
 
     private void Update() {
@@ -56,7 +60,6 @@ public class Player : MonoBehaviour {
 
     private void UpdatePickUpMovement() {
         if (pickUpTarget != null) {
-            movement.PrintDebug();
             if (movement.GetRemainingDistance() < pickUpTarget.PickUpRadius) {
                 ActivatePickUp();
             }
@@ -100,8 +103,16 @@ public class Player : MonoBehaviour {
             } else {
                 pickUpObject.transform.position = pickUpHolder.position;
                 pickUpObject.transform.SetParent(pickUpHolder, true);
+                StartPutInInvetory(pickUpObject);
                 pickUpObject = null;
             }
+        }
+    }
+
+    private void StartPutInInvetory(PickUpable pickUpObject) {
+        if (!inventory.IsWorking) {
+            DropObject();
+            notifications.SendNotification("Where to put it?", 2f);
         }
     }
 
