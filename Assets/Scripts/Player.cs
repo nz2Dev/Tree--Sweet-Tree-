@@ -110,9 +110,17 @@ public class Player : MonoBehaviour {
     }
 
     private void StartPutInInvetory(PickUpable pickUpObject) {
+        if (pickUpObject.name == "Bag") {
+            inventory.IsWorking = true;
+            Destroy(pickUpObject.gameObject);
+            return;
+        }
+
         if (!inventory.IsWorking) {
             DropObject();
             notifications.SendNotification("Where to put it?", 2f);
+        } else {
+            inventory.Put(pickUpObject);
         }
     }
 

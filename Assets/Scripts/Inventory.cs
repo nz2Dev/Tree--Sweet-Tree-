@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,17 @@ public class Inventory : MonoBehaviour {
     
     private bool working;
 
-    public bool IsWorking => working;
+    public bool IsWorking {
+        get => working;
+        set {
+            if (!working) {
+                Open();
+            }
+            working = true;
+        }
+    }
+
+    public event Action OnOpenRequest;
 
     public bool Put(PickUpable pickUpable) {
         if (working) {
@@ -15,6 +26,10 @@ public class Inventory : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    public void Open() {
+        OnOpenRequest?.Invoke();
     }
 
 }
