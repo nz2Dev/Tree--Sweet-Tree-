@@ -6,10 +6,10 @@ using UnityEngine.AI;
 
 public class AutomaticMovement : MonoBehaviour {
     
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private float jumpMaxHight = 1f;
     [SerializeField] private float jumpDuration = 1f;
     [SerializeField] private AnimationCurve jumpCurve;
+    [SerializeField] private float rotationSpeed = 5;
 
     private NavMeshAgent navMeshAgent;
     private bool jumpStarted;
@@ -19,23 +19,47 @@ public class AutomaticMovement : MonoBehaviour {
     private void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.autoTraverseOffMeshLink = false;
+        navMeshAgent.updateRotation = false;
     }
 
     private void Update() {
-        if (Input.GetMouseButtonDown(0)) {
-            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(mouseRay, out var hit, groundMask)) {
-                MoveTo(hit.point);
-            }
-        }
-        
+        UpdateRotation();
         UpdateLinkJump();
         DrawDestinationDebug();
+    }
+
+    public void PrintDebug() {
+        Debug.Log("path - has?: " + navMeshAgent.hasPath
+            + " isPending?: " + navMeshAgent.pathPending
+            + " isStale?: " + navMeshAgent.isPathStale
+            + " status:" + navMeshAgent.pathStatus
+            + " remaining distance: " + navMeshAgent.remainingDistance
+            + " nextLink: " + navMeshAgent.nextOffMeshLinkData);
     }
 
     public void MoveTo(Vector3 destination) {
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(destination);
+    }
+
+    public float GetRemainingDistance() {
+        if (navMeshAgent.pathPending) {
+            return float.PositiveInfinity;
+        } else {
+            return navMeshAgent.remainingDistance;
+        }
+    }
+
+    public void StopMovement() {
+        navMeshAgent.destination = navMeshAgent.nextPosition;
+    }
+
+    private void UpdateRotation() {
+        if (navMeshAgent.velocity.sqrMagnitude > 0) {
+            transform.rotation = Quaternion.Lerp(transform.rotation, 
+                    Quaternion.LookRotation(navMeshAgent.velocity, Vector3.up), 
+                    Time.deltaTime * rotationSpeed);
+        }
     }
 
     private void DrawDestinationDebug() {
