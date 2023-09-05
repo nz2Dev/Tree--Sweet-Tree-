@@ -135,7 +135,7 @@ public class Player : MonoBehaviour {
         CancelPickUp();        
 
         var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mouseRay, out var hit, groundMask)) {
+        if (Physics.Raycast(mouseRay, out var hit, 100f, groundMask)) {
             movement.MoveTo(hit.point);
         }
     }

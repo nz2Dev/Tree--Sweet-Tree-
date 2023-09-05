@@ -10,19 +10,23 @@ public class PreciseMovement : MonoBehaviour {
     [SerializeField] private float jumpMaxHight = 1f;
     [SerializeField] private float jumpDuration = 1f;
     [SerializeField] private AnimationCurve jumpCurve;
+    [SerializeField] private float rotationSpeed = 3;
 
     private NavMeshAgent navMeshAgent;
     private bool flying;
     private float jumpStartY;
     private float jumpStartTime;
-    
+
     private void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     private void Update() {
         var inputMoveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        Move(inputMoveDirection);
+        var inputInWorldSpace = Camera.main.transform.TransformDirection(inputMoveDirection);
+        var inputProjected = Vector3.ProjectOnPlane(inputInWorldSpace, Vector3.up);
+
+        Move(inputProjected);
 
         if (Input.GetKeyDown(KeyCode.Space)) {
             Jump();
@@ -35,6 +39,7 @@ public class PreciseMovement : MonoBehaviour {
         if (direction.sqrMagnitude > 0f) {
             navMeshAgent.isStopped = true;
             transform.position = transform.position + direction * speed * Time.deltaTime;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction, Vector3.up), Time.deltaTime * rotationSpeed);
         }
     }
 
