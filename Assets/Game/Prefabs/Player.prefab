@@ -42,13 +42,14 @@ GameObject:
   - component: {fileID: 8431472499714721353}
   - component: {fileID: 3469634359318127620}
   - component: {fileID: 6725145376099102764}
-  - component: {fileID: 2942916069581436695}
   - component: {fileID: 5831932937360807799}
   - component: {fileID: 5414448039962176378}
   - component: {fileID: 2315702140081223902}
+  - component: {fileID: 2942916069581436695}
+  - component: {fileID: 7502926502364869401}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,21 +144,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   rotationSpeed: 5
---- !u!114 &2942916069581436695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 642874682484127438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3aa8e099d027486891902ce02384ff6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectableObjectsMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!114 &5831932937360807799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,9 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8960088c899574734a249b09056567e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
   pickUpHolder: {fileID: 6453086339710988512}
   pickUpCurve:
     serializedVersion: 2
@@ -232,6 +215,37 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pickingUpDuration: 0.4
+--- !u!114 &2942916069581436695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642874682484127438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3aa8e099d027486891902ce02384ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectableObjectsMask:
+    serializedVersion: 2
+    m_Bits: 1
+  defaultCursor: {fileID: 0}
+--- !u!114 &7502926502364869401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642874682484127438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530f8e2d8b28b4350b172fefc11d6e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &765924103879051699
 GameObject:
   m_ObjectHideFlags: 0

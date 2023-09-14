@@ -8,50 +8,21 @@ using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour {
 
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private Transform pickUpHolder;
     [SerializeField] private AnimationCurve pickUpCurve;
     [SerializeField] private float pickingUpDuration = 0.4f;
 
     private AutomaticMovement movement;
-    private ObjectSelector selector;
     private PopUpNotifications notifications;
     private Inventory inventory;
 
     private void Awake() {
         movement = GetComponent<AutomaticMovement>();
-        selector = GetComponent<ObjectSelector>();
         notifications = GetComponent<PopUpNotifications>();
         inventory = GetComponent<Inventory>();
     }
 
-    private PickUpable targetPickUp;
-
     private void Update() {
-        if (Input.GetMouseButtonDown(0)) {
-            if (selector.Selected != null) {
-                targetPickUp = selector.Selected.GetComponent<PickUpable>();
-                ActivateNavigation(targetPickUp.transform.position);
-            } else {
-                targetPickUp = null;
-                var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(mouseRay, out var hit, 100f, groundMask)) {
-                    ActivateNavigation(hit.point);
-                }
-            }
-        }
-
-        if (targetPickUp != null) {
-            if (GetRemainingNavigationDistance() < targetPickUp.PickUpRadius) {
-                StopNavigation();
-                ActivatePickUp(targetPickUp);
-                targetPickUp = null;
-            }
-        }
-        if (HasPickedUp()) {
-            HandlePickedUp();
-        }
-
         UpdatePickUp();
     }
 
@@ -119,7 +90,7 @@ public class Player : MonoBehaviour {
 
         if (!inventory.IsWorking) {
             // drop object from hands
-            pickedUp.transform.parent.SetParent(null, true);
+            pickedUp.transform.SetParent(null, true);
             pickedUp.Release();
 
             notifications.SendNotification("Where to put it?", 2f);
@@ -131,7 +102,7 @@ public class Player : MonoBehaviour {
 
     public void DropPickedUp() {
         var handledPickUpable = GetHandledObject();
-        handledPickUpable.transform.parent.SetParent(null, true);
+        handledPickUpable.transform.SetParent(null, true);
         handledPickUpable.Release();
     }
     
