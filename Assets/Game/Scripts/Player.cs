@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour {
 
@@ -17,13 +18,6 @@ public class Player : MonoBehaviour {
     private PopUpNotifications notifications;
     private Inventory inventory;
 
-    private PickUpable pickUpTarget;
-    private PickUpable pickUpDelayObject;
-    private PickUpable pickUpObject;
-    private float pickUpActivationTime;
-    private Vector3 pickUpObjectStartPosition;
-    private float pickUpObjectStartTime;
-
     private void Awake() {
         movement = GetComponent<AutomaticMovement>();
         selector = GetComponent<ObjectSelector>();
@@ -31,112 +25,136 @@ public class Player : MonoBehaviour {
         inventory = GetComponent<Inventory>();
     }
 
+    private PickUpable targetPickUp;
+
     private void Update() {
         if (Input.GetMouseButtonDown(0)) {
             if (selector.Selected != null) {
-                StartPickUp();
+                targetPickUp = selector.Selected.GetComponent<PickUpable>();
+                ActivateNavigation(targetPickUp.transform.position);
             } else {
-                StartNavigation();
+                targetPickUp = null;
+                var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(mouseRay, out var hit, 100f, groundMask)) {
+                    ActivateNavigation(hit.point);
+                }
             }
         }
-        if (Input.GetMouseButtonDown(1)) {
-            DropObject();
-        }
 
-        UpdatePickUpMovement();
-        UpdatePickUpDelay();
-        UpdatePickingUp();
-    }
-
-    private void StartPickUp() {
-        pickUpTarget = selector.Selected.GetComponent<PickUpable>();
-        // var playerToSelected = pickUpTarget.transform.position - transform.position;
-        // var pickUpOffset = -playerToSelected.normalized * pickUpTarget.PickUpRadius;
-        // var playerToStopPoint = playerToSelected + pickUpOffset;
-        // var pickUpPoint = transform.position + playerToStopPoint;
-        // movement.MoveTo(pickUpPoint);
-        movement.MoveTo(pickUpTarget.transform.position);
-    }
-
-    private void UpdatePickUpMovement() {
-        if (pickUpTarget != null) {
-            if (movement.GetRemainingDistance() < pickUpTarget.PickUpRadius) {
-                ActivatePickUp();
+        if (targetPickUp != null) {
+            if (GetRemainingNavigationDistance() < targetPickUp.PickUpRadius) {
+                StopNavigation();
+                ActivatePickUp(targetPickUp);
+                targetPickUp = null;
             }
         }
+        if (HasPickedUp()) {
+            HandlePickedUp();
+        }
+
+        UpdatePickUp();
     }
 
-    private void CancelPickUp() {
-        pickUpTarget = null;
+    private PickUpable activePickUpable;
+    private Vector3 activePickUpableStartPosition;
+    private float pickUpActivationStartTime;
+
+    public bool CanPickUpFromHere(PickUpable pickUpable) {
+        return Vector3.Distance(transform.position, pickUpable.transform.position) < pickUpable.PickUpRadius;
     }
 
-    private void ActivatePickUp() {
+    public void CancelPickUp() {
+        // todo probably should call release on pickupable
+        activePickUpable = null;
+    }
+
+    public void ActivatePickUp(PickUpable pickUpable) {
         movement.StopMovement();
-        pickUpDelayObject = pickUpTarget;
-        pickUpActivationTime = Time.time;
-        pickUpTarget = null;
+        activePickUpable = pickUpable;
+        activePickUpableStartPosition = pickUpable.transform.position;
+        pickUpActivationStartTime = Time.time;
     }
 
-    private void UpdatePickUpDelay() {
-        if (pickUpDelayObject != null) {
-            if (pickUpActivationTime + 0.3 < Time.time) {
-                StartPickingUp(pickUpDelayObject);
-                pickUpDelayObject = null;
-            }
+    public bool IsPickingUp() {
+        return activePickUpable != null;
+    }
+    
+    private void UpdatePickUp() {
+        if (activePickUpable == null) {
+            return;
         }
-    }
 
-    private void StartPickingUp(PickUpable pickUpable) {
-        pickUpObject = pickUpable;
-        pickUpObjectStartPosition = pickUpObject.transform.position;
-        pickUpObjectStartTime = Time.time;
-    }
-
-    private void UpdatePickingUp() {
-        if (pickUpObject != null) {
-            if (pickUpObjectStartTime + pickingUpDuration > Time.time) {
-                var pickingUpTime = Time.time - pickUpObjectStartTime;
+        var pickUpDelay = 0.3f;
+        var delayEndTime = pickUpActivationStartTime + pickUpDelay;
+        if (Time.time > delayEndTime) {
+            var pickUpEndTime = delayEndTime + pickingUpDuration; 
+            if (Time.time < pickUpEndTime) {
+                var pickingUpTime = pickingUpDuration - (pickUpEndTime - Time.time);
                 var pickingUpProgress = pickingUpTime / pickingUpDuration;
                 var upDelta = pickUpCurve.Evaluate(pickingUpProgress) * Vector3.up;
-                var objectToHands = pickUpHolder.position - pickUpObjectStartPosition;
-                pickUpObject.transform.position = pickUpObjectStartPosition + objectToHands * pickingUpProgress + upDelta;
+                var objectToHands = pickUpHolder.position - activePickUpableStartPosition;
+
+                activePickUpable.transform.position = activePickUpableStartPosition + objectToHands * pickingUpProgress + upDelta;
             } else {
-                pickUpObject.transform.position = pickUpHolder.position;
-                pickUpObject.transform.SetParent(pickUpHolder, true);
-                StartPutInInvetory(pickUpObject);
-                pickUpObject = null;
+                // Time > pickUpEndTime
+                activePickUpable.transform.position = pickUpHolder.position;
+                activePickUpable.transform.SetParent(pickUpHolder, true);
+                activePickUpable = null;
             }
         }
     }
 
-    private void StartPutInInvetory(PickUpable pickUpObject) {
-        if (pickUpObject.name == "Bag") {
+    public bool HasPickedUp() {
+        return GetHandledObject() != null;
+    }
+
+    public void HandlePickedUp() {
+        var pickedUp = GetHandledObject();
+        if (pickedUp.name == "Bag") {
             inventory.IsWorking = true;
-            Destroy(pickUpObject.gameObject);
+            // destory object from hands
+            Destroy(pickedUp.gameObject);
             return;
         }
 
         if (!inventory.IsWorking) {
-            DropObject();
+            // drop object from hands
+            pickedUp.transform.parent.SetParent(null, true);
+            pickedUp.Release();
+
             notifications.SendNotification("Where to put it?", 2f);
         } else {
-            inventory.Put(pickUpObject);
+            // handle object by inventory
+            inventory.Put(pickedUp);
         }
     }
 
-    private void DropObject() {
+    public void DropPickedUp() {
+        var handledPickUpable = GetHandledObject();
+        handledPickUpable.transform.parent.SetParent(null, true);
+        handledPickUpable.Release();
+    }
+    
+    private PickUpable GetHandledObject() {
+        if (pickUpHolder.transform.childCount == 0) {
+            return null;
+        }
         var handledObject = pickUpHolder.transform.GetChild(0);
-        handledObject.transform.SetParent(null, true);
-        handledObject.GetComponent<PickUpable>().Release();
+        return handledObject == null ? null : handledObject.GetComponent<PickUpable>();
     }
 
-    private void StartNavigation() {
+    public void ActivateNavigation(Vector3 point) {
         // cancel all the rest
         CancelPickUp();        
 
-        var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mouseRay, out var hit, 100f, groundMask)) {
-            movement.MoveTo(hit.point);
-        }
+        movement.MoveTo(point);
+    }
+
+    public float GetRemainingNavigationDistance() {
+        return movement.GetRemainingDistance();
+    }
+
+    public void StopNavigation() {
+        movement.StopMovement();
     }
 }
