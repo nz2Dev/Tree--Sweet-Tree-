@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectableObject : MonoBehaviour {
-    
+
+    [SerializeField] private Texture2D selectionCursorTexture;
+
+    public Texture2D SelectionCursorTexture => selectionCursorTexture;
+
     public event Action<bool> OnSelectionChanged;
 
     private bool isSelected;
