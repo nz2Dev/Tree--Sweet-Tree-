@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public interface IPlayerActivity {
     bool IsFinished { get; }
@@ -24,7 +25,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
             if (selector.Selected != null) {
                 var selectedPickUp = selector.Selected.GetComponent<PickUpable>();
                 ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
