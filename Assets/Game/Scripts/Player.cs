@@ -24,6 +24,10 @@ public class Player : MonoBehaviour {
         inventory = GetComponent<Inventory>();
     }
 
+    private void Start() {
+        character.SetBagEquiped(inventory.IsWorking);
+    }
+
     private void Update() {
         UpdatePickUp();
         var currentMovementSpeed = movement.GetCurrentSpeed();
@@ -92,6 +96,7 @@ public class Player : MonoBehaviour {
         var pickedUp = GetHandledObject();
         if (pickedUp.name == "Bag") {
             inventory.IsWorking = true;
+            character.SetBagEquiped(inventory.IsWorking);
             // destory object from hands
             Destroy(pickedUp.gameObject);
             return;
