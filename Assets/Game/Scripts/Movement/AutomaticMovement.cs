@@ -50,6 +50,10 @@ public class AutomaticMovement : MonoBehaviour {
         }
     }
 
+    public float GetCurrentSpeed() {
+        return navMeshAgent.velocity.magnitude;
+    }
+
     public void StopMovement() {
         navMeshAgent.destination = navMeshAgent.nextPosition;
     }

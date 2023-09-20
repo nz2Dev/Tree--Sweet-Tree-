@@ -14,16 +14,25 @@ public class Player : MonoBehaviour {
 
     private AutomaticMovement movement;
     private PopUpNotifications notifications;
+    private HovanetsCharacter character;
     private Inventory inventory;
 
     private void Awake() {
         movement = GetComponent<AutomaticMovement>();
         notifications = GetComponent<PopUpNotifications>();
+        character = GetComponentInChildren<HovanetsCharacter>();
         inventory = GetComponent<Inventory>();
     }
 
     private void Update() {
         UpdatePickUp();
+        var currentMovementSpeed = movement.GetCurrentSpeed();
+        if (currentMovementSpeed > 0) {
+            character.SetIsWalking(true);
+            character.SetWalkMotionSpeed(currentMovementSpeed);
+        } else {
+            character.SetIsWalking(false);
+        }
     }
 
     private PickUpable activePickUpable;
