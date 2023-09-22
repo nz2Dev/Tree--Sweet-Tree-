@@ -9,11 +9,20 @@ public class InventoryUI : MonoBehaviour {
     [SerializeField] private RectTransform mask;
     [SerializeField] private RectTransform container;
     [SerializeField] private float changeDuration = 0.5f;
+    [SerializeField] private RectTransform activator;
+    [SerializeField] private float activatorChangeDuration = 0.25f;
 
-    private bool changing;
-    private float changeStartTime;
-    private Vector2 changeSizeDelta;
-    private Vector2 lastSizeDelta;
+    private bool changingContainer;
+    private bool changeContainerStateIsOpen;
+    private float changeContainerStartTime;
+    private Vector2 changeContainerToSizeDelta;
+    private Vector2 changeContainerFromSizeDelta;
+
+    private bool changingActivator;
+    private bool changeActivatorStateIsVisible;
+    private float changeActivatorStartTime;
+    private float changeActivatorFromScale;
+    private float changeActivatorToScale;
 
     private void Awake() {
         inventory.OnOpenRequest += Open;
@@ -25,31 +34,68 @@ public class InventoryUI : MonoBehaviour {
     }
 
     public void Open() {
-        ChangeState(true);
-    }
-
-    private void ChangeState(bool open) {
-        changing = true;
-        changeStartTime = Time.time;
-        lastSizeDelta = mask.sizeDelta;
-        changeSizeDelta = open ? container.sizeDelta : new Vector2(0, container.sizeDelta.y);
-    }
-
-    private void Update() {
-        if (changing) {
-            var changeEndTime = changeStartTime + changeDuration;
-            if (Time.time < changeEndTime) {
-                var changeProgress = (Time.time - changeStartTime) / changeDuration;
-                mask.sizeDelta = Vector2.Lerp(lastSizeDelta, changeSizeDelta, changeProgress);
-            } else {
-                changing = false;
-                mask.sizeDelta = changeSizeDelta;
-            }
-        }
+        ChangeActivatorState(visible: false);
     }
 
     public void Close() {
-        ChangeState(false);
+        ChangeContainerState(open: false);
+    }
+
+    private void ChangeContainerState(bool open) {
+        changingContainer = true;
+        changeContainerStateIsOpen = open;
+        changeContainerStartTime = Time.time;
+        changeContainerFromSizeDelta = mask.sizeDelta;
+        changeContainerToSizeDelta = open ? container.sizeDelta : new Vector2(0, container.sizeDelta.y);
+        if (open) {
+            inventoryRoot.SetActive(true);
+        }
+    }
+
+    private void ChangeActivatorState(bool visible) {
+        changingActivator = true;
+        changeActivatorStateIsVisible = visible;
+        changeActivatorStartTime = Time.time;
+        changeActivatorFromScale = visible ? 0.5f : 1f;
+        changeActivatorToScale = visible ? 1 : 0;
+        if (visible) {
+            activator.gameObject.SetActive(true);
+        }
+    }
+
+    private void Update() {
+        if (changingContainer) {
+            var changeEndTime = changeContainerStartTime + changeDuration;
+            if (Time.time < changeEndTime) {
+                var changeProgress = (Time.time - changeContainerStartTime) / changeDuration;
+                mask.sizeDelta = Vector2.Lerp(changeContainerFromSizeDelta, changeContainerToSizeDelta, changeProgress);
+            } else {
+                changingContainer = false;
+                mask.sizeDelta = changeContainerToSizeDelta;
+
+                if (!changeContainerStateIsOpen) {
+                    inventoryRoot.SetActive(false);
+                    ChangeActivatorState(visible: true);
+                }
+            }
+        }
+
+        if (changingActivator) {
+            var changeEndTime = changeActivatorStartTime + activatorChangeDuration;
+            if (Time.time < changeEndTime) {
+                var changeProgress = (Time.time - changeActivatorStartTime) / activatorChangeDuration;
+                var scale = Mathf.Lerp(changeActivatorFromScale, changeActivatorToScale, changeProgress);
+                activator.localScale = new Vector3(scale, scale, scale);
+            } else {
+                changingActivator = false;
+                activator.localScale = new Vector3(changeActivatorToScale, changeActivatorToScale, changeActivatorToScale);
+
+                if (!changeActivatorStateIsVisible) {
+                    // activator.gameObject.setActive(false); well, we are scaling, so no needs to additionaly enable/disable GO
+                    ChangeContainerState(open: true);
+                }
+            }
+        }
     }
 
 }
