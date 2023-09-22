@@ -25,20 +25,34 @@ public class InventoryUI : MonoBehaviour {
     private float changeActivatorToScale;
 
     private void Awake() {
-        inventory.OnOpenRequest += Open;
+        inventory.OnOpenRequest += OpenDirectly;
         inventoryRoot.SetActive(true);
     }
 
     private void Start() {
-        Close();
+        if (inventory.IsWorking) {
+            Close();
+        } else {
+            Disable();
+        }
     }
 
     public void Open() {
         ChangeActivatorState(visible: false);
     }
 
+    public void OpenDirectly() {
+        activator.gameObject.SetActive(false);
+        ChangeContainerState(true);
+    }
+
     public void Close() {
         ChangeContainerState(open: false);
+    }
+
+    public void Disable() {
+        inventoryRoot.SetActive(false);
+        activator.gameObject.SetActive(false);
     }
 
     private void ChangeContainerState(bool open) {
@@ -47,9 +61,7 @@ public class InventoryUI : MonoBehaviour {
         changeContainerStartTime = Time.time;
         changeContainerFromSizeDelta = mask.sizeDelta;
         changeContainerToSizeDelta = open ? container.sizeDelta : new Vector2(0, container.sizeDelta.y);
-        if (open) {
-            inventoryRoot.SetActive(true);
-        }
+        inventoryRoot.SetActive(true);
     }
 
     private void ChangeActivatorState(bool visible) {
@@ -58,9 +70,7 @@ public class InventoryUI : MonoBehaviour {
         changeActivatorStartTime = Time.time;
         changeActivatorFromScale = visible ? 0.5f : 1f;
         changeActivatorToScale = visible ? 1 : 0;
-        if (visible) {
-            activator.gameObject.SetActive(true);
-        }
+        activator.gameObject.SetActive(true);
     }
 
     private void Update() {
