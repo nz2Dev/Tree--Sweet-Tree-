@@ -57,7 +57,12 @@ public class Player : MonoBehaviour {
         activePickUpable = pickUpable;
         activePickUpableStartPosition = pickUpable.transform.position;
         pickUpActivationStartTime = Time.time;
-        pickUpDestination = pickUpable.name == "Bag" ? character.HandsLocation : character.BagLocation;
+        
+        if (pickUpable.name == "Bag" || !inventory.IsWorking) {
+            pickUpDestination = character.HandsLocation;
+        } else {
+            pickUpDestination = character.BagLocation;
+        }
     }
 
     public bool IsPickingUp() {
