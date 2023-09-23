@@ -17,6 +17,7 @@ public class InventoryUI : MonoBehaviour {
     [SerializeField] private float scaleMultiplier = 1f;
     [SerializeField] private AnimationCurve highlightMoveCurve;
     [SerializeField] private float moveMultiplier = 1f;
+    [SerializeField] private float highlightDelay = 0.5f;
     [SerializeField] private float highlightDuration = 0.5f;
 
     private bool changingContainer;
@@ -69,15 +70,16 @@ public class InventoryUI : MonoBehaviour {
 
     public void HighlightItem(int index) {
         ChangeItemsSprite();
+        if (!inventoryRoot.activeSelf) {
+            OpenDirectly();
+        }
         PlayHighlightOnSlot(index);
     }
 
     private void PlayHighlightOnSlot(int index) {
-        var startDelay = 1.0f;
         playingHighlight = true;
-        playingHighlightStartTime = Time.time + startDelay;
+        playingHighlightStartTime = Time.time + highlightDelay;
         playingHighlightSlotIndex = index;
-        mask.GetComponent<Image>().enabled = false;
     }
 
     private void ChangeContainerState(bool open) {
@@ -149,6 +151,7 @@ public class InventoryUI : MonoBehaviour {
         if (playingHighlight) {
             var highlightEndTime = playingHighlightStartTime + highlightDuration;
             if (playingHighlightStartTime < Time.time) {
+                mask.GetComponent<Image>().enabled = false;
                 if (Time.time < highlightEndTime) {
                     var highlightProgress = (Time.time - playingHighlightStartTime) / highlightDuration;
 

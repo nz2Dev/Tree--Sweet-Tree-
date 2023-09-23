@@ -18,7 +18,7 @@ public class PickUpable : MonoBehaviour {
     }
 
     public void DestroySelf(bool consumed) {
-        if (consumed) {
+        if (consumed && destructionEffectPrefab != null) {
             var destructionEffectInstance = Instantiate(destructionEffectPrefab, transform.position, Quaternion.identity);
             destructionEffectInstance.SetActive(true);
         }

@@ -1765,7 +1765,7 @@ PrefabInstance:
     - target: {fileID: 790514954176641032, guid: 6df24d04c56b24e2c9cce2da7e324518, type: 3}
       propertyPath: destructionEffectPrefab
       value: 
-      objectReference: {fileID: 3125908671876608230, guid: 2e07e5ba5a6e8b74d8206f9be0e29d37, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 2566820042902703805, guid: 6df24d04c56b24e2c9cce2da7e324518, type: 3}
       propertyPath: m_Name
       value: Bag
@@ -1997,8 +1997,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1516084191}
-  m_LocalRotation: {x: 0.18105724, y: 0.00025748828, z: -0.00004740358, w: 0.9834725}
-  m_LocalPosition: {x: 0.37166888, y: 3.9442225, z: -3.611727}
+  m_LocalRotation: {x: 0.18105724, y: 0.00025747134, z: -0.000047400463, w: 0.9834725}
+  m_LocalPosition: {x: 0.37166893, y: 3.9442225, z: -3.611727}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4910,11 +4910,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8180875859813777195, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00025748825
+      value: 0.00025747134
       objectReference: {fileID: 0}
     - target: {fileID: 8180875859813777195, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000047403577
+      value: -0.000047400466
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14758,7 +14758,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  scaleMultiplier: 0.3
+  scaleMultiplier: 0.4
   highlightMoveCurve:
     serializedVersion: 2
     m_Curve:
@@ -14810,7 +14810,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  moveMultiplier: 30
+  moveMultiplier: 40
+  highlightDelay: 0.5
   highlightDuration: 1
 --- !u!1001 &4639195130723279886
 PrefabInstance:
