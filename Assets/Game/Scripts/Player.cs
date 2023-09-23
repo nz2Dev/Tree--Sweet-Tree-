@@ -99,7 +99,7 @@ public class Player : MonoBehaviour {
             inventory.IsWorking = true;
             character.SetBagEquiped(inventory.IsWorking);
             // destory object from hands
-            Destroy(pickedUp.gameObject);
+            pickedUp.DestroySelf(consumed: true);
             return;
         }
 
@@ -112,7 +112,7 @@ public class Player : MonoBehaviour {
         } else {
             // handle object by inventory
             inventory.Put(pickedUp.InventoryItem);
-            Destroy(pickedUp.gameObject);
+            pickedUp.DestroySelf(consumed: true);
         }
     }
 

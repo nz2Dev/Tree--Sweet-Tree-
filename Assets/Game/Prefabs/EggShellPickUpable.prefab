@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionCursorTexture: {fileID: 0}
+  selectionCursorTexture: {fileID: 2800000, guid: 90d6965a755f4a9cb1b17c8a2efed2cc, type: 3}
 --- !u!114 &7237761976991211079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +226,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ea5d48f367147b0a473dca7a6811e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpRadius: 0.5
+  pickUpRadius: 0.62
+  inventoryItem:
+    icon: {fileID: 21300000, guid: 5774ad7b67c846d58700a68848c98da1, type: 3}
+  destructionEffectPrefab: {fileID: 3732551427800355369, guid: 3e2226b0718f88b40ad98d970390f416, type: 3}
 --- !u!1 &4001546149848606601
 GameObject:
   m_ObjectHideFlags: 0
