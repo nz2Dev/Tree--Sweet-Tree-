@@ -7,9 +7,14 @@ public class HovanetsCharacter : MonoBehaviour {
     
     [SerializeField] private float walkAnimUnitsPerCycle = 1;
     [SerializeField] private GameObject bagVisuals;
+    [SerializeField] private Transform handsLocation;
+    [SerializeField] private Transform bagLocation;
 
     private Animator animator;
     private int bagLayerIndex;
+
+    public Transform HandsLocation => handsLocation;
+    public Transform BagLocation => bagLocation;
 
     private void Awake() {
         animator = GetComponent<Animator>();

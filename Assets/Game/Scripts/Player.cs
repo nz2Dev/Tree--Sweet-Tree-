@@ -8,7 +8,6 @@ using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour {
 
-    [SerializeField] private Transform pickUpHolder;
     [SerializeField] private AnimationCurve pickUpCurve;
     [SerializeField] private float pickingUpDuration = 0.4f;
 
@@ -40,6 +39,7 @@ public class Player : MonoBehaviour {
     }
 
     private PickUpable activePickUpable;
+    private Transform pickUpDestination;
     private Vector3 activePickUpableStartPosition;
     private float pickUpActivationStartTime;
 
@@ -57,6 +57,7 @@ public class Player : MonoBehaviour {
         activePickUpable = pickUpable;
         activePickUpableStartPosition = pickUpable.transform.position;
         pickUpActivationStartTime = Time.time;
+        pickUpDestination = pickUpable.name == "Bag" ? character.HandsLocation : character.BagLocation;
     }
 
     public bool IsPickingUp() {
@@ -76,13 +77,13 @@ public class Player : MonoBehaviour {
                 var pickingUpTime = pickingUpDuration - (pickUpEndTime - Time.time);
                 var pickingUpProgress = pickingUpTime / pickingUpDuration;
                 var upDelta = pickUpCurve.Evaluate(pickingUpProgress) * Vector3.up;
-                var objectToHands = pickUpHolder.position - activePickUpableStartPosition;
+                var objectToHands = pickUpDestination.position - activePickUpableStartPosition;
 
                 activePickUpable.transform.position = activePickUpableStartPosition + objectToHands * pickingUpProgress + upDelta;
             } else {
                 // Time > pickUpEndTime
-                activePickUpable.transform.position = pickUpHolder.position;
-                activePickUpable.transform.SetParent(pickUpHolder, true);
+                activePickUpable.transform.position = pickUpDestination.position;
+                activePickUpable.transform.SetParent(pickUpDestination, true);
                 activePickUpable = null;
             }
         }
@@ -122,10 +123,10 @@ public class Player : MonoBehaviour {
     }
     
     private PickUpable GetHandledObject() {
-        if (pickUpHolder.transform.childCount == 0) {
+        if (pickUpDestination.transform.childCount == 0) {
             return null;
         }
-        var handledObject = pickUpHolder.transform.GetChild(0);
+        var handledObject = pickUpDestination.transform.GetChild(0);
         return handledObject == null ? null : handledObject.GetComponent<PickUpable>();
     }
 
