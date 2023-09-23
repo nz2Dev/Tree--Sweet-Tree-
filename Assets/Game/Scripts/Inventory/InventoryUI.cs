@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour {
     
     [SerializeField] private Inventory inventory;
     [SerializeField] private GameObject inventoryRoot;
+    [SerializeField] private Sprite emptySlotSprite;
     [SerializeField] private RectTransform mask;
     [SerializeField] private RectTransform container;
     [SerializeField] private float changeDuration = 0.5f;
@@ -26,10 +28,11 @@ public class InventoryUI : MonoBehaviour {
 
     private void Awake() {
         inventory.OnOpenRequest += OpenDirectly;
-        inventoryRoot.SetActive(true);
+        inventory.OnItemAdded += HighlightItem;
     }
 
     private void Start() {
+        ChangeItemsSprite();
         if (inventory.IsWorking) {
             Close();
         } else {
@@ -53,6 +56,11 @@ public class InventoryUI : MonoBehaviour {
     public void Disable() {
         inventoryRoot.SetActive(false);
         activator.gameObject.SetActive(false);
+    }    
+
+    private void HighlightItem(int index) {
+        ChangeItemsSprite();
+        Debug.LogError("Not implemented");
     }
 
     private void ChangeContainerState(bool open) {
@@ -62,6 +70,19 @@ public class InventoryUI : MonoBehaviour {
         changeContainerFromSizeDelta = mask.sizeDelta;
         changeContainerToSizeDelta = open ? container.sizeDelta : new Vector2(0, container.sizeDelta.y);
         inventoryRoot.SetActive(true);
+    }
+
+    private void ChangeItemsSprite() {
+        for (int i = 0; i < container.childCount; i++) {
+            var itemSlot = container.GetChild(i);
+            var itemSlotImage = itemSlot.GetChild(0).GetComponent<UnityEngine.UI.Image>();
+            if (i >= inventory.ItemsCount) {
+                itemSlotImage.sprite = emptySlotSprite;
+            } else {
+                var item = inventory.GetItem(i);
+                itemSlotImage.sprite = item.icon;
+            }
+        }
     }
 
     private void ChangeActivatorState(bool visible) {

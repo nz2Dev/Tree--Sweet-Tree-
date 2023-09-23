@@ -110,7 +110,8 @@ public class Player : MonoBehaviour {
             notifications.SendNotification("Where to put it?", 2f);
         } else {
             // handle object by inventory
-            inventory.Put(pickedUp);
+            inventory.Put(pickedUp.InventoryItem);
+            Destroy(pickedUp.gameObject);
         }
     }
 
