@@ -4782,15 +4782,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6707048884371326029, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.22342867
+      value: 0.2234287
       objectReference: {fileID: 0}
     - target: {fileID: 6707048884371326029, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000255185
+      value: 0.00025521766
       objectReference: {fileID: 0}
     - target: {fileID: 6707048884371326029, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000058494366
+      value: -0.00005850186
       objectReference: {fileID: 0}
     - target: {fileID: 7059544680546104118, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalPosition.x
@@ -14718,17 +14718,100 @@ MonoBehaviour:
   activatorChangeDuration: 0.1
   highlightScaleCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4.271012
+      outSlope: 4.271012
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.16176064
+    - serializedVersion: 3
+      time: 0.28334045
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.73522943
+      value: 1.0003284
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.7780952
+      outSlope: -3.7780952
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  scaleMultiplier: 0.3
   highlightMoveCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.20832825
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.49210984
+      value: 0.000074505806
+      inSlope: -0.0065904586
+      outSlope: -0.0065904586
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.97254896
+    - serializedVersion: 3
+      time: 0.7317266
+      value: 0.62525314
+      inSlope: 0.020977963
+      outSlope: 0.020977963
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.7928674
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.3306563
+      outSlope: -2.3306563
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  highlightDuration: 0.5
+  moveMultiplier: 30
+  highlightDuration: 1
 --- !u!1001 &4639195130723279886
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17663,7 +17746,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8826401326907913693}
-  - component: {fileID: 8673448285975085276}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -20937,14 +21019,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1233482419822897813, guid: 3e76d2a167dfbc641881c89990cb4a43, type: 3}
   m_PrefabInstance: {fileID: 8642907233423250260}
   m_PrefabAsset: {fileID: 0}
---- !u!222 &8673448285975085276
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6419046576614303057}
-  m_CullTransparentMesh: 1
 --- !u!1001 &8681570590095495191
 PrefabInstance:
   m_ObjectHideFlags: 0

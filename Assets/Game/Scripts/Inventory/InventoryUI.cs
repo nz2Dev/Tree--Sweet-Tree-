@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour {
     
@@ -14,7 +14,9 @@ public class InventoryUI : MonoBehaviour {
     [SerializeField] private RectTransform activator;
     [SerializeField] private float activatorChangeDuration = 0.25f;
     [SerializeField] private AnimationCurve highlightScaleCurve;
+    [SerializeField] private float scaleMultiplier = 1f;
     [SerializeField] private AnimationCurve highlightMoveCurve;
+    [SerializeField] private float moveMultiplier = 1f;
     [SerializeField] private float highlightDuration = 0.5f;
 
     private bool changingContainer;
@@ -71,9 +73,11 @@ public class InventoryUI : MonoBehaviour {
     }
 
     private void PlayHighlightOnSlot(int index) {
+        var startDelay = 1.0f;
         playingHighlight = true;
-        playingHighlightStartTime = Time.time;
+        playingHighlightStartTime = Time.time + startDelay;
         playingHighlightSlotIndex = index;
+        mask.GetComponent<Image>().enabled = false;
     }
 
     private void ChangeContainerState(bool open) {
@@ -142,13 +146,29 @@ public class InventoryUI : MonoBehaviour {
             }
         }
 
-        // if (playingHighlight) {
-        //     var highlightEndTime = playingHighlightStartTime + highlightDuration;
-        //     if (Time.time < highlightEndTime) {
-        //         var highlightProgress = (Time.time - playingHighlightStartTime) / highlightDuration;
-        //         var movePos = highlightMoveCurve.Evaluate(highlightProgress);
-        //     }
-        // }
+        if (playingHighlight) {
+            var highlightEndTime = playingHighlightStartTime + highlightDuration;
+            if (playingHighlightStartTime < Time.time) {
+                if (Time.time < highlightEndTime) {
+                    var highlightProgress = (Time.time - playingHighlightStartTime) / highlightDuration;
+
+                    var yPos = highlightMoveCurve.Evaluate(highlightProgress) * moveMultiplier;
+                    var slotIconTransform = container.GetChild(playingHighlightSlotIndex).GetChild(1).transform as RectTransform;
+                    slotIconTransform.anchoredPosition = new Vector2(0, yPos);
+
+                    var scale = 1 + highlightScaleCurve.Evaluate(highlightProgress) * scaleMultiplier;
+                    var slotBackgroundTransform = container.GetChild(playingHighlightSlotIndex).GetChild(0).transform;
+                    slotBackgroundTransform.localScale = new Vector3(scale, scale, scale);
+                } else {
+                    mask.GetComponent<Image>().enabled = true;
+                    playingHighlight = false;
+                    var slotIconTransform = container.GetChild(playingHighlightSlotIndex).GetChild(1).transform as RectTransform;
+                    slotIconTransform.anchoredPosition = Vector2.zero;
+                    var slotBackgroundTransform = container.GetChild(playingHighlightSlotIndex).GetChild(0).transform;
+                    slotBackgroundTransform.localScale = Vector3.one;
+                }
+            }
+        }
     }
 
 }
