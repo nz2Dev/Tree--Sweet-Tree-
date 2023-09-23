@@ -13,6 +13,9 @@ public class InventoryUI : MonoBehaviour {
     [SerializeField] private float changeDuration = 0.5f;
     [SerializeField] private RectTransform activator;
     [SerializeField] private float activatorChangeDuration = 0.25f;
+    [SerializeField] private AnimationCurve highlightScaleCurve;
+    [SerializeField] private AnimationCurve highlightMoveCurve;
+    [SerializeField] private float highlightDuration = 0.5f;
 
     private bool changingContainer;
     private bool changeContainerStateIsOpen;
@@ -25,6 +28,10 @@ public class InventoryUI : MonoBehaviour {
     private float changeActivatorStartTime;
     private float changeActivatorFromScale;
     private float changeActivatorToScale;
+
+    private bool playingHighlight;
+    private int playingHighlightSlotIndex;
+    private float playingHighlightStartTime;
 
     private void Awake() {
         inventory.OnOpenRequest += OpenDirectly;
@@ -58,9 +65,15 @@ public class InventoryUI : MonoBehaviour {
         activator.gameObject.SetActive(false);
     }    
 
-    private void HighlightItem(int index) {
+    public void HighlightItem(int index) {
         ChangeItemsSprite();
-        Debug.LogError("Not implemented");
+        PlayHighlightOnSlot(index);
+    }
+
+    private void PlayHighlightOnSlot(int index) {
+        playingHighlight = true;
+        playingHighlightStartTime = Time.time;
+        playingHighlightSlotIndex = index;
     }
 
     private void ChangeContainerState(bool open) {
@@ -75,11 +88,12 @@ public class InventoryUI : MonoBehaviour {
     private void ChangeItemsSprite() {
         for (int i = 0; i < container.childCount; i++) {
             var itemSlot = container.GetChild(i);
-            var itemSlotImage = itemSlot.GetChild(0).GetComponent<UnityEngine.UI.Image>();
+            var itemSlotImage = itemSlot.GetChild(1).GetComponent<UnityEngine.UI.Image>();
             if (i >= inventory.ItemsCount) {
-                itemSlotImage.sprite = emptySlotSprite;
+                itemSlotImage.enabled = false;
             } else {
                 var item = inventory.GetItem(i);
+                itemSlotImage.enabled = true;
                 itemSlotImage.sprite = item.icon;
             }
         }
@@ -127,6 +141,14 @@ public class InventoryUI : MonoBehaviour {
                 }
             }
         }
+
+        // if (playingHighlight) {
+        //     var highlightEndTime = playingHighlightStartTime + highlightDuration;
+        //     if (Time.time < highlightEndTime) {
+        //         var highlightProgress = (Time.time - playingHighlightStartTime) / highlightDuration;
+        //         var movePos = highlightMoveCurve.Evaluate(highlightProgress);
+        //     }
+        // }
     }
 
 }
