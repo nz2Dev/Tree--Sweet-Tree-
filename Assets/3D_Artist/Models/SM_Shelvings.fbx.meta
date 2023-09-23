@@ -3,7 +3,17 @@ guid: 4414faa3a9254754ca820633af1a884d
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_lp
+    second: {fileID: 2100000, guid: 210da9e463955ce498b871e5d605ab6e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pasted__Color_pallete
+    second: {fileID: 2100000, guid: 5f617f6299272a1428fd1e4d74532abc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
