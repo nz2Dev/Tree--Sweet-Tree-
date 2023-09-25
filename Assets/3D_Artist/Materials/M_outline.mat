@@ -37,11 +37,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _OutlineThikness: 0.04
+    - _OutlineThikness: 0.1
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _OutlineColor: {r: 1, g: 0, b: 0, a: 0}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8305010296592387644
 MonoBehaviour:
