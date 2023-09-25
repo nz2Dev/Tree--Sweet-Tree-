@@ -12,6 +12,7 @@ public class HovanetsCharacter : MonoBehaviour {
 
     private Animator animator;
     private int bagLayerIndex;
+    private HovanetsAudio audioPlayer;
 
     public Transform HandsLocation => handsLocation;
     public Transform BagLocation => bagLocation;
@@ -19,6 +20,7 @@ public class HovanetsCharacter : MonoBehaviour {
     private void Awake() {
         animator = GetComponent<Animator>();
         bagLayerIndex = animator.GetLayerIndex("Bag Layer");
+        audioPlayer = GetComponent<HovanetsAudio>();
     }
 
     public void SetIsWalking(bool isWalking) {
@@ -33,6 +35,14 @@ public class HovanetsCharacter : MonoBehaviour {
     public void SetBagEquiped(bool equiped) {
         bagVisuals.SetActive(equiped);
         animator.SetLayerWeight(bagLayerIndex, equiped ? 1.0f : 0.0f);
+    }
+
+    private void OnLeftFootDown() {
+        audioPlayer.PlayLeftFoot();
+    }
+
+    private void OnRightFootDown() {
+        audioPlayer.PlayRightFoot();
     }
     
 }
