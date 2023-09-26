@@ -16,12 +16,13 @@ public class InventoryUI : MonoBehaviour {
     [SerializeField] private float changeDuration = 0.5f;
     [SerializeField] private RectTransform activator;
     [SerializeField] private float activatorChangeDuration = 0.25f;
-    [SerializeField] private AnimationCurve highlightScaleCurve;
-    [SerializeField] private float scaleMultiplier = 1f;
+    [SerializeField] private RectTransform highlightingItem;
     [SerializeField] private AnimationCurve highlightMoveCurve;
     [SerializeField] private float moveMultiplier = 1f;
     [SerializeField] private float highlightDelay = 0.5f;
     [SerializeField] private float highlightDuration = 0.5f;
+
+    private Vector2 highlightingItemStartPosition;
 
     private bool changingContainer;
     private bool changeContainerStateIsOpen;
@@ -47,7 +48,10 @@ public class InventoryUI : MonoBehaviour {
     }
 
     private void Start() {
-        ChangeItemsSprite();
+        highlightingItemStartPosition = highlightingItem.anchoredPosition;
+        highlightingItem.gameObject.SetActive(false);
+
+        ChangeItemsDisplayState();
         if (inventory.IsWorking) {
             Close();
         } else {
@@ -75,7 +79,7 @@ public class InventoryUI : MonoBehaviour {
     }    
 
     public void HighlightItem(int index) {
-        ChangeItemsSprite();
+        ChangeItemsDisplayState();
         if (!baseRoot.activeSelf) {
             OpenDirectly();
         }
@@ -86,6 +90,10 @@ public class InventoryUI : MonoBehaviour {
         playingHighlight = true;
         playingHighlightStartTime = Time.time + highlightDelay;
         playingHighlightSlotIndex = index;
+
+        var highlightSlot = itemsContainer.GetChild(index);
+        highlightSlot.GetComponent<CanvasGroup>().alpha = 0;
+        BindSlotToItem(highlightingItem, inventory.GetItem(index));
     }
 
     private void ChangeContainerState(bool open) {
@@ -100,18 +108,21 @@ public class InventoryUI : MonoBehaviour {
         itemsRoot.SetActive(true);
     }
 
-    private void ChangeItemsSprite() {
+    private void ChangeItemsDisplayState() {
         for (int i = 0; i < itemsContainer.childCount; i++) {
             var itemSlot = itemsContainer.GetChild(i);
-            var itemSlotImage = itemSlot.GetChild(1).GetComponent<UnityEngine.UI.Image>();
             if (i >= inventory.ItemsCount) {
                 itemSlot.gameObject.SetActive(false);
             } else {
                 itemSlot.gameObject.SetActive(true);
-                var item = inventory.GetItem(i);
-                itemSlotImage.sprite = item.icon;
+                BindSlotToItem(itemSlot, inventory.GetItem(i));
             }
         }
+    }
+
+    private void BindSlotToItem(Transform itemSlotTransform, Item item) {
+        var itemSlotImage = itemSlotTransform.GetChild(1).GetComponent<UnityEngine.UI.Image>();
+        itemSlotImage.sprite = item.icon;
     }
 
     private void ChangeActivatorState(bool visible) {
@@ -162,24 +173,22 @@ public class InventoryUI : MonoBehaviour {
         if (playingHighlight) {
             var highlightEndTime = playingHighlightStartTime + highlightDuration;
             if (playingHighlightStartTime < Time.time) {
-                baseMask.GetComponent<Image>().enabled = false;
+                highlightingItem.gameObject.SetActive(true);
+
                 if (Time.time < highlightEndTime) {
                     var highlightProgress = (Time.time - playingHighlightStartTime) / highlightDuration;
 
-                    var yPos = highlightMoveCurve.Evaluate(highlightProgress) * moveMultiplier;
-                    var slotIconTransform = baseArea.GetChild(playingHighlightSlotIndex).GetChild(1).transform as RectTransform;
-                    slotIconTransform.anchoredPosition = new Vector2(0, yPos);
+                    var highlightSlot = itemsContainer.GetChild(playingHighlightSlotIndex) as RectTransform;
+                    var positionDelta = highlightSlot.anchoredPosition - highlightingItemStartPosition;
 
-                    var scale = 1 + highlightScaleCurve.Evaluate(highlightProgress) * scaleMultiplier;
-                    var slotBackgroundTransform = baseArea.GetChild(playingHighlightSlotIndex).GetChild(0).transform;
-                    slotBackgroundTransform.localScale = new Vector3(scale, scale, scale);
+                    var hightExtra = highlightMoveCurve.Evaluate(highlightProgress) * moveMultiplier;
+                    highlightingItem.anchoredPosition = highlightingItemStartPosition + positionDelta * highlightProgress + Vector2.up * hightExtra;
                 } else {
-                    baseMask.GetComponent<Image>().enabled = true;
                     playingHighlight = false;
-                    var slotIconTransform = baseArea.GetChild(playingHighlightSlotIndex).GetChild(1).transform as RectTransform;
-                    slotIconTransform.anchoredPosition = Vector2.zero;
-                    var slotBackgroundTransform = baseArea.GetChild(playingHighlightSlotIndex).GetChild(0).transform;
-                    slotBackgroundTransform.localScale = Vector3.one;
+
+                    highlightingItem.gameObject.SetActive(false);
+                    var highlightSlot = itemsContainer.GetChild(playingHighlightSlotIndex) as RectTransform;
+                    highlightSlot.GetComponent<CanvasGroup>().alpha = 1;
                 }
             }
         }
