@@ -86,8 +86,8 @@ public class InventoryUI : MonoBehaviour {
         changingContainer = true;
         changeContainerStateIsOpen = open;
         changeContainerStartTime = Time.time;
-        changeContainerFromSizeDelta = mask.sizeDelta;
-        changeContainerToSizeDelta = open ? container.sizeDelta : new Vector2(0, container.sizeDelta.y);
+        changeContainerFromSizeDelta = open ? new Vector2(-70, container.sizeDelta.y) : mask.sizeDelta;
+        changeContainerToSizeDelta = open ? container.sizeDelta : new Vector2(-70, container.sizeDelta.y);
         inventoryRoot.SetActive(true);
     }
 
