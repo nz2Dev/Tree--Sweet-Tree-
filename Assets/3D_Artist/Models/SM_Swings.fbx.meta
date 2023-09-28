@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_Rope
     second: {fileID: 2100000, guid: bcf85988014d7fd48921918d5429973e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_lp
+    second: {fileID: 2100000, guid: 210da9e463955ce498b871e5d605ab6e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
