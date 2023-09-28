@@ -67,6 +67,11 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void UpdateCursorIcon() {
+        if (EventSystem.current.IsPointerOverGameObject()) {
+            Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.Auto);
+            return;
+        }
+        
         if (selector.Selected != null) {
             Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.Auto);
         } else if (raycastForNavigation) {
