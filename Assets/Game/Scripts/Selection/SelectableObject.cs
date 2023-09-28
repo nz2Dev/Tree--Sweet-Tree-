@@ -12,6 +12,7 @@ public class SelectableObject : MonoBehaviour {
     public Vector2 CursorHotSpot => cursorHotSpot;
 
     public event Action<bool> OnSelectionChanged;
+    public event Action<bool> OnHighlightChanged;
 
     private bool isSelected;
 
@@ -30,6 +31,14 @@ public class SelectableObject : MonoBehaviour {
     public void MarkUnselected() {
         isSelected = false;
         NotifyChanges();
+    }
+
+    public void Highlight() {
+        OnHighlightChanged?.Invoke(true);
+    }
+
+    public void StopHighlighting() {
+        OnHighlightChanged?.Invoke(false);
     }
 
     private void NotifyChanges() {

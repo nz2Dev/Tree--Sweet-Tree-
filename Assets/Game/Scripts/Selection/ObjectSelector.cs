@@ -9,6 +9,7 @@ public class ObjectSelector : MonoBehaviour {
     [SerializeField] private LayerMask selectableObjectsMask;
 
     private SelectableObject selectedObject;
+    private SelectableObject highlightedObject;
     private bool selectionLocked;
 
     public SelectableObject Selected => selectedObject;
@@ -22,6 +23,25 @@ public class ObjectSelector : MonoBehaviour {
             Debug.LogWarning("Selected Object is null!");
         }
         selectionLocked = true;
+    }
+
+    public void HighlightSelection() {
+        if (selectedObject != null) {
+            if (highlightedObject != null) {
+                highlightedObject.StopHighlighting();
+                highlightedObject = null;
+            }
+            
+            highlightedObject = selectedObject;
+            highlightedObject.Highlight();
+        }
+    }
+
+    public void CancelLastHighlight() {
+        if (highlightedObject != null) {
+            highlightedObject.StopHighlighting();
+            highlightedObject = null;
+        }
     }
 
     public void UnlockSelection() {

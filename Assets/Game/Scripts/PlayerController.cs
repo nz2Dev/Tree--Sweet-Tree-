@@ -39,7 +39,10 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
             if (selector.Selected != null) {
                 var selectedPickUp = selector.Selected.GetComponent<PickUpable>();
-                ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
+                ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
+                    selector.CancelLastHighlight();
+                }));
+                selector.HighlightSelection();
             } else if (raycastForNavigation) {
                 ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
             }
@@ -49,6 +52,7 @@ public class PlayerController : MonoBehaviour {
             currentActivity.Update(player);
 
             if (currentActivity.IsFinished) {
+                currentActivity.Cancel(player);
                 currentActivity = null;
             }
         }

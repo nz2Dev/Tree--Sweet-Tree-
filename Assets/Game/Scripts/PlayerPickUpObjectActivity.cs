@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +13,14 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
     }
 
     private readonly PickUpable targetPickUp;
+    private Action onCancel;
     private State state;
 
-    public PlayerPickUpObjectActivity(PickUpable targetPickUp) {
+    public PlayerPickUpObjectActivity(PickUpable targetPickUp, Action onCancel = null)
+    {
         this.targetPickUp = targetPickUp;
         this.state = State.Idle;
+        this.onCancel = onCancel;
     }
 
     public bool IsFinished => state == State.Finished;
@@ -53,6 +57,8 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
         if (state != State.Finished && player.IsPickingUp()) {
             player.CancelPickUp();
         }
+
+        onCancel?.Invoke();
     }
 
 }
