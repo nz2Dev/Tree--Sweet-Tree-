@@ -16,12 +16,12 @@ MonoBehaviour:
   - gameObject: {fileID: 919132149155446097, guid: 2a372e3d8de28ca4bb3fbff43803982c, type: 3}
     settings:
       m_Strength: 100
-      m_RotationRangeMin: {x: 0, y: 0, z: 0}
-      m_RotationRangeMax: {x: 17.746479, y: 20.28169, z: 27.887325}
+      m_RotationRangeMin: {x: 0, y: 136.90141, z: 0}
+      m_RotationRangeMax: {x: 32.95775, y: 157.1831, z: 27.887325}
       m_ScaleRangeMin: {x: 1, y: 1, z: 1}
-      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 6.1408453, z: 1}
       m_UniformScale: {x: 0.5, y: 0.7}
-      m_UniformBool: 1
+      m_UniformBool: 0
       m_XRotationBool: 1
       m_YRotationBool: 1
       m_ZRotationBool: 1
@@ -29,3 +29,19 @@ MonoBehaviour:
       m_YScaleBool: 0
       m_ZScaleBool: 0
     name: SM_Moss_02
+  - gameObject: {fileID: 919132149155446097, guid: ff05f76dc31ed954aa4de3d72a7de32c, type: 3}
+    settings:
+      m_Strength: 89.51681
+      m_RotationRangeMin: {x: 0, y: 0, z: 0}
+      m_RotationRangeMax: {x: 0, y: 0, z: 0}
+      m_ScaleRangeMin: {x: 1, y: 1, z: 1}
+      m_ScaleRangeMax: {x: 1, y: 1, z: 1}
+      m_UniformScale: {x: 1, y: 1}
+      m_UniformBool: 1
+      m_XRotationBool: 1
+      m_YRotationBool: 1
+      m_ZRotationBool: 1
+      m_XScaleBool: 0
+      m_YScaleBool: 0
+      m_ZScaleBool: 0
+    name: SM_Moss_03
