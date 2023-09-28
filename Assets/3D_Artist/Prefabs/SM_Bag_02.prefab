@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7587989439028881873}
   - component: {fileID: 7785259124680596748}
   - component: {fileID: 8942737764718508688}
+  - component: {fileID: 5023645537930983473}
   m_Layer: 0
   m_Name: SM_Bag_02
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3107467031018220182}
-  m_LocalRotation: {x: -0, y: 0.5045231, z: -0, w: 0.8633982}
+  m_LocalRotation: {x: 0, y: 0.50452006, z: 0, w: 0.8634}
   m_LocalPosition: {x: -8.268428, y: -10.688919, z: -2.979999}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
@@ -85,3 +86,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5023645537930983473
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3107467031018220182}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.79577696, y: 0.8066162, z: 0.6206644}
+  m_Center: {x: 0.000000014901161, y: 0.4032446, z: -0.0000068843365}

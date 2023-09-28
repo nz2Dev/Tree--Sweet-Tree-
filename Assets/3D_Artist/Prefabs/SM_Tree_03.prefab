@@ -25,9 +25,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8542484301082950537}
-  m_LocalRotation: {x: -0, y: 0.6522574, z: -0, w: 0.7579975}
+  m_LocalRotation: {x: 0, y: 0.6522572, z: 0, w: 0.75799775}
   m_LocalPosition: {x: -12.97, y: -0.9763689, z: 4.03}
-  m_LocalScale: {x: 1, y: 1.1979, z: 1}
+  m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -74,7 +74,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
