@@ -11,7 +11,7 @@ public class ObjectSelector : MonoBehaviour {
     private SelectableObject selectedObject;
     private bool selectionLocked;
 
-    public GameObject Selected => selectedObject == null ? null : selectedObject.gameObject;
+    public SelectableObject Selected => selectedObject;
 
     private void Update() {
         UpdateSelection();

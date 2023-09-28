@@ -100,7 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionCursorTexture: {fileID: 2800000, guid: 90d6965a755f4a9cb1b17c8a2efed2cc, type: 3}
+  selectionCursorTexture: {fileID: 2800000, guid: ef8725419ec144e1ea7d1d7f2904609d, type: 3}
+  cursorHotSpot: {x: 16, y: 16}
 --- !u!114 &7237761976991211079
 MonoBehaviour:
   m_ObjectHideFlags: 0

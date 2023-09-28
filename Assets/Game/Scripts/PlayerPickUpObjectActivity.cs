@@ -21,6 +21,8 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
 
     public bool IsFinished => state == State.Finished;
 
+    public PickUpable TargetPickUpable => targetPickUp;
+
     public void Begin(Player player) {
         state = State.Aproaching;
         player.ActivateNavigation(targetPickUp.transform.position);
