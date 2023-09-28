@@ -7,7 +7,6 @@ using UnityEngine;
 public class ObjectSelector : MonoBehaviour {
 
     [SerializeField] private LayerMask selectableObjectsMask;
-    [SerializeField] private Texture2D defaultCursor;
 
     private SelectableObject selectedObject;
     private bool selectionLocked;
@@ -43,22 +42,12 @@ public class ObjectSelector : MonoBehaviour {
                 
                 selectedObject = raycastedSelectable;
                 selectedObject.MarkSelected();
-                UpdateCursorIcon();
             }
         } else {
             if (selectedObject != null) {
                 selectedObject.MarkUnselected();
                 selectedObject = null;
-                UpdateCursorIcon();
             }
-        }
-    }
-
-    private void UpdateCursorIcon() {
-        if (selectedObject == null) {
-            Cursor.SetCursor(defaultCursor, Vector2.zero, CursorMode.Auto);
-        } else {
-            Cursor.SetCursor(selectedObject.SelectionCursorTexture, Vector2.zero, CursorMode.Auto);
         }
     }
 

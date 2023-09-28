@@ -354,7 +354,6 @@ MonoBehaviour:
   selectableObjectsMask:
     serializedVersion: 2
     m_Bits: 1
-  defaultCursor: {fileID: 0}
 --- !u!114 &7502926502364869401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,6 +369,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  cursorHotSpot: {x: 16, y: 16}
+  defaultCursor: {fileID: 0}
+  manipulationCursor: {fileID: 0}
+  navigationCursor: {fileID: 0}
 --- !u!1 &3687451025088866936
 GameObject:
   m_ObjectHideFlags: 0
