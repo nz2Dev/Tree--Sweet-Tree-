@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 1793120371632493961}
   - component: {fileID: 2561347313380580099}
   - component: {fileID: 7146662296631476393}
+  - component: {fileID: 637905922835254212}
   m_Layer: 0
   m_Name: SM_Bench_01
-  m_TagString: Untagged
+  m_TagString: Selectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1143537653463308938}
-  m_LocalRotation: {x: 0.51360655, y: 0.67191637, z: 0.32935962, w: 0.41983205}
+  m_LocalRotation: {x: 0.5136072, y: 0.6719174, z: 0.3293571, w: 0.41983172}
   m_LocalPosition: {x: -1.894, y: 0.377, z: 3.832}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.4, y: 1.4000001, z: 1.4}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -0.65, y: 115.503, z: 75.198}
 --- !u!33 &2561347313380580099
 MeshFilter:
@@ -74,7 +75,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 2
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &637905922835254212
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143537653463308938}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5035336, y: 0.44632697, z: 1.8314537}
+  m_Center: {x: -0.17994638, y: 0.22316349, z: -0.84492874}
