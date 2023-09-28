@@ -376,8 +376,8 @@ MonoBehaviour:
     m_Bits: 64
   cursorHotSpot: {x: 16, y: 16}
   defaultCursor: {fileID: 0}
-  manipulationCursor: {fileID: 0}
-  navigationCursor: {fileID: 0}
+  manipulationCursor: {fileID: 2800000, guid: d4086a7f9abd4413ea12b7b740a03467, type: 3}
+  navigationCursor: {fileID: 2800000, guid: 74d9dffa5b67243dea00429e754bb624, type: 3}
 --- !u!1 &1303438873492893461
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +389,7 @@ GameObject:
   - component: {fileID: 684020380455571767}
   - component: {fileID: 6556438394062196567}
   - component: {fileID: 6052108101887280369}
+  - component: {fileID: 1051656086760302854}
   m_Layer: 0
   m_Name: HintIcon
   m_TagString: Untagged
@@ -454,6 +455,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &1051656086760302854
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303438873492893461}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1937043766053510923
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,6 +478,7 @@ GameObject:
   - component: {fileID: 1910478717916496516}
   - component: {fileID: 51292863267443916}
   - component: {fileID: 6845827748670235159}
+  - component: {fileID: 4883091515720508488}
   m_Layer: 0
   m_Name: EmotionsIcon
   m_TagString: Untagged
@@ -530,6 +544,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &4883091515720508488
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937043766053510923}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4147385757263223633
 GameObject:
   m_ObjectHideFlags: 0
