@@ -7,7 +7,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour {
-
+    
+    [SerializeField] private Suggestion inventorySuggestion;
     [SerializeField] private AnimationCurve pickUpCurve;
     [SerializeField] private float pickingUpDuration = 0.4f;
 
@@ -113,7 +114,7 @@ public class Player : MonoBehaviour {
             pickedUp.transform.SetParent(null, true);
             pickedUp.Release();
 
-            notifications.SendNotification("Where to put it?", 2f);
+            notifications.SendNotification(inventorySuggestion);
         } else {
             // handle object by inventory
             inventory.Put(pickedUp.InventoryItem);
