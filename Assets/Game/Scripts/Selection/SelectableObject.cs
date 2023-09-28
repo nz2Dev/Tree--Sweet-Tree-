@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class SelectableObject : MonoBehaviour {
 
-    [SerializeField] private Texture2D selectionCursorTexture;
-    [SerializeField] private Vector2 cursorHotSpot;
-
-    public Texture2D SelectionCursorTexture => selectionCursorTexture;
-    public Vector2 CursorHotSpot => cursorHotSpot;
-
     public event Action<bool> OnSelectionChanged;
     public event Action<bool> OnHighlightChanged;
 

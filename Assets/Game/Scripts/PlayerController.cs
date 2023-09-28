@@ -76,16 +76,14 @@ public class PlayerController : MonoBehaviour {
             return;
         }
 
+        Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.Auto);
         if (selector.Selected != null) {
-            if (currentActivity is PlayerPickUpObjectActivity pickUpActivity && pickUpActivity.TargetPickUpable.gameObject == selector.Selected.gameObject) {
-                Cursor.SetCursor(selector.Selected.SelectionCursorTexture, selector.Selected.CursorHotSpot, CursorMode.Auto);
-            } else {
-                Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.Auto);
+            if (currentActivity is not PlayerPickUpObjectActivity pickUpActivity 
+                || pickUpActivity.TargetPickUpable.gameObject != selector.Selected.gameObject) {
+                Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.Auto);                
             }
         } else if (raycastForNavigation) {
             Cursor.SetCursor(navigationCursor, cursorHotSpot, CursorMode.Auto);
-        } else {
-            Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.Auto);
         }
     }
 
