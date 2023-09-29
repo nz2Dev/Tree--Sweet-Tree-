@@ -60,6 +60,10 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
+/build-win
+build-win*.zip
+/build-linux*
+build-linux.zip
 
 # Crashlytics generated file
 crashlytics-build.properties
