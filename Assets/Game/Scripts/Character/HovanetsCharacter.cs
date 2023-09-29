@@ -9,6 +9,8 @@ public class HovanetsCharacter : MonoBehaviour {
     [SerializeField] private GameObject bagVisuals;
     [SerializeField] private Transform handsLocation;
     [SerializeField] private Transform bagLocation;
+    [SerializeField] private bool resetPosition;
+    [SerializeField] private bool applyBuiltinRootMotion;
 
     private Animator animator;
     private int bagLayerIndex;
@@ -21,6 +23,18 @@ public class HovanetsCharacter : MonoBehaviour {
         animator = GetComponent<Animator>();
         bagLayerIndex = animator.GetLayerIndex("Bag Layer");
         audioPlayer = GetComponent<HovanetsAudio>();
+    }
+
+    private void OnAnimatorMove() {
+        if (applyBuiltinRootMotion) {
+            animator.ApplyBuiltinRootMotion();    
+        }
+    }
+
+    private void LateUpdate() {
+        if (resetPosition) {
+            transform.localPosition = Vector3.zero;
+        }
     }
 
     public void SetIsWalking(bool isWalking) {
