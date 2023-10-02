@@ -73,10 +73,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BaseEmission: 0.67
-    - _Moss_1_Emission: 1.87
+    - _BaseEmission: 0.005
+    - _Moss_1_Emission: 0.85
     - _Moss_1_Tile: 1.83
-    - _Moss_2_Emission: 1.03
+    - _Moss_2_Emission: 0.51
     - _Moss_2_Tile: 1.62
     - _QueueControl: 0
     - _QueueOffset: 0
