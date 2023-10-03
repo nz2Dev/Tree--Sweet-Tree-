@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour {
@@ -145,6 +146,13 @@ public class Player : MonoBehaviour {
 
     public float GetRemainingNavigationDistance() {
         return movement.GetRemainingDistance();
+    }
+
+    public void LandJump() {
+        // called from timeline
+        transform.position = character.transform.position;
+        GetComponent<NavMeshAgent>().Warp(transform.position);
+        character.transform.localPosition = Vector3.zero;
     }
 
     public void StopNavigation() {
