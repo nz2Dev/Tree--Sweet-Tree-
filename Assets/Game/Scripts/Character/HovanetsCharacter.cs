@@ -37,6 +37,10 @@ public class HovanetsCharacter : MonoBehaviour {
         }
     }
 
+    public void PlayJump() {
+        animator.SetTrigger("Jump");
+    }
+
     public void SetIsWalking(bool isWalking) {
         animator.SetBool("Walking", isWalking);
     }

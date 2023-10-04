@@ -1,25 +1,28 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Assertions;
+using UnityEngine.Playables;
 
 public class Player : MonoBehaviour {
     
     [SerializeField] private Suggestion inventorySuggestion;
     [SerializeField] private AnimationCurve pickUpCurve;
     [SerializeField] private float pickingUpDuration = 0.4f;
+    [SerializeField] private float jumpMaxHight = 1f;
+    [SerializeField] private float jumpDuration = 1f;
+    [SerializeField] private AnimationCurve jumpCurve;
+    [SerializeField] private float rotationSpeed = 5;
+    [SerializeField] private PlayableDirector jumpDirector;
 
-    private AutomaticMovement movement;
+    private NavMeshAgent navMeshAgent;
     private PopUpNotifications notifications;
     private HovanetsCharacter character;
     private Inventory inventory;
 
     private void Awake() {
-        movement = GetComponent<AutomaticMovement>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.autoTraverseOffMeshLink = false;
+        navMeshAgent.updateRotation = false;
+
         notifications = GetComponent<PopUpNotifications>();
         character = GetComponentInChildren<HovanetsCharacter>();
         inventory = GetComponent<Inventory>();
@@ -31,13 +34,7 @@ public class Player : MonoBehaviour {
 
     private void Update() {
         UpdatePickUp();
-        var currentMovementSpeed = movement.GetCurrentSpeed();
-        if (currentMovementSpeed > 0) {
-            character.SetIsWalking(true);
-            character.SetWalkMotionSpeed(currentMovementSpeed);
-        } else {
-            character.SetIsWalking(false);
-        }
+        UpdateNavigation();
     }
 
     private PickUpable activePickUpable;
@@ -55,7 +52,8 @@ public class Player : MonoBehaviour {
     }
 
     public void ActivatePickUp(PickUpable pickUpable) {
-        movement.StopMovement();
+        navMeshAgent.ExtResetDestination();
+
         activePickUpable = pickUpable;
         activePickUpableStartPosition = pickUpable.transform.position;
         pickUpActivationStartTime = Time.time;
@@ -141,21 +139,71 @@ public class Player : MonoBehaviour {
         // cancel all the rest
         CancelPickUp();        
 
-        movement.MoveTo(point);
+        navMeshAgent.destination = point;
     }
 
     public float GetRemainingNavigationDistance() {
-        return movement.GetRemainingDistance();
+        return navMeshAgent.ExtGetRemainingDistanceAnyState();
     }
 
-    public void LandJump() {
-        // called from timeline
-        transform.position = character.transform.position;
-        GetComponent<NavMeshAgent>().Warp(transform.position);
-        character.transform.localPosition = Vector3.zero;
+    public void UpdateNavigation() {
+        if (navMeshAgent.isOnOffMeshLink && !jumpStarted) {
+            jumpStarted = true;
+            jumpStartTime = Time.time;   
+            jumpStartPosition = transform.position;
+            character.PlayJump();
+        }
+
+        if (jumpStarted) {
+            UpdateLinkJump();
+        } else {
+            UpdateMovement();
+        }
+    }
+
+    private void UpdateMovement() {
+        var currentMovementSpeed = navMeshAgent.ExtGetCurrentSpeed();
+        if (currentMovementSpeed > 0) {
+            character.SetIsWalking(true);
+            character.SetWalkMotionSpeed(currentMovementSpeed);
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, 
+                    Quaternion.LookRotation(navMeshAgent.velocity, Vector3.up), 
+                    Time.deltaTime * rotationSpeed);
+        } else {
+            character.SetIsWalking(false);
+        }
+    }
+
+    private bool jumpStarted;
+    private float jumpStartTime;
+    private Vector3 jumpStartPosition;
+
+    private void UpdateLinkJump() {
+        if (jumpStartTime + jumpDuration > Time.time) {
+            var jumpTime = Time.time - jumpStartTime;
+            var jumpProgress = jumpTime / jumpDuration;
+            if (jumpProgress < 0.2f) {
+                jumpProgress = 0;
+            } else {
+                jumpProgress = 1 - ((1 - jumpProgress) / 0.8f); // remapping progress from 0.2 - 1.0 to 0.0 - 1.0
+            }
+            
+            var jumpStart = jumpStartPosition;
+            var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight * Vector3.up;
+            var jumpDistanceVector = navMeshAgent.currentOffMeshLinkData.endPos - jumpStart;
+            var jumpWidthDelta = jumpDistanceVector * jumpProgress;
+
+            var desiredPosition = jumpStart + jumpHightDelta + jumpWidthDelta;
+            transform.position = desiredPosition;
+        } else {
+            navMeshAgent.transform.position = navMeshAgent.currentOffMeshLinkData.endPos;
+            navMeshAgent.CompleteOffMeshLink();
+            jumpStarted = false;
+        }
     }
 
     public void StopNavigation() {
-        movement.StopMovement();
+        navMeshAgent.ExtResetDestination();
     }
 }
