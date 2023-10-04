@@ -195,6 +195,9 @@ public class Player : MonoBehaviour {
 
             var desiredPosition = jumpStart + jumpHightDelta + jumpWidthDelta;
             transform.position = desiredPosition;
+            transform.rotation = Quaternion.Lerp(transform.rotation, 
+                    Quaternion.LookRotation(Vector3.ProjectOnPlane(jumpDistanceVector, Vector3.up), Vector3.up), 
+                    Time.deltaTime * rotationSpeed);
         } else {
             navMeshAgent.transform.position = navMeshAgent.currentOffMeshLinkData.endPos;
             navMeshAgent.CompleteOffMeshLink();
