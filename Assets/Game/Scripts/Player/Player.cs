@@ -11,7 +11,6 @@ public class Player : MonoBehaviour {
     [SerializeField] private float jumpDuration = 1f;
     [SerializeField] private AnimationCurve jumpCurve;
     [SerializeField] private float rotationSpeed = 5;
-    [SerializeField] private PlayableDirector jumpDirector;
 
     private NavMeshAgent navMeshAgent;
     private PopUpNotifications notifications;
