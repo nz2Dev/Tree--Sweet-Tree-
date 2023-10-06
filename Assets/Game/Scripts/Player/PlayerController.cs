@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -38,11 +39,17 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
             if (selector.Selected != null) {
-                var selectedPickUp = selector.Selected.GetComponent<PickUpable>();
-                ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
-                    selector.CancelLastHighlight();
-                }));
-                selector.HighlightSelection();
+                if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
+                    ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
+                        selector.CancelLastHighlight();
+                    }));
+                    selector.HighlightSelection();
+                } else if (selector.Selected.TryGetComponent<ActivationObject>(out var activationObject)) {
+                    ExecuteActivity(new PlayerActivateObjectActivity(activationObject, onCancel: () => {
+                        selector.CancelLastHighlight();
+                    }));
+                    selector.HighlightSelection();
+                }
             } else if (raycastForNavigation) {
                 ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
             }
