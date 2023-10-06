@@ -12,6 +12,7 @@ public class CameraZoomController : MonoBehaviour {
 
     private void Awake() {
         cameraOffset = GetComponent<CinemachineCameraOffset>();
+        freeLook = GetComponent<CinemachineFreeLook>();
         CinemachineCore.GetInputAxis = GetAxisCustom;
     }
 
@@ -41,6 +42,8 @@ public class CameraZoomController : MonoBehaviour {
         }
 
         var scrollDelta = Input.mouseScrollDelta.y;
-        cameraOffset.m_Offset = new Vector3(cameraOffset.m_Offset.x, cameraOffset.m_Offset.y, cameraOffset.m_Offset.z + scrollDelta * scrollSpeed);
+        if (CinemachineCore.Instance.IsLive(freeLook)) {
+            cameraOffset.m_Offset = new Vector3(cameraOffset.m_Offset.x, cameraOffset.m_Offset.y, cameraOffset.m_Offset.z + scrollDelta * scrollSpeed);
+        }
     }
 }
