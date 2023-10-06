@@ -10,6 +10,7 @@ public class BenchManipulator : MonoBehaviour {
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
     [SerializeField] private ActivationObject manipulationActivator;
     [SerializeField] private GameObject manipulatedBench;
+    [SerializeField] private GameObject benchTransformReference;
     [SerializeField] private LayerMask manipulationSurface;
     [SerializeField] private float snapSpeed = 10;
 
@@ -21,6 +22,12 @@ public class BenchManipulator : MonoBehaviour {
         manipulationActivator.OnActivated += ManipulationActivatorOnActivated;
     }
 
+    private void Start() {
+        manipulatedBench.SetActive(false);
+        manipulationActivator.gameObject.SetActive(false);
+        benchTransformReference.SetActive(false);
+    }
+
     private void ActivationObjectOnActivated() {
         manipulatorVCam.m_Priority++;
         activator.gameObject.SetActive(false);
@@ -30,6 +37,7 @@ public class BenchManipulator : MonoBehaviour {
     private void ManipulationActivatorOnActivated() {
         manipulationActivator.gameObject.SetActive(false);
         manipulatedBench.gameObject.SetActive(true);
+        benchTransformReference.SetActive(true);
         manipulating = true;
     }
 
