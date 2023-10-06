@@ -13,6 +13,7 @@ public class BenchManipulator : MonoBehaviour {
     [SerializeField] private GameObject benchTransformReference;
     [SerializeField] private LayerMask manipulationSurface;
     [SerializeField] private float snapSpeed = 10;
+    [SerializeField] private float snapDistance = 0.3f;
 
     private bool manipulating;
     private Vector3 raycastPosition;
@@ -46,6 +47,10 @@ public class BenchManipulator : MonoBehaviour {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 100, manipulationSurface)) {
                 raycastPosition = hit.point;
             }
+
+            if (Vector3.Distance(raycastPosition, benchTransformReference.transform.position) < snapDistance) {
+                raycastPosition = benchTransformReference.transform.position;
+            } 
 
             manipulatedBench.transform.position = Vector3.Lerp(manipulatedBench.transform.position, raycastPosition, Time.deltaTime * snapSpeed);
         }
