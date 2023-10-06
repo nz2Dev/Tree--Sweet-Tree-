@@ -22,8 +22,7 @@ public class PlayerActivateObjectActivity : IPlayerActivity {
     public void Update(Player player) {
         if (Vector3.Distance(player.transform.position, activationObject.transform.position) < activationObject.ActivationRadius) {
             player.StopNavigation();
-            // activationObject.Activate();
-            Debug.Log("Activated!");
+            activationObject.Activate();
             IsFinished = true;
         }
     }
