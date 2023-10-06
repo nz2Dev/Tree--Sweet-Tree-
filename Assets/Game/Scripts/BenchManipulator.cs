@@ -7,6 +7,7 @@ using UnityEngine;
 public class BenchManipulator : MonoBehaviour {
 
     [SerializeField] private ActivationObject activator;
+    [SerializeField] private GameObject actualBench;
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
     [SerializeField] private ActivationObject manipulationActivator;
     [SerializeField] private GameObject manipulatedBench;
@@ -17,6 +18,7 @@ public class BenchManipulator : MonoBehaviour {
     [SerializeField] private float snapDistance = 0.3f;
 
     private bool manipulating;
+    private bool approving;
     private Vector3 raycastPosition;
 
     private void Awake() {
@@ -28,12 +30,13 @@ public class BenchManipulator : MonoBehaviour {
         manipulatedBench.SetActive(false);
         manipulationActivator.gameObject.SetActive(false);
         benchTransformReference.SetActive(false);
+        actualBench.SetActive(false);
     }
 
     private void ActivationObjectOnActivated() {
-        manipulatorVCam.m_Priority++;
         activator.gameObject.SetActive(false);
         manipulationActivator.gameObject.SetActive(true);
+        manipulatorVCam.m_Priority++;
     }
 
     private void ManipulationActivatorOnActivated() {
@@ -46,6 +49,16 @@ public class BenchManipulator : MonoBehaviour {
     private void ManipulationFinished() {
         benchTransformReference.SetActive(false);
         manipulatedBench.GetComponentInChildren<Renderer>().material.color = snappedColor;
+        manipulating = false;
+        approving = true;
+    }
+
+    private void ManipulationApproved() {
+        approving = false;
+        actualBench.SetActive(true);
+        manipulatedBench.SetActive(false);
+        manipulatorVCam.m_Priority--;
+        manipulatorVCam.m_Priority--;
     }
 
     private void Update() {
@@ -74,6 +87,12 @@ public class BenchManipulator : MonoBehaviour {
                 } else if (dotProduct > 0.1f) {
                     manipulatedBench.transform.rotation = newRotation;
                 }
+            }
+        }
+
+        if (approving) {
+            if (Input.GetMouseButtonDown(0)) {
+                ManipulationApproved();
             }
         }
     }
