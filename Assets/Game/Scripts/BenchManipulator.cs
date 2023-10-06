@@ -21,6 +21,8 @@ public class BenchManipulator : MonoBehaviour {
     private bool approving;
     private Vector3 raycastPosition;
 
+    public bool InFocus => manipulating || approving;
+
     private void Awake() {
         activator.OnActivated += ActivationObjectOnActivated;
         manipulationActivator.OnActivated += ManipulationActivatorOnActivated;
@@ -61,7 +63,7 @@ public class BenchManipulator : MonoBehaviour {
         manipulatorVCam.m_Priority--;
     }
 
-    private void Update() {
+    public void UpdateControl() {
         if (manipulating) {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 100, manipulationSurface)) {
                 raycastPosition = hit.point;

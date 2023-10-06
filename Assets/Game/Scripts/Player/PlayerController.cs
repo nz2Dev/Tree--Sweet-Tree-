@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Texture2D defaultCursor;
     [SerializeField] private Texture2D manipulationCursor;
     [SerializeField] private Texture2D navigationCursor;
+    [SerializeField] private BenchManipulator benchManipulator;
 
     private ObjectSelector selector;
     private Player player;
@@ -37,21 +38,25 @@ public class PlayerController : MonoBehaviour {
         RaycastNavigationPoint();
         UpdateCursorIcon();
 
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-            if (selector.Selected != null) {
-                if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
-                    ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
-                        selector.CancelLastHighlight();
-                    }));
-                    selector.HighlightSelection();
-                } else if (selector.Selected.TryGetComponent<ActivationObject>(out var activationObject)) {
-                    ExecuteActivity(new PlayerActivateObjectActivity(activationObject, onCancel: () => {
-                        selector.CancelLastHighlight();
-                    }));
-                    selector.HighlightSelection();
+        if (benchManipulator.InFocus) {
+            benchManipulator.UpdateControl();
+        } else {
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+                if (selector.Selected != null) {
+                    if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
+                        ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
+                            selector.CancelLastHighlight();
+                        }));
+                        selector.HighlightSelection();
+                    } else if (selector.Selected.TryGetComponent<ActivationObject>(out var activationObject)) {
+                        ExecuteActivity(new PlayerActivateObjectActivity(activationObject, onCancel: () => {
+                            selector.CancelLastHighlight();
+                        }));
+                        selector.HighlightSelection();
+                    }
+                } else if (raycastForNavigation) {
+                    ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
                 }
-            } else if (raycastForNavigation) {
-                ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
             }
         }
 
