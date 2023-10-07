@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Tree_corner
-    second: {fileID: 2100000, guid: 0f818b5e6b4569448bdc7a463662f22d, type: 2}
+      name: M_BigTree
+    second: {fileID: 2100000, guid: 0f9e5dc29570d5c49bcd920491ea19df, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -53,7 +53,7 @@ ModelImporter:
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
