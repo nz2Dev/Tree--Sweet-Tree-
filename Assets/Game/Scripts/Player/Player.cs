@@ -34,6 +34,7 @@ public class Player : MonoBehaviour {
     private void Update() {
         UpdatePickUp();
         UpdateNavigation();
+        UpdateJump();
     }
 
     private PickUpable activePickUpable;
@@ -139,6 +140,8 @@ public class Player : MonoBehaviour {
         CancelPickUp();        
 
         navMeshAgent.destination = point;
+        navMeshAgent.nextPosition = transform.position;
+        navMeshAgent.updatePosition = true;
     }
 
     public float GetRemainingNavigationDistance() {
@@ -146,14 +149,14 @@ public class Player : MonoBehaviour {
     }
 
     public void UpdateNavigation() {
-        if (navMeshAgent.isOnOffMeshLink && !jumpStarted) {
-            jumpStarted = true;
-            jumpStartTime = Time.time;   
-            jumpStartPosition = transform.position;
+        if (navMeshAgent.isOnOffMeshLink && !linkJumpStarted) {
+            linkJumpStarted = true;
+            linkJumpStartTime = Time.time;   
+            linkJumpStartPosition = transform.position;
             character.PlayJump();
         }
 
-        if (jumpStarted) {
+        if (linkJumpStarted) {
             UpdateLinkJump();
         } else {
             UpdateMovement();
@@ -174,13 +177,13 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private bool jumpStarted;
-    private float jumpStartTime;
-    private Vector3 jumpStartPosition;
+    private bool linkJumpStarted;
+    private float linkJumpStartTime;
+    private Vector3 linkJumpStartPosition;
 
     private void UpdateLinkJump() {
-        if (jumpStartTime + jumpDuration > Time.time) {
-            var jumpTime = Time.time - jumpStartTime;
+        if (linkJumpStartTime + jumpDuration > Time.time) {
+            var jumpTime = Time.time - linkJumpStartTime;
             var jumpProgress = jumpTime / jumpDuration;
             if (jumpProgress < 0.2f) {
                 jumpProgress = 0;
@@ -188,7 +191,7 @@ public class Player : MonoBehaviour {
                 jumpProgress = 1 - ((1 - jumpProgress) / 0.8f); // remapping progress from 0.2 - 1.0 to 0.0 - 1.0
             }
             
-            var jumpStart = jumpStartPosition;
+            var jumpStart = linkJumpStartPosition;
             var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight * Vector3.up;
             var jumpDistanceVector = navMeshAgent.currentOffMeshLinkData.endPos - jumpStart;
             var jumpWidthDelta = jumpDistanceVector * jumpProgress;
@@ -201,11 +204,52 @@ public class Player : MonoBehaviour {
         } else {
             navMeshAgent.transform.position = navMeshAgent.currentOffMeshLinkData.endPos;
             navMeshAgent.CompleteOffMeshLink();
-            jumpStarted = false;
+            linkJumpStarted = false;
         }
     }
 
     public void StopNavigation() {
         navMeshAgent.ExtResetDestination();
+    }
+
+    private bool jumpStarted;
+    private float jumpStartTime;
+    private Vector3 jumpStartPosition;
+    private Vector3 jumpEndPosition;
+
+    public void ActivateJump(Vector3 target) {
+        jumpStarted = true;
+        jumpStartTime = Time.time;
+        jumpStartPosition = transform.position;
+        jumpEndPosition = target;
+        character.PlayJump();
+        navMeshAgent.updatePosition = false;
+    }
+
+    private void UpdateJump() {
+        if (jumpStarted) {
+            var jumpEndTime = jumpStartTime + jumpDuration;
+            if (Time.time < jumpEndTime) {
+                var jumpTime = Time.time - jumpStartTime;
+                var jumpProgress = jumpTime / jumpDuration;
+
+                var jumpStart = jumpStartPosition;
+                var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight * Vector3.up;
+                var jumpDistanceVector = jumpEndPosition - jumpStart;
+                var jumpWidthDelta = jumpDistanceVector * jumpProgress;
+
+                var desiredPosition = jumpStart + jumpHightDelta + jumpWidthDelta;
+                transform.position = desiredPosition;
+                transform.rotation = Quaternion.Lerp(transform.rotation, 
+                        Quaternion.LookRotation(Vector3.ProjectOnPlane(jumpDistanceVector, Vector3.up), Vector3.up), 
+                        Time.deltaTime * rotationSpeed);
+            } else {
+                jumpStarted = false;
+            }
+        }
+    }
+
+    public bool IsInJump() {
+        return jumpStarted;
     }
 }

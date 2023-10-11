@@ -14,7 +14,7 @@ public interface IPlayerActivity {
 
 public class PlayerController : MonoBehaviour {
     
-    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LayerMask navigationMap;
     [SerializeField] private Vector2 cursorHotSpot = new Vector2(16, 16);
     [SerializeField] private Texture2D defaultCursor;
     [SerializeField] private Texture2D manipulationCursor;
@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour {
 
     private bool raycastForNavigation;
     private Vector3 raycastPoint;
+    private bool raycastForJump;
+    private JumpPlatform raycastedPlatform;
 
     private void Awake() {
         player = GetComponent<Player>();
@@ -56,6 +58,8 @@ public class PlayerController : MonoBehaviour {
                     }
                 } else if (raycastForNavigation) {
                     ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
+                } else if (raycastForJump) {
+                    ExecuteActivity(new PlayerNavigateToJumpActivity(raycastedPlatform));
                 }
             }
         }
@@ -72,10 +76,14 @@ public class PlayerController : MonoBehaviour {
 
     private void RaycastNavigationPoint() {
         raycastForNavigation = false;
+        raycastForJump = false;
         
         var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(mouseRay, out var hit, 100f, groundMask)) {
-            if (NavMesh.SamplePosition(hit.point, out var navMeshHit, 0.5f, NavMesh.AllAreas)) {
+        if (Physics.Raycast(mouseRay, out var hit, 100f, navigationMap)) {
+            if (hit.collider.TryGetComponent<JumpPlatform>(out var jumpPlatform)) {
+                raycastedPlatform = jumpPlatform;
+                raycastForJump = true;
+            } else if (NavMesh.SamplePosition(hit.point, out var navMeshHit, 0.5f, NavMesh.AllAreas)) {    
                 raycastPoint = hit.point;
                 raycastForNavigation = true;
             }
@@ -94,7 +102,7 @@ public class PlayerController : MonoBehaviour {
                 || pickUpActivity.TargetPickUpable.gameObject != selector.Selected.gameObject) {
                 Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.Auto);                
             }
-        } else if (raycastForNavigation) {
+        } else if (raycastForNavigation || raycastForJump) {
             Cursor.SetCursor(navigationCursor, cursorHotSpot, CursorMode.Auto);
         }
     }

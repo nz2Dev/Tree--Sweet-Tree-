@@ -39,6 +39,7 @@ public class BenchManipulator : MonoBehaviour {
         activator.gameObject.SetActive(false);
         manipulationActivator.gameObject.SetActive(true);
         manipulatorVCam.m_Priority++;
+        manipulatorVCam.m_Priority++;
     }
 
     private void ManipulationActivatorOnActivated() {
