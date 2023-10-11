@@ -223,7 +223,7 @@ public class Player : MonoBehaviour {
             jumpStarted = true;
             jumpStartTime = Time.time;
             jumpStartPosition = transform.position;
-            jumpEndPosition = target.transform.position;
+            jumpEndPosition = target.jumpEndPoint.position;
             character.PlayJump();
             navMeshAgent.updatePosition = false;
         } else {
