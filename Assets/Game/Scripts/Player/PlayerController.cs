@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Texture2D manipulationCursor;
     [SerializeField] private Texture2D navigationCursor;
     [SerializeField] private BenchManipulator benchManipulator;
+    [SerializeField] private JumpPlatform candleCheckPlatform;
 
     private ObjectSelector selector;
     private Player player;
@@ -46,10 +47,14 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (selector.Selected != null) {
                     if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
-                        ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
-                            selector.CancelLastHighlight();
-                        }));
-                        selector.HighlightSelection();
+                        if (selectedPickUp.gameObject.name == "Candle" && !candleCheckPlatform.active) {
+                            ExecuteActivity(new PlayerNavigateToJumpActivity(candleCheckPlatform));
+                        } else {
+                            ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
+                                selector.CancelLastHighlight();
+                            }));
+                            selector.HighlightSelection();
+                        }
                     } else if (selector.Selected.TryGetComponent<ActivationObject>(out var activationObject)) {
                         ExecuteActivity(new PlayerActivateObjectActivity(activationObject, onCancel: () => {
                             selector.CancelLastHighlight();

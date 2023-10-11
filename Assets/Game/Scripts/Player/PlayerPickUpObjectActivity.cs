@@ -29,7 +29,15 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
 
     public void Begin(Player player) {
         state = State.Aproaching;
-        player.ActivateNavigation(targetPickUp.transform.position);
+        if (targetPickUp.gameObject.name == "Candle") {
+            var playerToPickUp = targetPickUp.transform.position - player.transform.position;
+            if (Vector3.Distance(Vector3.zero, new Vector3(playerToPickUp.x, 0, playerToPickUp.z)) < 2) {
+                player.ActivatePickUp(targetPickUp);
+                state = State.PickingUp;
+            } 
+        } else {
+            player.ActivateNavigation(targetPickUp.transform.position);
+        }
     }
 
     public void Update(Player player) {
