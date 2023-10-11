@@ -213,20 +213,34 @@ public class Player : MonoBehaviour {
     }
 
     private bool jumpStarted;
+    private bool jumpFailStarted;
     private float jumpStartTime;
     private Vector3 jumpStartPosition;
     private Vector3 jumpEndPosition;
 
-    public void ActivateJump(Vector3 target) {
-        jumpStarted = true;
-        jumpStartTime = Time.time;
-        jumpStartPosition = transform.position;
-        jumpEndPosition = target;
-        character.PlayJump();
-        navMeshAgent.updatePosition = false;
+    public void ActivateJump(JumpPlatform target) {
+        if (target.active) {
+            jumpStarted = true;
+            jumpStartTime = Time.time;
+            jumpStartPosition = transform.position;
+            jumpEndPosition = target.transform.position;
+            character.PlayJump();
+            navMeshAgent.updatePosition = false;
+        } else {
+            jumpFailStarted = true;
+            jumpStartTime = Time.time;
+            character.PlayJump();
+        }
     }
 
     private void UpdateJump() {
+        if (jumpFailStarted) {
+            var jumpEndTime = jumpStartTime + jumpDuration;
+            if (Time.time > jumpEndTime) {
+                jumpFailStarted = false;
+            }
+        }
+
         if (jumpStarted) {
             var jumpEndTime = jumpStartTime + jumpDuration;
             if (Time.time < jumpEndTime) {

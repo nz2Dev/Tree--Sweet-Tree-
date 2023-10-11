@@ -15,7 +15,7 @@ public class PlayerNavigateToJumpActivity : IPlayerActivity
 
     public void Begin(Player player) {
         if (Vector3.Distance(player.transform.position, jumpPlatform.jumpStartPoint.position) < 0.5f) {
-            player.ActivateJump(jumpPlatform.transform.position);
+            player.ActivateJump(jumpPlatform);
         } else {
             player.ActivateNavigation(jumpPlatform.jumpStartPoint.position);
         }
@@ -26,7 +26,7 @@ public class PlayerNavigateToJumpActivity : IPlayerActivity
             player.StopNavigation();
             if (!startedJump) {
                 startedJump = true;
-                player.ActivateJump(jumpPlatform.transform.position);
+                player.ActivateJump(jumpPlatform);
             }
         }
 

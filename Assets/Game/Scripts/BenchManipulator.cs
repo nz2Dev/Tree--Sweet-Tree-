@@ -8,6 +8,7 @@ public class BenchManipulator : MonoBehaviour {
 
     [SerializeField] private ActivationObject activator;
     [SerializeField] private GameObject actualBench;
+    [SerializeField] private JumpPlatform tablePlatform;
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
     [SerializeField] private ActivationObject manipulationActivator;
     [SerializeField] private GameObject manipulatedBench;
@@ -33,6 +34,7 @@ public class BenchManipulator : MonoBehaviour {
         manipulationActivator.gameObject.SetActive(false);
         benchTransformReference.SetActive(false);
         actualBench.SetActive(false);
+        tablePlatform.active = false;
     }
 
     private void ActivationObjectOnActivated() {
@@ -60,6 +62,7 @@ public class BenchManipulator : MonoBehaviour {
         approving = false;
         actualBench.SetActive(true);
         manipulatedBench.SetActive(false);
+        tablePlatform.active = true;
         manipulatorVCam.m_Priority--;
         manipulatorVCam.m_Priority--;
     }
