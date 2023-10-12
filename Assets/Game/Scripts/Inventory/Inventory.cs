@@ -6,6 +6,7 @@ using UnityEngine;
 [Serializable]
 public struct Item {
     public Sprite icon;
+    public GameObject prefab;
 }
 
 public class Inventory : MonoBehaviour {
@@ -30,6 +31,7 @@ public class Inventory : MonoBehaviour {
     public event Action OnOpenRequest;
     public event Action<int> OnItemAdded; // notifies at what index a new item was placed
     public event Action<int> OnItemRemoved;
+    public event Action<Item> OnItemActivated;
 
     private void Awake() {
         items = new List<Item>();
@@ -51,8 +53,10 @@ public class Inventory : MonoBehaviour {
 
     public void ActivateItem(int index) {
         if (index < items.Count) {
+            var item = items[index];
             items.RemoveAt(index);
             OnItemRemoved?.Invoke(index);
+            OnItemActivated?.Invoke(item);
         }
     }
 

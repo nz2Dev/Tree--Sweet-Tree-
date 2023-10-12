@@ -8,6 +8,7 @@ public class CupQuestController : MonoBehaviour {
 
     [SerializeField] private CinemachineVirtualCamera questCamera;
     [SerializeField] private ActivationObject activationObject;
+    [SerializeField] private Transform elementsLocation;
     [SerializeField] private Player player;
     [SerializeField] private float cameraCutDuration = 0.9f;
 
@@ -22,12 +23,22 @@ public class CupQuestController : MonoBehaviour {
         activationStartTime = Time.time;
         questCamera.m_Priority += 2;
         activated = true;
+        
+        var playerInventory = player.GetComponent<Inventory>();
+        playerInventory.OnItemActivated += PlayerInventoryOnItemActivated;
+    }
+
+    private void PlayerInventoryOnItemActivated(Item item) {
+        var elementGO = GameObject.Instantiate(item.prefab, elementsLocation.position, Quaternion.identity);
     }
 
     private void OnDeactivate() {
         questCamera.m_Priority -= 2;
         player.GetComponentInChildren<Animator>(true).gameObject.SetActive(true);
         activated = false;
+
+        var playerInventory = player.GetComponent<Inventory>();
+        playerInventory.OnItemActivated -= PlayerInventoryOnItemActivated;
     }
 
     private void Update() {
