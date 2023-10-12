@@ -45,6 +45,7 @@ public class InventoryUI : MonoBehaviour {
     private void Awake() {
         inventory.OnOpenRequest += OpenDirectly;
         inventory.OnItemAdded += HighlightItem;
+        inventory.OnItemRemoved += (index) => ChangeItemsDisplayState();
     }
 
     private void Start() {
@@ -84,6 +85,10 @@ public class InventoryUI : MonoBehaviour {
             OpenDirectly();
         }
         PlayHighlightOnSlot(index);
+    }
+
+    public void OnItemClicked(int index) {
+        inventory.ActivateItem(index);
     }
 
     private void PlayHighlightOnSlot(int index) {
