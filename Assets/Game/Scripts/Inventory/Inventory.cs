@@ -10,6 +10,9 @@ public struct Item {
 
 public class Inventory : MonoBehaviour {
     
+    [SerializeField] private bool initialIsWorkingState;
+    [SerializeField] private Item[] initialItems;
+
     private bool working;
     private List<Item> items;
 
@@ -29,6 +32,11 @@ public class Inventory : MonoBehaviour {
 
     private void Awake() {
         items = new List<Item>();
+        working = initialIsWorkingState;
+    }
+
+    private void Start() {
+        items.AddRange(initialItems);
     }
 
     public bool Put(Item item) {
