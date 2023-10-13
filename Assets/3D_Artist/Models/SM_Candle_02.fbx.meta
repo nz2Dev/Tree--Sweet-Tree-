@@ -3,7 +3,22 @@ guid: 60c2a1604a371d542ba08107a0431697
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Candle_light
+    second: {fileID: 2100000, guid: ff2518f88e8a62447939ba82caeb677f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Candles
+    second: {fileID: 2100000, guid: 3aa1306f526222842b45bad544f960c2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_light_particle
+    second: {fileID: 2100000, guid: ff2518f88e8a62447939ba82caeb677f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

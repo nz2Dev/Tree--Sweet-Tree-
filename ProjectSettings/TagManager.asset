@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Selectable
+  - InteractiveObject
+  - Buildings
   layers:
   - Default
   - TransparentFX
@@ -15,8 +17,9 @@ TagManager:
   - Ground
   - Furniture
   - Postprocess
-  - 
+  - Interact
   - JumpPlatform
+  - 
   - 
   - 
   - 
