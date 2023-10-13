@@ -244,12 +244,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f0284bafaa3c4db7b811d5381704792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialIsWorkingState: 1
+  initialIsWorkingState: 0
   initialItems:
   - icon: {fileID: 21300000, guid: b4c9102f667849238fa89554c7433f4f, type: 3}
+    prefab: {fileID: 0}
   - icon: {fileID: 21300000, guid: 3de74e0b87c0431ea1b4586d5efc99e2, type: 3}
+    prefab: {fileID: 0}
   - icon: {fileID: 21300000, guid: 3c976de8a6e1476c8e2714142b31cd0f, type: 3}
+    prefab: {fileID: 0}
   - icon: {fileID: 21300000, guid: 9b80ed2ac23743d4b51479717aae5645, type: 3}
+    prefab: {fileID: 0}
 --- !u!114 &2315702140081223902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,7 +370,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   navigationMap:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1088
   cursorHotSpot: {x: 16, y: 16}
   defaultCursor: {fileID: 0}
   manipulationCursor: {fileID: 2800000, guid: d4086a7f9abd4413ea12b7b740a03467, type: 3}
