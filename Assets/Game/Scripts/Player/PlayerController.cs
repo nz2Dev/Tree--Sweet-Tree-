@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour {
         RaycastNavigationPoint();
         UpdateCursorIcon();
 
-        if (benchManipulator.InFocus) {
+        if (benchManipulator != null && benchManipulator.InFocus) {
             benchManipulator.UpdateControl();
         } else {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
