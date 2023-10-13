@@ -83,7 +83,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8769298352855232392}
+  - {fileID: 5510016756580045794}
   - {fileID: 6262792430367568125}
   m_Father: {fileID: 0}
   m_RootOrder: -1
@@ -100,8 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectionCursorTexture: {fileID: 2800000, guid: ef8725419ec144e1ea7d1d7f2904609d, type: 3}
-  cursorHotSpot: {x: 16, y: 16}
 --- !u!114 &7237761976991211079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +115,7 @@ MonoBehaviour:
   pickUpRadius: 0.62
   inventoryItem:
     icon: {fileID: 21300000, guid: 5774ad7b67c846d58700a68848c98da1, type: 3}
+    prefab: {fileID: 0}
   destructionEffectPrefab: {fileID: 3732551427800355369, guid: 3e2226b0718f88b40ad98d970390f416, type: 3}
 --- !u!1 &8233606932298563781
 GameObject:
@@ -146,11 +145,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8233606932298563781}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.307, y: 0, z: 0.33}
+  m_LocalPosition: {x: 2.307, y: 0.165, z: 0.32999986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8769298352855232392}
+  m_Father: {fileID: 1198220638277149157}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1541512978477934627
@@ -160,7 +159,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8233606932298563781}
-  m_Mesh: {fileID: -8183232568574757211, guid: 53107d1bb903b7e4c8b807dcee56413e, type: 3}
+  m_Mesh: {fileID: -8183232568574757211, guid: 6a5cd76f1e5792a4e895419f8f8b44e2, type: 3}
 --- !u!23 &777789755037575505
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -181,7 +180,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5f617f6299272a1428fd1e4d74532abc, type: 2}
+  - {fileID: 2100000, guid: 65423b5672005ea49a5b98e039a1bf29, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -234,35 +233,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectable: {fileID: 6508246678505389040}
---- !u!1 &8249607828219297804
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8769298352855232392}
-  m_Layer: 0
-  m_Name: EggShellWrapper
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8769298352855232392
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8249607828219297804}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5510016756580045794}
-  m_Father: {fileID: 1198220638277149157}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  selectionColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  highlightWidthCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  highlightDuration: 0.5
+  highlightWidthScale: 8
