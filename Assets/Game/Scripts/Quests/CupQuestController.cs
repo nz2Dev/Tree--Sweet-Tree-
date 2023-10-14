@@ -16,6 +16,7 @@ public class CupQuestController : MonoBehaviour {
     [SerializeField] private ActivationObject activationObject;
     [SerializeField] private TableStates tableStates;
     [SerializeField] private Transform elementsLocation;
+    [SerializeField] private GameObject assemblyCenter;
     [SerializeField] private float elementsPlacementsOffset = 1.0f;
     [SerializeField] private Player player;
     [SerializeField] private float cameraCutDuration = 0.9f;
@@ -37,6 +38,7 @@ public class CupQuestController : MonoBehaviour {
 
     private void Start() {
         nextElementPlacementPosition = elementsLocation.position;
+        assemblyCenter.SetActive(false);
     }
 
     private void ActivationObjectOnActivated() {
@@ -92,8 +94,7 @@ public class CupQuestController : MonoBehaviour {
                     }
 
                     if (questItemSelected) {
-                        activatedQuestItem = selectedQuestItem;
-                        Debug.Log("Activate: " + activatedQuestItem.elementGO.name);
+                        ActivateManipulationState(selectedQuestItem);
                     }
                 }
             }
@@ -108,4 +109,10 @@ public class CupQuestController : MonoBehaviour {
             }
         }
     }
+
+    private void ActivateManipulationState(QuestElementItem questElementItem) {
+        activatedQuestItem = questElementItem;
+        assemblyCenter.SetActive(true);
+    }
+
 }
