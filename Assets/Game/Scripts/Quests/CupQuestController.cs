@@ -27,6 +27,7 @@ public class CupQuestController : MonoBehaviour {
     private List<QuestElementItem> questElementItems;
 
     private ObjectSelector selector;
+    private QuestElementItem activatedQuestItem;
 
     private void Awake() {
         activationObject.OnActivated += ActivationObjectOnActivated;
@@ -79,11 +80,23 @@ public class CupQuestController : MonoBehaviour {
                 OnDeactivate();
             }
 
-            // if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-            //     if (selector.Selected != null) {
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+                if (selector.Selected != null) {
+                    var questItemSelected = false;
+                    var selectedQuestItem = default (QuestElementItem);
+                    foreach (var questItem in questElementItems) {
+                        if (questItem.elementGO == selector.Selected.gameObject) {
+                            selectedQuestItem = questItem;
+                            questItemSelected = true;
+                        }
+                    }
 
-            //     }
-            // }
+                    if (questItemSelected) {
+                        activatedQuestItem = selectedQuestItem;
+                        Debug.Log("Activate: " + activatedQuestItem.elementGO.name);
+                    }
+                }
+            }
 
 
             if (Input.GetKeyDown(KeyCode.F)) {
