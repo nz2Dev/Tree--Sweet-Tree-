@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public struct QuestElement {
+public struct QuestElementItem {
     public GameObject elementGO;
     public Vector3 initialPosition;
 }
@@ -23,11 +24,14 @@ public class CupQuestController : MonoBehaviour {
     private float activationStartTime;
 
     private Vector3 nextElementPlacementPosition;
-    private List<QuestElement> questElements;
+    private List<QuestElementItem> questElementItems;
+
+    private ObjectSelector selector;
 
     private void Awake() {
         activationObject.OnActivated += ActivationObjectOnActivated;
-        questElements = new List<QuestElement>();
+        questElementItems = new List<QuestElementItem>();
+        selector = player.GetComponent<ObjectSelector>();
     }
 
     private void Start() {
@@ -47,7 +51,7 @@ public class CupQuestController : MonoBehaviour {
     private void PlayerInventoryOnItemActivated(Item item) {
         var placementPosition = nextElementPlacementPosition;
         var elementGO = GameObject.Instantiate(item.prefab, placementPosition, Quaternion.identity);
-        questElements.Add(new QuestElement {
+        questElementItems.Add(new QuestElementItem {
             elementGO = elementGO,
             initialPosition = placementPosition
         });
@@ -75,12 +79,19 @@ public class CupQuestController : MonoBehaviour {
                 OnDeactivate();
             }
 
+            // if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+            //     if (selector.Selected != null) {
+
+            //     }
+            // }
+
+
             if (Input.GetKeyDown(KeyCode.F)) {
-                questElements[0].elementGO.transform.position += Camera.main.transform.right;
+                questElementItems[0].elementGO.transform.position += Camera.main.transform.right;
             }
 
             if (Input.GetKeyDown(KeyCode.Space)) {
-                questElements[0].elementGO.transform.position = questElements[0].initialPosition;
+                questElementItems[0].elementGO.transform.position = questElementItems[0].initialPosition;
             }
         }
     }
