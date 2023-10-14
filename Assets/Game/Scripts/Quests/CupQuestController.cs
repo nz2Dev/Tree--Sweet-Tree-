@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
+public struct QuestElement {
+    public GameObject elementGO;
+    public Vector3 initialPosition;
+}
+
 public class CupQuestController : MonoBehaviour {
 
     [SerializeField] private CinemachineVirtualCamera questCamera;
@@ -17,14 +22,16 @@ public class CupQuestController : MonoBehaviour {
     private bool activated;
     private float activationStartTime;
 
-    private Vector3 lastPlacedElementPosition;
+    private Vector3 nextElementPlacementPosition;
+    private List<QuestElement> questElements;
 
     private void Awake() {
         activationObject.OnActivated += ActivationObjectOnActivated;
+        questElements = new List<QuestElement>();
     }
 
     private void Start() {
-        lastPlacedElementPosition = elementsLocation.position;
+        nextElementPlacementPosition = elementsLocation.position;
     }
 
     private void ActivationObjectOnActivated() {
@@ -38,9 +45,14 @@ public class CupQuestController : MonoBehaviour {
     }
 
     private void PlayerInventoryOnItemActivated(Item item) {
-        var newElementPlacementPosition = lastPlacedElementPosition + elementsLocation.forward * elementsPlacementsOffset;
-        var elementGO = GameObject.Instantiate(item.prefab, lastPlacedElementPosition, Quaternion.identity);
-        lastPlacedElementPosition = newElementPlacementPosition;
+        var placementPosition = nextElementPlacementPosition;
+        var elementGO = GameObject.Instantiate(item.prefab, placementPosition, Quaternion.identity);
+        questElements.Add(new QuestElement {
+            elementGO = elementGO,
+            initialPosition = placementPosition
+        });
+
+        nextElementPlacementPosition = placementPosition + elementsLocation.forward * elementsPlacementsOffset;
     }
 
     private void OnDeactivate() {
@@ -61,6 +73,14 @@ public class CupQuestController : MonoBehaviour {
 
             if (Input.GetMouseButtonDown(1)) {
                 OnDeactivate();
+            }
+
+            if (Input.GetKeyDown(KeyCode.F)) {
+                questElements[0].elementGO.transform.position += Camera.main.transform.right;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                questElements[0].elementGO.transform.position = questElements[0].initialPosition;
             }
         }
     }
