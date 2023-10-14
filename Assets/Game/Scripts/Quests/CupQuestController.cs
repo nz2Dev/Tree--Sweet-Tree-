@@ -10,14 +10,21 @@ public class CupQuestController : MonoBehaviour {
     [SerializeField] private ActivationObject activationObject;
     [SerializeField] private TableStates tableStates;
     [SerializeField] private Transform elementsLocation;
+    [SerializeField] private float elementsPlacementsOffset = 1.0f;
     [SerializeField] private Player player;
     [SerializeField] private float cameraCutDuration = 0.9f;
 
     private bool activated;
     private float activationStartTime;
 
+    private Vector3 lastPlacedElementPosition;
+
     private void Awake() {
         activationObject.OnActivated += ActivationObjectOnActivated;
+    }
+
+    private void Start() {
+        lastPlacedElementPosition = elementsLocation.position;
     }
 
     private void ActivationObjectOnActivated() {
@@ -31,7 +38,9 @@ public class CupQuestController : MonoBehaviour {
     }
 
     private void PlayerInventoryOnItemActivated(Item item) {
-        var elementGO = GameObject.Instantiate(item.prefab, elementsLocation.position, Quaternion.identity);
+        var newElementPlacementPosition = lastPlacedElementPosition + elementsLocation.forward * elementsPlacementsOffset;
+        var elementGO = GameObject.Instantiate(item.prefab, lastPlacedElementPosition, Quaternion.identity);
+        lastPlacedElementPosition = newElementPlacementPosition;
     }
 
     private void OnDeactivate() {
