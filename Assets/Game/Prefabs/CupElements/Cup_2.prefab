@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7153576643812552343}
   - component: {fileID: 6819596777102580973}
+  - component: {fileID: 4442076364129179014}
   m_Layer: 0
   m_Name: Cup_2
   m_TagString: Untagged
@@ -43,6 +44,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4442076364129179014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3658902824281966664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4beebbb4bee304a0b9b9a758d02a0730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6436485354424209540

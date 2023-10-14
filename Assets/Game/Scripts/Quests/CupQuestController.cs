@@ -99,6 +99,9 @@ public class CupQuestController : MonoBehaviour {
                 }
             }
 
+            if (activatedQuestItem.elementGO != null) {
+                activatedQuestItem.elementGO.transform.rotation *= Quaternion.AngleAxis(1, Vector3.up);
+            }
 
             if (Input.GetKeyDown(KeyCode.F)) {
                 questElementItems[0].elementGO.transform.position += Camera.main.transform.right;
@@ -112,6 +115,7 @@ public class CupQuestController : MonoBehaviour {
 
     private void ActivateManipulationState(QuestElementItem questElementItem) {
         activatedQuestItem = questElementItem;
+        activatedQuestItem.elementGO.GetComponent<CupQuestElement>().SetIsManipulationVisuals();
         assemblyCenter.SetActive(true);
     }
 

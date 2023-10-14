@@ -185,6 +185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8870926289357381517}
   - component: {fileID: 648643593387479052}
+  - component: {fileID: 3959379138245052009}
   m_Layer: 0
   m_Name: Cup_3
   m_TagString: Untagged
@@ -218,5 +219,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3959379138245052009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4264028228411995357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4beebbb4bee304a0b9b9a758d02a0730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

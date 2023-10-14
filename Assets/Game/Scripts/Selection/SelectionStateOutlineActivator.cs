@@ -26,6 +26,11 @@ public class SelectionStateOutlineActivator : MonoBehaviour {
         selectable.OnHighlightChanged += SelectableOnHighlightChanged;
     }
 
+    private void OnDisable() {
+        selectable.OnSelectionChanged -= SelectableOnSelectionChanged;
+        selectable.OnHighlightChanged -= SelectableOnHighlightChanged;
+    }
+
     private void Start() {
         outline.enabled = false;
     }
