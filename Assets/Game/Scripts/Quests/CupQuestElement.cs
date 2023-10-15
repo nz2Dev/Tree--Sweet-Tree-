@@ -51,7 +51,7 @@ public class CupQuestElement : MonoBehaviour {
     public void SetSealed() {
         isManipulationState = false;
         UpdateStateObjects();
-        // todo disable selection
+        defaultGraphics.GetComponentInChildren<BoxCollider>().enabled = false; // so SelectableObject stop beeing selected
     }
 
     public void Reset() {

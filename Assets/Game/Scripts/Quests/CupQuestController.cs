@@ -106,7 +106,6 @@ public class CupQuestController : MonoBehaviour {
                 }
             }
 
-
             if (activatedQuestItem != null) {
                 var mousePointer = Camera.main.ScreenPointToRay(Input.mousePosition);
                 var raycastCenter = new Plane(Vector3.up, assemblyCenter.transform.position);
