@@ -10,6 +10,8 @@ public class SelectableObject : MonoBehaviour {
 
     private bool isSelected;
 
+    public bool IsSelected => isSelected;
+
     private void Awake() {
         var collider = GetComponentInChildren<Collider>();
         if (collider == null) {
