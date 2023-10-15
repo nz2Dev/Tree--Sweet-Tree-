@@ -72,6 +72,8 @@ public class CupQuestController : MonoBehaviour {
         playerInventory.OnItemActivated -= PlayerInventoryOnItemActivated;
     }
 
+    private bool rotationStage;
+
     private void Update() {
         if (activated) {
             if (Time.time > activationStartTime + cameraCutDuration /*camera cut transition time*/ ) {
@@ -105,7 +107,13 @@ public class CupQuestController : MonoBehaviour {
                 var raycastCenter = new Plane(Vector3.up, assemblyCenter.transform.position);
                 if (raycastCenter.Raycast(mousePointer, out float enter)) {
                     var raycastPoint = mousePointer.GetPoint(enter);
-                    activatedQuestItem.elementGO.transform.position = raycastPoint;
+                    var finalTranslationPoint = raycastPoint;
+                    var isSnappedToAssemblyCenter = Vector3.Distance(raycastPoint, assemblyCenter.transform.position) < 0.3;
+                    SetIsRotationStage(isSnappedToAssemblyCenter);
+                    if (isSnappedToAssemblyCenter) {
+                        finalTranslationPoint = assemblyCenter.transform.position;
+                    }
+                    activatedQuestItem.elementGO.transform.position = finalTranslationPoint;
                 }
             }
 
@@ -123,6 +131,11 @@ public class CupQuestController : MonoBehaviour {
         activatedQuestItem = questElementItem;
         activatedQuestItem.elementGO.GetComponent<CupQuestElement>().SetIsManipulationVisuals();
         assemblyCenter.SetActive(true);
+    }
+
+    private void SetIsRotationStage(bool rotationStage) {
+        this.rotationStage = rotationStage;
+        assemblyCenter.SetActive(!rotationStage);
     }
 
 }
