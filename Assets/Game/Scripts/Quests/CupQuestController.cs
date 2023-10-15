@@ -5,9 +5,10 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public struct QuestElementItem {
+public class QuestElementItem {
     public GameObject elementGO;
     public Vector3 initialPosition;
+    public bool isInSpot;
 }
 
 public class CupQuestController : MonoBehaviour {
@@ -56,7 +57,8 @@ public class CupQuestController : MonoBehaviour {
         var elementGO = GameObject.Instantiate(item.prefab, placementPosition, Quaternion.identity);
         questElementItems.Add(new QuestElementItem {
             elementGO = elementGO,
-            initialPosition = placementPosition
+            initialPosition = placementPosition,
+            isInSpot = false,
         });
 
         nextElementPlacementPosition = placementPosition + elementsLocation.forward * elementsPlacementsOffset;
@@ -86,7 +88,9 @@ public class CupQuestController : MonoBehaviour {
             }
 
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-                if (selector.Selected != null) {
+                if (activatedQuestItem != null) {
+                    HandleManipulationResult();
+                } else if (selector.Selected != null) {
                     var questItemSelected = false;
                     var selectedQuestItem = default (QuestElementItem);
                     foreach (var questItem in questElementItems) {
@@ -103,7 +107,7 @@ public class CupQuestController : MonoBehaviour {
             }
 
 
-            if (activatedQuestItem.elementGO != null) {
+            if (activatedQuestItem != null) {
                 var mousePointer = Camera.main.ScreenPointToRay(Input.mousePosition);
                 var raycastCenter = new Plane(Vector3.up, assemblyCenter.transform.position);
                 if (raycastCenter.Raycast(mousePointer, out float enter)) {
@@ -129,14 +133,6 @@ public class CupQuestController : MonoBehaviour {
                     }
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.F)) {
-                questElementItems[0].elementGO.transform.position += Camera.main.transform.right;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space)) {
-                questElementItems[0].elementGO.transform.position = questElementItems[0].initialPosition;
-            }
         }
     }
 
@@ -144,6 +140,16 @@ public class CupQuestController : MonoBehaviour {
         activatedQuestItem = questElementItem;
         activatedQuestItem.elementGO.GetComponent<CupQuestElement>().SetIsManipulationVisuals();
         assemblyCenter.SetActive(true);
+    }
+
+    private void HandleManipulationResult() {
+        if (activatedQuestItem.isInSpot) {
+            activatedQuestItem.elementGO.GetComponent<CupQuestElement>().SetSealed();
+        } else {
+            activatedQuestItem.elementGO.GetComponent<CupQuestElement>().Reset();
+            activatedQuestItem.elementGO.transform.position = activatedQuestItem.initialPosition;
+        }
+        activatedQuestItem = null;
     }
 
     private void SetIsRotationStage(bool rotationStage) {
@@ -155,6 +161,7 @@ public class CupQuestController : MonoBehaviour {
     }
 
     private void SetIsRotationInSpot(bool isInSpot) {
+        activatedQuestItem.isInSpot = isInSpot;
         activatedQuestItem.elementGO.GetComponent<CupQuestElement>().SetIsInSpotVisuals(isInSpot);
     }
 

@@ -47,4 +47,15 @@ public class CupQuestElement : MonoBehaviour {
     public void SetIsInSpotVisuals(bool isInSpot) {
         manipulationGraphics.GetComponent<MeshRenderer>().material = isInSpot ? inSpotMaterial : isManipulatedMaterial;
     }
+
+    public void SetSealed() {
+        isManipulationState = false;
+        UpdateStateObjects();
+        // todo disable selection
+    }
+
+    public void Reset() {
+        isManipulationState = false;
+        UpdateStateObjects();
+    }
 }
