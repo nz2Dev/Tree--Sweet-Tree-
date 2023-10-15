@@ -20,6 +20,7 @@ public class CupQuestController : MonoBehaviour {
     [SerializeField] private GameObject assemblyCenter;
     [SerializeField] private float elementsPlacementsOffset = 1.0f;
     [SerializeField] private Player player;
+    [SerializeField] private GameObject assembledCupPickupablePrefab;
     [SerializeField] private float cameraCutDuration = 0.9f;
 
     private bool activated;
@@ -74,11 +75,28 @@ public class CupQuestController : MonoBehaviour {
         playerInventory.OnItemActivated -= PlayerInventoryOnItemActivated;
     }
 
+    private void OnFinish() {
+        OnDeactivate();
+
+        foreach (var item in questElementItems) {
+            Destroy(item.elementGO);
+        }
+        questElementItems.Clear();
+
+        var pickupable = Instantiate(assembledCupPickupablePrefab, assemblyCenter.transform.position, Quaternion.identity);
+        player.ActivatePickUp(pickupable.GetComponent<PickUpable>());
+    }
+
     private bool rotationStage;
     private Quaternion rotationProgres;
 
     private void Update() {
         if (activated) {
+            if (Input.GetKeyDown(KeyCode.F)) {
+                OnFinish();
+                return;
+            }
+
             if (Time.time > activationStartTime + cameraCutDuration /*camera cut transition time*/ ) {
                 player.GetComponentInChildren<Animator>(true).gameObject.SetActive(false);
             }
@@ -153,6 +171,21 @@ public class CupQuestController : MonoBehaviour {
 
         activatedQuestItem = null;
         assemblyCenter.SetActive(false);
+
+        var allInSpot = true;
+        if (questElementItems.Count == 0) {
+            allInSpot = false;
+        }
+        foreach (var questElementItem in questElementItems) {
+            if (!questElementItem.isInSpot) {
+                allInSpot = false;
+                break;
+            }
+        }
+
+        if (allInSpot) {
+            OnFinish();
+        }
     }
 
     private void SetIsRotationStage(bool rotationStage) {
