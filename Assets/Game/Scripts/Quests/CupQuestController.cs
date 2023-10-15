@@ -99,8 +99,14 @@ public class CupQuestController : MonoBehaviour {
                 }
             }
 
+
             if (activatedQuestItem.elementGO != null) {
-                activatedQuestItem.elementGO.transform.rotation *= Quaternion.AngleAxis(1, Vector3.up);
+                var mousePointer = Camera.main.ScreenPointToRay(Input.mousePosition);
+                var raycastCenter = new Plane(Vector3.up, assemblyCenter.transform.position);
+                if (raycastCenter.Raycast(mousePointer, out float enter)) {
+                    var raycastPoint = mousePointer.GetPoint(enter);
+                    activatedQuestItem.elementGO.transform.position = raycastPoint;
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.F)) {

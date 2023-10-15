@@ -19,6 +19,7 @@ public class CupQuestElement : MonoBehaviour {
         manipulationGraphics = Instantiate(defaultGraphics, Vector3.zero, Quaternion.identity);
         manipulationGraphics.transform.SetParent(transform, false);
         manipulationGraphics.transform.localScale = Vector3.one * 1.2f;
+        manipulationGraphics.transform.localPosition = defaultGraphics.transform.localPosition;
         Destroy(manipulationGraphics.GetComponent<SelectionStateOutlineActivator>());
         Destroy(manipulationGraphics.GetComponent<Outline>());
         Destroy(manipulationGraphics.GetComponent<BoxCollider>());
