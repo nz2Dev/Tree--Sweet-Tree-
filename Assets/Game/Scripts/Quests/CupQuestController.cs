@@ -84,7 +84,7 @@ public class CupQuestController : MonoBehaviour {
         questElementItems.Clear();
 
         var pickupable = Instantiate(assembledCupPickupablePrefab, assemblyCenter.transform.position, Quaternion.identity);
-        player.ActivatePickUp(pickupable.GetComponent<PickUpable>());
+        player.ActivatePickUp(pickupable.GetComponent<PickUpable>(), handleAutomatically: true);
     }
 
     private bool rotationStage;

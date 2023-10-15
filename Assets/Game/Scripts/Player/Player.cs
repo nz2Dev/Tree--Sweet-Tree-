@@ -41,6 +41,7 @@ public class Player : MonoBehaviour {
     private Transform pickUpDestination;
     private Vector3 activePickUpableStartPosition;
     private float pickUpActivationStartTime;
+    private bool handleAutomatically;
 
     public bool CanPickUpFromHere(PickUpable pickUpable) {
         return Vector3.Distance(transform.position, pickUpable.transform.position) < pickUpable.PickUpRadius;
@@ -51,7 +52,8 @@ public class Player : MonoBehaviour {
         activePickUpable = null;
     }
 
-    public void ActivatePickUp(PickUpable pickUpable) {
+    public void ActivatePickUp(PickUpable pickUpable, bool handleAutomatically = false) {
+        this.handleAutomatically = handleAutomatically;
         navMeshAgent.ExtResetDestination();
 
         activePickUpable = pickUpable;
@@ -90,6 +92,10 @@ public class Player : MonoBehaviour {
                 activePickUpable.transform.position = pickUpDestination.position;
                 activePickUpable.transform.SetParent(pickUpDestination, true);
                 activePickUpable = null;
+
+                if (handleAutomatically) {
+                    HandlePickedUp();
+                }
             }
         }
     }
