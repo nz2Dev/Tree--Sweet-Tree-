@@ -149,7 +149,9 @@ public class CupQuestController : MonoBehaviour {
             activatedQuestItem.elementGO.GetComponent<CupQuestElement>().Reset();
             activatedQuestItem.elementGO.transform.position = activatedQuestItem.initialPosition;
         }
+        
         activatedQuestItem = null;
+        assemblyCenter.SetActive(false);
     }
 
     private void SetIsRotationStage(bool rotationStage) {
