@@ -75,6 +75,10 @@ public class CupQuestController : MonoBehaviour {
         playerInventory.OnItemActivated -= PlayerInventoryOnItemActivated;
     }
 
+    private bool waitForPickUp;
+    private float waitStartTime;
+    private PickUpable pickUpable;
+
     private void OnFinish() {
         OnDeactivate();
 
@@ -83,14 +87,22 @@ public class CupQuestController : MonoBehaviour {
         }
         questElementItems.Clear();
 
-        var pickupable = Instantiate(assembledCupPickupablePrefab, assemblyCenter.transform.position, Quaternion.identity);
-        player.ActivatePickUp(pickupable.GetComponent<PickUpable>(), handleAutomatically: true);
+        pickUpable = Instantiate(assembledCupPickupablePrefab, assemblyCenter.transform.position, Quaternion.identity).GetComponent<PickUpable>();
+        waitForPickUp = true;
+        waitStartTime = Time.time;
     }
 
     private bool rotationStage;
     private Quaternion rotationProgres;
 
     private void Update() {
+        if (waitForPickUp) {
+            if (Time.time > waitStartTime + cameraCutDuration) {
+                waitForPickUp = false;
+                player.ActivatePickUp(pickUpable, handleAutomatically: true);
+            }
+        }
+        
         if (activated) {
             if (Input.GetKeyDown(KeyCode.F)) {
                 OnFinish();
