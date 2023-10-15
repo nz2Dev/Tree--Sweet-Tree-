@@ -117,6 +117,8 @@ public class CupQuestController : MonoBehaviour {
                     SetIsRotationStage(isSnappedToAssemblyCenter);
                     if (isSnappedToAssemblyCenter) {
                         finalTranslationPoint = assemblyCenter.transform.position;
+                    } else {
+                        SetIsRotationInSpot(false);
                     }
                     activatedQuestItem.elementGO.transform.position = finalTranslationPoint;
                 }
@@ -149,7 +151,7 @@ public class CupQuestController : MonoBehaviour {
             activatedQuestItem.elementGO.GetComponent<CupQuestElement>().Reset();
             activatedQuestItem.elementGO.transform.position = activatedQuestItem.initialPosition;
         }
-        
+
         activatedQuestItem = null;
         assemblyCenter.SetActive(false);
     }
