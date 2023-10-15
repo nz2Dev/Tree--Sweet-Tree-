@@ -73,6 +73,7 @@ public class CupQuestController : MonoBehaviour {
     }
 
     private bool rotationStage;
+    private Quaternion rotationProgres;
 
     private void Update() {
         if (activated) {
@@ -115,6 +116,18 @@ public class CupQuestController : MonoBehaviour {
                     }
                     activatedQuestItem.elementGO.transform.position = finalTranslationPoint;
                 }
+
+                if (rotationStage) {
+                    var rotationDelta = Quaternion.AngleAxis(Input.mouseScrollDelta.y, Vector3.up);
+                    rotationProgres *= rotationDelta;
+                    if (rotationProgres.eulerAngles.y > 50 && rotationProgres.eulerAngles.y < 70) {
+                        activatedQuestItem.elementGO.transform.rotation = Quaternion.Euler(0, 60, 0);
+                        SetIsRotationInSpot(true);
+                    } else {
+                        activatedQuestItem.elementGO.transform.rotation = rotationProgres;
+                        SetIsRotationInSpot(false);
+                    }
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.F)) {
@@ -134,8 +147,15 @@ public class CupQuestController : MonoBehaviour {
     }
 
     private void SetIsRotationStage(bool rotationStage) {
+        if (!this.rotationStage && rotationStage) {
+            rotationProgres = activatedQuestItem.elementGO.transform.rotation;
+        }
         this.rotationStage = rotationStage;
         assemblyCenter.SetActive(!rotationStage);
+    }
+
+    private void SetIsRotationInSpot(bool isInSpot) {
+        activatedQuestItem.elementGO.GetComponent<CupQuestElement>().SetIsInSpotVisuals(isInSpot);
     }
 
 }

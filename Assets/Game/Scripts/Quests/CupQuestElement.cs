@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -9,6 +10,8 @@ public class CupQuestElement : MonoBehaviour {
     private GameObject defaultGraphics;
     private GameObject manipulationGraphics;
 
+    private Material isManipulatedMaterial;
+    private Material inSpotMaterial;
     private bool isManipulationState;
 
     private void Awake() {
@@ -24,8 +27,9 @@ public class CupQuestElement : MonoBehaviour {
         Destroy(manipulationGraphics.GetComponent<Outline>());
         Destroy(manipulationGraphics.GetComponent<BoxCollider>());
 
-        var material = Resources.Load("Materials/Transparent Emissive Gray", typeof(Material)) as Material;
-        manipulationGraphics.GetComponent<MeshRenderer>().materials = new Material[] {material};
+        isManipulatedMaterial = Resources.Load("Materials/Transparent Emissive Gray", typeof(Material)) as Material;
+        manipulationGraphics.GetComponent<MeshRenderer>().materials = new Material[] {isManipulatedMaterial};
+        inSpotMaterial = Resources.Load("Materials/Transparent Emissive Accent", typeof(Material)) as Material;
 
         UpdateStateObjects();
     }
@@ -39,5 +43,8 @@ public class CupQuestElement : MonoBehaviour {
         defaultGraphics.SetActive(!isManipulationState);
         manipulationGraphics.SetActive(isManipulationState);
     }
-    
+
+    public void SetIsInSpotVisuals(bool isInSpot) {
+        manipulationGraphics.GetComponent<MeshRenderer>().material = isInSpot ? inSpotMaterial : isManipulatedMaterial;
+    }
 }
