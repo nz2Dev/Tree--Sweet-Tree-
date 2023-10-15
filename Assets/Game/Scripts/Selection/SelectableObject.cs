@@ -9,8 +9,10 @@ public class SelectableObject : MonoBehaviour {
     public event Action<bool> OnHighlightChanged;
 
     private bool isSelected;
+    private bool isHighlighted;
 
     public bool IsSelected => isSelected;
+    public bool IsHighlighted => isHighlighted;
 
     private void Awake() {
         var collider = GetComponentInChildren<Collider>();
@@ -30,10 +32,12 @@ public class SelectableObject : MonoBehaviour {
     }
 
     public void Highlight() {
+        isHighlighted = true;
         OnHighlightChanged?.Invoke(true);
     }
 
     public void StopHighlighting() {
+        isHighlighted = false;
         OnHighlightChanged?.Invoke(false);
     }
 
