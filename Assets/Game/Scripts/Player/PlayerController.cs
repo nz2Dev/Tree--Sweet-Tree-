@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private BenchManipulator benchManipulator;
     [SerializeField] private JumpPlatform tablePlatform;
     [SerializeField] private JumpPlatform benchPlatform;
+    [SerializeField] private TableStates tableStates;
     [SerializeField] private ObjectSelector selector;
 
     private Player player;
@@ -59,6 +60,10 @@ public class PlayerController : MonoBehaviour {
                                 player.ActivateJump(null);
                             } else {
                                 player.ActivatePickUp(selectedPickUp, handleAutomatically: true);
+                                // we better use player pickup item event, to check if the candle has been picked up
+                                if (player.GetComponent<Inventory>().IsWorking) {
+                                    tableStates.SetState(TableStates.State.QuestActivation);
+                                }
                             }
                         } else {
                             ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {

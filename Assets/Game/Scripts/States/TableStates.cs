@@ -28,6 +28,12 @@ public class TableStates : MonoBehaviour {
         UpdateStateGameObjects();
     }
 
+    public void SetState(State newState) {
+        stateStack = default;
+        currentState = newState;
+        UpdateStateGameObjects();
+    }
+
     public void PushState(State newState) {
         stateStack = currentState;
         currentState = newState;
