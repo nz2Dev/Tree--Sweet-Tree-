@@ -17,6 +17,10 @@ public class Player : MonoBehaviour {
     private HovanetsCharacter character;
     private Inventory inventory;
 
+    private JumpPlatform platformUnder;
+
+    public JumpPlatform PlatformUnder => platformUnder;
+
     private void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.autoTraverseOffMeshLink = false;
@@ -142,6 +146,7 @@ public class Player : MonoBehaviour {
     }
 
     public void ActivateNavigation(Vector3 point) {
+        platformUnder = null;
         // cancel all the rest
         CancelPickUp();        
 
@@ -225,13 +230,14 @@ public class Player : MonoBehaviour {
     private Vector3 jumpEndPosition;
 
     public void ActivateJump(JumpPlatform target) {
-        if (target.active) {
+        if (target != null && target.active) {
             jumpStarted = true;
             jumpStartTime = Time.time;
             jumpStartPosition = transform.position;
             jumpEndPosition = target.jumpEndPoint.position;
             character.PlayJump();
             navMeshAgent.updatePosition = false;
+            platformUnder = target;
         } else {
             jumpFailStarted = true;
             jumpStartTime = Time.time;
