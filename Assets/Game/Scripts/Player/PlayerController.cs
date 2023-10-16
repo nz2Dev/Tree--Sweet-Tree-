@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Texture2D navigationCursor;
     [SerializeField] private BenchManipulator benchManipulator;
     [SerializeField] private JumpPlatform candleCheckPlatform;
+    [SerializeField] private ObjectSelector selector;
 
-    private ObjectSelector selector;
     private Player player;
 
     private IPlayerActivity currentActivity;
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake() {
         player = GetComponent<Player>();
-        selector = GetComponent<ObjectSelector>();
     }
 
     private void Update() {

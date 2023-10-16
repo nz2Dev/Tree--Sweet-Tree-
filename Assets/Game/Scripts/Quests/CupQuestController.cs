@@ -13,6 +13,7 @@ public class QuestElementItem {
 
 public class CupQuestController : MonoBehaviour {
 
+    [SerializeField] private ObjectSelector selector;
     [SerializeField] private CinemachineVirtualCamera questCamera;
     [SerializeField] private ActivationObject activationObject;
     [SerializeField] private TableStates tableStates;
@@ -29,13 +30,11 @@ public class CupQuestController : MonoBehaviour {
     private Vector3 nextElementPlacementPosition;
     private List<QuestElementItem> questElementItems;
 
-    private ObjectSelector selector;
     private QuestElementItem activatedQuestItem;
 
     private void Awake() {
         activationObject.OnActivated += ActivationObjectOnActivated;
         questElementItems = new List<QuestElementItem>();
-        selector = player.GetComponent<ObjectSelector>();
     }
 
     private void Start() {
