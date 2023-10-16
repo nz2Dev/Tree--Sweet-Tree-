@@ -6,12 +6,9 @@ using UnityEngine;
 
 public class BenchManipulator : MonoBehaviour {
 
-    [SerializeField] private ActivationObject activator;
-    [SerializeField] private GameObject actualBench;
+    [SerializeField] private BenchStates benchStates;
     [SerializeField] private JumpPlatform tablePlatform;
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
-    [SerializeField] private ActivationObject manipulationActivator;
-    [SerializeField] private GameObject manipulatedBench;
     [SerializeField] private Color snappedColor = Color.blue;
     [SerializeField] private GameObject benchTransformReference;
     [SerializeField] private LayerMask manipulationSurface;
@@ -25,44 +22,39 @@ public class BenchManipulator : MonoBehaviour {
     public bool InFocus => manipulating || approving;
 
     private void Awake() {
-        activator.OnActivated += ActivationObjectOnActivated;
-        manipulationActivator.OnActivated += ManipulationActivatorOnActivated;
+        benchStates.Activator.OnActivated += ActivationObjectOnActivated;
+        benchStates.Starter.OnActivated += ManipulationActivatorOnActivated;
     }
 
     private void Start() {
-        manipulatedBench.SetActive(false);
-        manipulationActivator.gameObject.SetActive(false);
         benchTransformReference.SetActive(false);
-        actualBench.SetActive(false);
-        tablePlatform.active = false;
+        tablePlatform.active = false; // this should be controlled from bench
     }
 
     private void ActivationObjectOnActivated() {
-        activator.gameObject.SetActive(false);
-        manipulationActivator.gameObject.SetActive(true);
+        benchStates.SetState(BenchStates.State.Starter);
         manipulatorVCam.m_Priority++;
         manipulatorVCam.m_Priority++;
     }
 
     private void ManipulationActivatorOnActivated() {
-        manipulationActivator.gameObject.SetActive(false);
-        manipulatedBench.gameObject.SetActive(true);
+        benchStates.SetState(BenchStates.State.Manipulatable);
         benchTransformReference.SetActive(true);
         manipulating = true;
     }
 
     private void ManipulationFinished() {
         benchTransformReference.SetActive(false);
-        manipulatedBench.GetComponentInChildren<Renderer>().material.color = snappedColor;
+        benchStates.SetManipulatedSnappedColor(snappedColor);
         manipulating = false;
         approving = true;
     }
 
     private void ManipulationApproved() {
         approving = false;
-        actualBench.SetActive(true);
-        manipulatedBench.SetActive(false);
+        benchStates.SetState(BenchStates.State.Stationar);
         tablePlatform.active = true;
+
         manipulatorVCam.m_Priority--;
         manipulatorVCam.m_Priority--;
     }
@@ -79,6 +71,7 @@ public class BenchManipulator : MonoBehaviour {
                 raycastPosition = benchTransformReference.transform.position;
             } 
 
+            var manipulatedBench = benchStates.Manipulated;
             manipulatedBench.transform.position = Vector3.Lerp(manipulatedBench.transform.position, raycastPosition, Time.deltaTime * snapSpeed);
 
             if (snapped) {
