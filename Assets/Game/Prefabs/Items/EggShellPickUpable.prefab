@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickUpRadius: 0.62
   inventoryItem:
-    icon: {fileID: 21300000, guid: 5774ad7b67c846d58700a68848c98da1, type: 3}
+    icon: {fileID: 21300000, guid: 0ee4fa5d9ccd59b4d8d27cbc5e008aad, type: 3}
     prefab: {fileID: 0}
   destructionEffectPrefab: {fileID: 3732551427800355369, guid: 3e2226b0718f88b40ad98d970390f416, type: 3}
 --- !u!1 &8233606932298563781
