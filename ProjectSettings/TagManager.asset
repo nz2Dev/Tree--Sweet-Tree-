@@ -7,6 +7,7 @@ TagManager:
   - Selectable
   - InteractiveObject
   - Buildings
+  - Ladder
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,6 @@ TagManager:
   - Postprocess
   - Interact
   - JumpPlatform
-  - 
   - 
   - 
   - 
