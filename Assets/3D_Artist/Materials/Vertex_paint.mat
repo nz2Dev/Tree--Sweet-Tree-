@@ -24,11 +24,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseNormal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9e09b010c2fe9214abeda670e84bf911, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseTexture:
-        m_Texture: {fileID: 2800000, guid: f99b403e23ea252478e321b4fd0050af, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5a2a45f05301f3f478402a879e90782f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Moss_1_Normal:
@@ -74,10 +74,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _BaseEmission: 0.005
-    - _Moss_1_Emission: 0.85
-    - _Moss_1_Tile: 1.83
-    - _Moss_2_Emission: 0.51
-    - _Moss_2_Tile: 1.62
+    - _Moss_1_Emission: -0.47
+    - _Moss_1_Tile: 0.74
+    - _Moss_2_Emission: -0.46
+    - _Moss_2_Tile: 0.74
     - _QueueControl: 0
     - _QueueOffset: 0
     - _alpha_multiply: 0
