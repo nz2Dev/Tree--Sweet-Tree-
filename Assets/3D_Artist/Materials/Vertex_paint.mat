@@ -75,7 +75,7 @@ Material:
     m_Floats:
     - _BaseEmission: 0.005
     - _Moss_1_Emission: -0.47
-    - _Moss_1_Tile: 0.74
+    - _Moss_1_Tile: 1
     - _Moss_2_Emission: -0.46
     - _Moss_2_Tile: 0.74
     - _QueueControl: 0
