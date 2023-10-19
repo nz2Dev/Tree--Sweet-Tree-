@@ -32,6 +32,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: pasted__M_Ivy
+    second: {fileID: 2100000, guid: d96f5bca7f6b91d4aa99bf4415ed8b77, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pasted__M_leaf
+    second: {fileID: 2100000, guid: 16816d2ebcba5704a90da7df433f30fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: water
     second: {fileID: 2100000, guid: 229f36118afb9be4dbe2402ddab12137, type: 2}
   - first:
