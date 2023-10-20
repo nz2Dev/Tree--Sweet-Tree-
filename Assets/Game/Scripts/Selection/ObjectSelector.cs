@@ -37,25 +37,33 @@ public class ObjectSelector : MonoBehaviour {
     }
 
     private void UpdateSelection() {
-        if (TryRaycastNextSelectableObject(out var raycastedSelectable)) {
-            var isRaycastedNewSelectable = raycastedSelectable != selectedObject;
-            if (isRaycastedNewSelectable) {
-                if (selectedObject != null) {
-                    selectedObject.OnUnselected();
-                }
-                
-                selectedObject = raycastedSelectable;
-                selectedObject.OnSelected();
+        if (TryRaycastSelectable(out var raycasted)) {
+            if (raycasted != selectedObject) {
+                MakeSelected(raycasted);
             }
         } else {
-            if (selectedObject != null) {
-                selectedObject.OnUnselected();
-                selectedObject = null;
-            }
+            UnselectCurrent();
         }
     }
 
-    private bool TryRaycastNextSelectableObject(out SelectableObject raycastedSelectable) {
+    private void MakeSelected(SelectableObject selectable) {
+        UnselectCurrent();
+        Select(selectable);
+    }
+
+    private void UnselectCurrent() {
+        if (selectedObject != null) {
+            selectedObject.OnUnselected();
+        }
+        selectedObject = null;
+    }
+
+    private void Select(SelectableObject selectable) {
+        selectedObject = selectable;
+        selectedObject.OnSelected();
+    }
+
+    private bool TryRaycastSelectable(out SelectableObject raycastedSelectable) {
         var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         
         if (Physics.Raycast(mouseRay, out var hitInfo, 100, selectableObjectsMask)) {
