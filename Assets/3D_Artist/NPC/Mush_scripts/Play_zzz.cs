@@ -11,7 +11,7 @@ public class Play_zzz : StateMachineBehaviour
     //}
 override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-    ParticleSystem ps = GameObject.Find("Mush_sleep").GetComponent<ParticleSystem>();
+    ParticleSystem ps = GameObject.Find("VFX_Mush_sleep").GetComponent<ParticleSystem>();
     ps.Play();
     }
 
