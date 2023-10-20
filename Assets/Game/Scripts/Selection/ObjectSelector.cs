@@ -10,19 +10,11 @@ public class ObjectSelector : MonoBehaviour {
 
     private SelectableObject selectedObject;
     private SelectableObject highlightedObject;
-    private bool selectionLocked;
 
     public SelectableObject Selected => selectedObject;
 
     private void Update() {
         UpdateSelection();
-    }
-
-    public void LockSelection() {
-        if (selectedObject == null) {
-            Debug.LogWarning("Selected Object is null!");
-        }
-        selectionLocked = true;
     }
 
     public void HighlightSelection() {
@@ -44,15 +36,7 @@ public class ObjectSelector : MonoBehaviour {
         }
     }
 
-    public void UnlockSelection() {
-        selectionLocked = false;
-    }
-
     private void UpdateSelection() {
-        if (selectionLocked) {
-            return;
-        }
-
         if (TryRaycastNextSelectableObject(out var raycastedSelectable)) {
             var isRaycastedNewSelectable = raycastedSelectable != selectedObject;
             if (isRaycastedNewSelectable) {
