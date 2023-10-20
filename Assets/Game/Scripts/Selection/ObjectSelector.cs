@@ -41,15 +41,15 @@ public class ObjectSelector : MonoBehaviour {
             var isRaycastedNewSelectable = raycastedSelectable != selectedObject;
             if (isRaycastedNewSelectable) {
                 if (selectedObject != null) {
-                    selectedObject.MarkUnselected();
+                    selectedObject.OnUnselected();
                 }
                 
                 selectedObject = raycastedSelectable;
-                selectedObject.MarkSelected();
+                selectedObject.OnSelected();
             }
         } else {
             if (selectedObject != null) {
-                selectedObject.MarkUnselected();
+                selectedObject.OnUnselected();
                 selectedObject = null;
             }
         }

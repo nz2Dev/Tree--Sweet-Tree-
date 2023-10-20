@@ -21,14 +21,18 @@ public class SelectableObject : MonoBehaviour {
         }
     }
 
-    public void MarkSelected() {
+    public void OnSelected() {
         isSelected = true;
-        NotifyChanges();
+        NotifyOnSelectionChanged();
     }
 
-    public void MarkUnselected() {
+    public void OnUnselected() {
         isSelected = false;
-        NotifyChanges();
+        NotifyOnSelectionChanged();
+    }
+
+    private void NotifyOnSelectionChanged() {
+        OnSelectionChanged?.Invoke(isSelected);
     }
 
     public void Highlight() {
@@ -39,10 +43,6 @@ public class SelectableObject : MonoBehaviour {
     public void StopHighlighting() {
         isHighlighted = false;
         OnHighlightChanged?.Invoke(false);
-    }
-
-    private void NotifyChanges() {
-        OnSelectionChanged?.Invoke(isSelected);
     }
 
 }
