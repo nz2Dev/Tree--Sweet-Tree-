@@ -13,14 +13,11 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
     }
 
     private readonly PickUpable targetPickUp;
-    private Action onCancel;
     private State state;
 
-    public PlayerPickUpObjectActivity(PickUpable targetPickUp, Action onCancel = null)
-    {
+    public PlayerPickUpObjectActivity(PickUpable targetPickUp) {
         this.targetPickUp = targetPickUp;
         this.state = State.Idle;
-        this.onCancel = onCancel;
     }
 
     public bool IsFinished => state == State.Finished;
@@ -37,6 +34,10 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
             } 
         } else {
             player.ActivateNavigation(targetPickUp.transform.position);
+        }
+
+        if (targetPickUp.TryGetComponent<SelectableObject>(out var selectable)) {
+            selectable.Highlight();
         }
     }
 
@@ -66,7 +67,9 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
             player.CancelPickUp();
         }
 
-        onCancel?.Invoke();
+        if (targetPickUp.TryGetComponent<SelectableObject>(out var selectable)) {
+            selectable.StopHighlighting();
+        }
     }
 
 }

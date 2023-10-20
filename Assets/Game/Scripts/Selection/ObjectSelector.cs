@@ -9,31 +9,11 @@ public class ObjectSelector : MonoBehaviour {
     [SerializeField] private LayerMask selectableObjectsMask;
 
     private SelectableObject selectedObject;
-    private SelectableObject highlightedObject;
 
     public SelectableObject Selected => selectedObject;
 
     private void Update() {
         UpdateSelection();
-    }
-
-    public void HighlightSelection() {
-        if (selectedObject != null) {
-            if (highlightedObject != null) {
-                highlightedObject.StopHighlighting();
-                highlightedObject = null;
-            }
-            
-            highlightedObject = selectedObject;
-            highlightedObject.Highlight();
-        }
-    }
-
-    public void CancelLastHighlight() {
-        if (highlightedObject != null) {
-            highlightedObject.StopHighlighting();
-            highlightedObject = null;
-        }
     }
 
     private void UpdateSelection() {

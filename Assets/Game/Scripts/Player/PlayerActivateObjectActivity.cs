@@ -6,17 +6,18 @@ using UnityEngine;
 public class PlayerActivateObjectActivity : IPlayerActivity {
 
     private ActivationObject activationObject;
-    private Action onCancel;
 
-    public PlayerActivateObjectActivity(ActivationObject activationObject, Action onCancel) {
+    public PlayerActivateObjectActivity(ActivationObject activationObject) {
         this.activationObject = activationObject;
-        this.onCancel = onCancel;
     }
 
     public bool IsFinished { get; private set; }
 
     public void Begin(Player player) {
         player.ActivateNavigation(activationObject.ActivationPoint.position);
+        if (activationObject.TryGetComponent<SelectableObject>(out var selectable)) {
+            selectable.Highlight();
+        }
     }
 
     public void Update(Player player) {
@@ -29,7 +30,9 @@ public class PlayerActivateObjectActivity : IPlayerActivity {
 
     public void Cancel(Player player) {
         player.StopNavigation();
-        onCancel?.Invoke();
+        if (activationObject.TryGetComponent<SelectableObject>(out var selectable)) {
+            selectable.StopHighlighting();
+        }
     }
 
 }

@@ -66,16 +66,10 @@ public class PlayerController : MonoBehaviour {
                                 }
                             }
                         } else {
-                            ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
-                                selector.CancelLastHighlight();
-                            }));
-                            selector.HighlightSelection();
+                            ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
                         }
-                    } else if (selector.Selected.TryGetComponent<ActivationObject>(out var activationObject)) {
-                        ExecuteActivity(new PlayerActivateObjectActivity(activationObject, onCancel: () => {
-                            selector.CancelLastHighlight();
-                        }));
-                        selector.HighlightSelection();
+                    } else if (selector.Selected.TryGetComponent<ActivationObject>(out var selectedActivationObject)) {
+                        ExecuteActivity(new PlayerActivateObjectActivity(selectedActivationObject));
                     }
                 } else if (raycastForNavigation) {
                     ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
