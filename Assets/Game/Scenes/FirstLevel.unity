@@ -2380,6 +2380,22 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 0ee7809ad872493bb1d5e7b3d94eb163, type: 3}
     prefab: {fileID: 0}
   destructionEffectPrefab: {fileID: 0}
+  pickUpPlatform: {fileID: 1026603302}
+  OnConsumed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1955210366}
+        m_TargetAssemblyTypeName: TableStates, Assembly-CSharp
+        m_MethodName: SetQuestState
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &581334996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2611,7 +2627,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ad6a4a47a4a42efb6ecab27e8a5dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  OnPlayerOnTop:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1026603302}
+        m_TargetAssemblyTypeName: JumpPlatform, Assembly-CSharp
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnEmptyOnTop:
+    m_PersistentCalls:
+      m_Calls: []
+  initIsActive: 1
   jumpStartPoint: {fileID: 112200944}
   jumpEndPoint: {fileID: 625309964}
 --- !u!1 &656459216
@@ -2991,6 +3025,7 @@ MonoBehaviour:
   manipulatableState: {fileID: 1416706291}
   manipulatedBench: {fileID: 1416706291}
   stationarState: {fileID: 1424444759}
+  stationrStatePlatform: {fileID: 625309966}
   initState: 0
 --- !u!43 &835452957
 Mesh:
@@ -3541,7 +3576,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ad6a4a47a4a42efb6ecab27e8a5dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 0
+  OnPlayerOnTop:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 625309966}
+        m_TargetAssemblyTypeName: JumpPlatform, Assembly-CSharp
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnEmptyOnTop:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 625309966}
+        m_TargetAssemblyTypeName: JumpPlatform, Assembly-CSharp
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1026603302}
+        m_TargetAssemblyTypeName: JumpPlatform, Assembly-CSharp
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  initIsActive: 0
   jumpStartPoint: {fileID: 1861661238}
   jumpEndPoint: {fileID: 938357680}
 --- !u!65 &1026603303
@@ -33792,7 +33869,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   benchStates: {fileID: 830645787}
-  tablePlatform: {fileID: 1026603302}
   manipulatorVCam: {fileID: 188695147}
   snappedColor: {r: 0, g: 0, b: 1, a: 1}
   benchTransformReference: {fileID: 1953800343}
@@ -46967,15 +47043,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6707048884371326029, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.20320714
+      value: 0.20320722
       objectReference: {fileID: 0}
     - target: {fileID: 6707048884371326029, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.005012846
+      value: -0.005012857
       objectReference: {fileID: 0}
     - target: {fileID: 6707048884371326029, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0010403666
+      value: 0.0010403693
       objectReference: {fileID: 0}
     - target: {fileID: 7059544680546104118, guid: 1387bd754510f4fbaa81e459e3f40e10, type: 3}
       propertyPath: m_LocalPosition.x

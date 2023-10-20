@@ -20,9 +20,6 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Texture2D manipulationCursor;
     [SerializeField] private Texture2D navigationCursor;
     [SerializeField] private BenchManipulator benchManipulator;
-    [SerializeField] private JumpPlatform tablePlatform;
-    [SerializeField] private JumpPlatform benchPlatform;
-    [SerializeField] private TableStates tableStates;
     [SerializeField] private ObjectSelector selector;
 
     private Player player;
@@ -42,32 +39,13 @@ public class PlayerController : MonoBehaviour {
         RaycastNavigationPoint();
         UpdateCursorIcon();
 
-        if (player.PlatformUnder == benchPlatform) {
-            tablePlatform.active = true;
-        }
-        if (player.PlatformUnder == null) {
-            tablePlatform.active = false;
-        }
-
         if (benchManipulator != null && benchManipulator.InFocus) {
             benchManipulator.UpdateControl();
         } else {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (selector.Selected != null) {
                     if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
-                        if (selectedPickUp.gameObject.name == "Candle") {
-                            if (!tablePlatform.active || player.PlatformUnder != tablePlatform) {
-                                player.ActivateJump(null);
-                            } else {
-                                player.ActivatePickUp(selectedPickUp, handleAutomatically: true);
-                                // we better use player pickup item event, to check if the candle has been picked up
-                                if (player.GetComponent<Inventory>().IsWorking) {
-                                    tableStates.SetState(TableStates.State.QuestActivation);
-                                }
-                            }
-                        } else {
-                            ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
-                        }
+                        ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
                     } else if (selector.Selected.TryGetComponent<ActivationObject>(out var selectedActivationObject)) {
                         ExecuteActivity(new PlayerActivateObjectActivity(selectedActivationObject));
                     }

@@ -28,6 +28,10 @@ public class TableStates : MonoBehaviour {
         UpdateStateGameObjects();
     }
 
+    public void SetQuestState() {
+        SetState(State.QuestActivation);
+    }
+
     public void SetState(State newState) {
         stateStack = default;
         currentState = newState;

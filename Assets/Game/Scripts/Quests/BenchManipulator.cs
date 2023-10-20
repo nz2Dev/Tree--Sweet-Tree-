@@ -7,7 +7,6 @@ using UnityEngine;
 public class BenchManipulator : MonoBehaviour {
 
     [SerializeField] private BenchStates benchStates;
-    [SerializeField] private JumpPlatform tablePlatform;
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
     [SerializeField] private Color snappedColor = Color.blue;
     [SerializeField] private GameObject benchTransformReference;
@@ -28,7 +27,6 @@ public class BenchManipulator : MonoBehaviour {
 
     private void Start() {
         benchTransformReference.SetActive(false);
-        tablePlatform.active = false; // this should be controlled from bench
     }
 
     private void ActivationObjectOnActivated() {
@@ -53,7 +51,6 @@ public class BenchManipulator : MonoBehaviour {
     private void ManipulationApproved() {
         approving = false;
         benchStates.SetState(BenchStates.State.Stationar);
-        tablePlatform.active = true;
 
         manipulatorVCam.m_Priority--;
         manipulatorVCam.m_Priority--;

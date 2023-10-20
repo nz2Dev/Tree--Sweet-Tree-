@@ -146,6 +146,9 @@ public class Player : MonoBehaviour {
     }
 
     public void ActivateNavigation(Vector3 point) {
+        if (platformUnder != null) {
+            platformUnder.SetPlayerOnTop(false);
+        }
         platformUnder = null;
         // cancel all the rest
         CancelPickUp();        
@@ -230,7 +233,7 @@ public class Player : MonoBehaviour {
     private Vector3 jumpEndPosition;
 
     public void ActivateJump(JumpPlatform target) {
-        if (target != null && target.active) {
+        if (target != null && target.IsActive) {
             jumpStarted = true;
             jumpStartTime = Time.time;
             jumpStartPosition = transform.position;
@@ -270,6 +273,7 @@ public class Player : MonoBehaviour {
                         Quaternion.LookRotation(Vector3.ProjectOnPlane(jumpDistanceVector, Vector3.up), Vector3.up), 
                         Time.deltaTime * rotationSpeed);
             } else {
+                platformUnder.SetPlayerOnTop(true);
                 jumpStarted = false;
             }
         }
