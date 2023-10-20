@@ -17,6 +17,7 @@ Material:
   - _NORMALMAP
   - _RECEIVE_SHADOWS_OFF
   - _SHARP_INERSECTION
+  - _SPECULARHIGHLIGHTS_OFF
   - _UNLIT
   m_InvalidKeywords:
   - ADVANCED_LIGHTING
@@ -123,10 +124,10 @@ Material:
     - _Cutoff: 0.5
     - _Depth: 5.01
     - _DepthExp: 1
-    - _DepthHorizontal: 1
+    - _DepthHorizontal: 0.5
     - _DepthMode: 0
     - _DepthTexture: 1
-    - _DepthVertical: 4
+    - _DepthVertical: 0.01
     - _DisableDepthTexture: 0
     - _DstBlend: 0
     - _EdgeFade: 7.37
@@ -144,8 +145,8 @@ Material:
     - _GlossyReflections: 0
     - _HorizonDistance: 7.6
     - _IntersectionClipping: 0.428
-    - _IntersectionFalloff: 1
-    - _IntersectionLength: 1.79
+    - _IntersectionFalloff: 0.29
+    - _IntersectionLength: 0.35
     - _IntersectionRippleDist: 64
     - _IntersectionRippleStrength: 0.355
     - _IntersectionSize: 0.944
@@ -188,17 +189,17 @@ Material:
     - _ShoreLineWaveDistance: 23
     - _ShoreLineWaveStr: 1
     - _SimpleLighting: 1
-    - _SlopeThreshold: 0.25
+    - _SlopeThreshold: 0.09
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SparkleIntensity: 4.53
     - _SparkleSize: 0.55
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _SunReflectionDistortion: 0.49
+    - _SunReflectionDistortion: 0.57
     - _SunReflectionPerturbance: 0.548
     - _SunReflectionSize: 0.943
-    - _SunReflectionStrength: 3
+    - _SunReflectionStrength: 1.72
     - _Surface: 0
     - _TEXTURE_INTERSECTIONOn: 0
     - _Texture_IntersectionOn: 1
@@ -220,7 +221,7 @@ Material:
     - _ZWrite: 0
     m_Colors:
     - _AnimationParams: {r: 1, g: 1, b: 1, a: 0}
-    - _BaseColor: {r: 0, g: 0.16451614, b: 0.34, a: 0.9647059}
+    - _BaseColor: {r: 0.062904924, g: 0.29213357, b: 0.5377358, a: 0.9647059}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _DepthMapBounds: {r: -402.3, g: -459.43, b: 0.0012693577, a: 0}
     - _DistanceNormalParams: {r: 100, g: 300, b: 0.25, a: 0}
@@ -229,8 +230,8 @@ Material:
     - _HorizonColor: {r: 0.2352941, g: 0.9051294, b: 1, a: 1}
     - _IntersectionColor: {r: 1, g: 1, b: 1, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShallowColor: {r: 0, g: 0.8446603, b: 1, a: 0.39607844}
-    - _SlopeParams: {r: 0.5, g: 4, b: 0, a: 0}
+    - _ShallowColor: {r: 0.12746526, g: 0.65607846, b: 0.8773585, a: 0.39607844}
+    - _SlopeParams: {r: 0.48, g: 1.19, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _TranslucencyParams: {r: 1, g: 4, b: 0, a: 0}
     - _VertexColorMask: {r: 0, g: 0, b: 0, a: 0}

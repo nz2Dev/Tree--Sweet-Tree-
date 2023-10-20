@@ -17,6 +17,7 @@ Material:
   - _NORMALMAP
   - _RECEIVE_SHADOWS_OFF
   - _SHARP_INERSECTION
+  - _SPECULARHIGHLIGHTS_OFF
   - _WAVES
   m_InvalidKeywords:
   - ADVANCED_LIGHTING
@@ -143,8 +144,8 @@ Material:
     - _GlossyReflections: 0
     - _HorizonDistance: 32
     - _IntersectionClipping: 0.61
-    - _IntersectionFalloff: 0.22
-    - _IntersectionLength: 1.33
+    - _IntersectionFalloff: 0.21
+    - _IntersectionLength: 1.22
     - _IntersectionRippleDist: 32
     - _IntersectionRippleStrength: 0
     - _IntersectionSize: 0.944
@@ -165,7 +166,7 @@ Material:
     - _OcclusionStrength: 1
     - _PlanarReflectionsEnabled: 0
     - _PlanarReflectionsParams: 0
-    - _PointSpotLightReflectionExp: 26
+    - _PointSpotLightReflectionExp: 3
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _ReflectionBlur: 0.04
@@ -193,10 +194,10 @@ Material:
     - _SparkleSize: 0.302
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _SunReflectionDistortion: 0.66
+    - _SunReflectionDistortion: 0.43
     - _SunReflectionPerturbance: 0.386
     - _SunReflectionSize: 0.77
-    - _SunReflectionStrength: 2.4
+    - _SunReflectionStrength: 0.69
     - _Surface: 0
     - _TEXTURE_INTERSECTIONOn: 0
     - _Texture_IntersectionOn: 1
@@ -225,9 +226,9 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 0.1830188, g: 0.72567314, b: 1, a: 0.078431375}
     - _HorizonColor: {r: 0, g: 0, b: 0, a: 0.5529412}
-    - _IntersectionColor: {r: 1.8735223, g: 2.1930606, b: 2.4397218, a: 0.9647059}
+    - _IntersectionColor: {r: 1.540959, g: 4.1755967, b: 5.9613757, a: 0.9647059}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShallowColor: {r: 0.1568627, g: 0.7858972, b: 0.85882354, a: 1}
+    - _ShallowColor: {r: 0.0011747944, g: 0.025422478, b: 0.028301895, a: 1}
     - _SlopeParams: {r: 0.5, g: 2, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _TranslucencyParams: {r: 1, g: 4, b: 0, a: 0}
