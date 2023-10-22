@@ -14,6 +14,7 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private DoorStates door;
     [SerializeField] private Transform inventoryItemPlacement;
     [SerializeField] private DoorQuestElement[] questElements;
+    [SerializeField] private DoorQuestZone dynamicZone;
     [SerializeField] private Player player;
 
     private bool active = false;
@@ -47,8 +48,8 @@ public class DoorQuest : MonoBehaviour {
 
     private void InventoryOnItemActivated(Item item) {
         var activatedItemGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
-        activatedItemGO.transform.SetParent(inventoryItemPlacement, false);
         placedElementGO = activatedItemGO;
+        dynamicZone.SetResident(activatedItemGO.GetComponent<DoorQuestElement>());
     }
 
     private void Finish() {
@@ -114,19 +115,25 @@ public class DoorQuest : MonoBehaviour {
                     destination.SetResident(transported);
                     transporting = false;
 
-                    if (transported.gameObject == placedElementGO) {
+                    if (transported.gameObject == placedElementGO && destination != dynamicZone) {
                         bool allStaticElementsInPlace = true;
                         
                         foreach (var questElement in questElements) {
                             if (!questElement.IsOnDesiredHost) {
                                 allStaticElementsInPlace = false;
-                                Debug.Log("qe: " + questElement + " is not on desired spot");
                                 break;
                             }
                         }
 
                         if (allStaticElementsInPlace) {
                             Finish();
+                        } else {
+                            startTime = Time.time;
+                            startPosition = transported.transform.position;
+                            startRotation = transported.transform.rotation;
+                            destination = dynamicZone;
+                            transporting = true;
+                            transported.SetTransported();
                         }
                     }
                 }

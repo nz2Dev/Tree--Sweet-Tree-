@@ -1222,6 +1222,7 @@ MonoBehaviour:
   - {fileID: 6956473027571567746}
   - {fileID: 8891475807351071488}
   - {fileID: 5889643008448042059}
+  dynamicZone: {fileID: 1703838642}
   player: {fileID: 2058804192}
 --- !u!1 &276674546
 GameObject:
@@ -33195,6 +33196,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1703838641}
+  - component: {fileID: 1703838642}
   m_Layer: 0
   m_Name: QuestPiecePlacement
   m_TagString: Untagged
@@ -33218,6 +33220,19 @@ Transform:
   m_Father: {fileID: 255919457}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: -14.727, y: 218.309, z: -4.499}
+--- !u!114 &1703838642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703838640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0019ecabb11ad4d8f804e29a3c109731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initResident: {fileID: 0}
 --- !u!43 &1715095417
 Mesh:
   m_ObjectHideFlags: 0
