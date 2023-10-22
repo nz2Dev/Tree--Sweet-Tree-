@@ -88,7 +88,7 @@ Material:
     - _QueueOffset: 0
     - _alpha_multiply: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 0, g: 0, b: 0, a: 0}
     - _Moss1_offset: {r: 1.03, g: 3.27, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4348509771002407675
