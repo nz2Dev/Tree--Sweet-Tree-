@@ -11,7 +11,8 @@ public class DoorStates : MonoBehaviour {
     }
 
     [SerializeField] private GameObject activatorState;
-    [SerializeField] private GameObject emptyState;
+    [SerializeField] private GameObject emptyState; // QuestState
+    [SerializeField] private GameObject stationarState;
     [SerializeField] private State initState;
 
     private State currentState;
@@ -28,6 +29,7 @@ public class DoorStates : MonoBehaviour {
         currentState = state;
         activatorState.SetActive(state == State.Activator);
         emptyState.SetActive(state == State.Quest);
+        stationarState.SetActive(state == State.Stationar);
     }
 
     public bool IsQuestState() {

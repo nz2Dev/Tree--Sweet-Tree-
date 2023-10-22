@@ -126,6 +126,7 @@ public class DoorQuest : MonoBehaviour {
                         }
 
                         if (allStaticElementsInPlace) {
+                            transported.gameObject.SetActive(false);
                             Finish();
                         } else {
                             startTime = Time.time;
