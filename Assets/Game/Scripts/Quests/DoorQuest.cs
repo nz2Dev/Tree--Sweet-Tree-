@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,6 +12,8 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private ObjectSelector selector;
     [SerializeField] private LayerMask transportationMask;
     [SerializeField] private DoorStates door;
+    [SerializeField] private Transform inventoryItemPlacement;
+    [SerializeField] private Player player;
 
     private bool active = false;
 
@@ -27,12 +31,21 @@ public class DoorQuest : MonoBehaviour {
         active = true;
         vcam.m_Priority += 2;
         door.SetState(DoorStates.State.Quest);
+
+        player.GetComponent<Inventory>().OnItemActivated += InventoryOnItemActivated;
     }
 
     public void Deactivate() {
         active = false;
         vcam.m_Priority -= 2;
         door.SetState(DoorStates.State.Activator);
+
+        player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
+    }
+
+    private void InventoryOnItemActivated(Item item) {
+        var activatedItemGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+        activatedItemGO.transform.SetParent(inventoryItemPlacement, false);
     }
 
     private bool transportationSelection;
