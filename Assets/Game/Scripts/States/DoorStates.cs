@@ -7,6 +7,7 @@ public class DoorStates : MonoBehaviour {
     public enum State {
         Activator,
         Quest,
+        Stationar
     }
 
     [SerializeField] private GameObject activatorState;

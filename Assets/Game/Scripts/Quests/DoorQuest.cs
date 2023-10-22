@@ -13,9 +13,11 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private LayerMask transportationMask;
     [SerializeField] private DoorStates door;
     [SerializeField] private Transform inventoryItemPlacement;
+    [SerializeField] private DoorQuestElement[] questElements;
     [SerializeField] private Player player;
 
     private bool active = false;
+    private GameObject placedElementGO;
 
     private void Awake() {
         vcam.m_Priority = 9;
@@ -46,6 +48,16 @@ public class DoorQuest : MonoBehaviour {
     private void InventoryOnItemActivated(Item item) {
         var activatedItemGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
         activatedItemGO.transform.SetParent(inventoryItemPlacement, false);
+        placedElementGO = activatedItemGO;
+    }
+
+    private void Finish() {
+        active = false;
+        vcam.m_Priority -= 2;
+        door.SetState(DoorStates.State.Stationar);
+
+        player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
+        Debug.Log("Quest Finished!");
     }
 
     private bool transportationSelection;
@@ -101,6 +113,22 @@ public class DoorQuest : MonoBehaviour {
                 } else {
                     destination.SetResident(transported);
                     transporting = false;
+
+                    if (transported.gameObject == placedElementGO) {
+                        bool allStaticElementsInPlace = true;
+                        
+                        foreach (var questElement in questElements) {
+                            if (!questElement.IsOnDesiredHost) {
+                                allStaticElementsInPlace = false;
+                                Debug.Log("qe: " + questElement + " is not on desired spot");
+                                break;
+                            }
+                        }
+
+                        if (allStaticElementsInPlace) {
+                            Finish();
+                        }
+                    }
                 }
             }
         }

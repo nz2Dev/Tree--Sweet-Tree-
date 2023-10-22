@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class DoorQuestElement : MonoBehaviour {
 
+    [SerializeField] private DoorQuestZone desiredZone;
+
     private DoorQuestZone host;
 
     public DoorQuestZone Host => host;
+
+    public bool IsOnDesiredHost => host == desiredZone;
 
     public void SetTransported() {
         if (host != null) {
