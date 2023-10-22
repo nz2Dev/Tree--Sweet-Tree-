@@ -74,7 +74,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BaseEmission: 0.09
-    - _Moss_1_Emission: -0.15
+    - _Moss_1_Emission: -0.3
     - _Moss_1_Tile: 0.18
     - _Moss_2_Emission: 0
     - _Moss_2_Tile: 0.74

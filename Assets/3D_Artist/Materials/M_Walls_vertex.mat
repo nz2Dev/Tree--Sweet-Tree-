@@ -12,8 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _ALPHATEST_ON
+  m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -78,9 +77,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 1
+    - _AlphaClip: 0
     - _BaseEmission: 0.59
-    - _Moss_1_Emission: -0.19
+    - _Moss_1_Emission: -0.2
     - _Moss_1_Tile: 0.18
     - _Moss_2_Emission: 0
     - _Moss_2_Tile: 0.74

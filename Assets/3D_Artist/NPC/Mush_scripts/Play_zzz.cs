@@ -23,7 +23,7 @@ override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-    ParticleSystem ps = GameObject.Find("Mush_sleep").GetComponent<ParticleSystem>();
+    ParticleSystem ps = GameObject.Find("VFX_Mush_sleep").GetComponent<ParticleSystem>();
     ps.Pause();
     ps.Clear();
     }
