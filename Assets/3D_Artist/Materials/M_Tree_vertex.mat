@@ -12,7 +12,8 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ALPHATEST_ON
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -23,12 +24,20 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseColor:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseNormal:
         m_Texture: {fileID: 2800000, guid: d3c226890fa15e74b9c7b7ac06866a5f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseTexture:
         m_Texture: {fileID: 2800000, guid: 1130f34f7cf9cc04fb0362f5e4c7c211, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Color:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Moss_1_Normal:
@@ -73,6 +82,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaClip: 1
     - _BaseEmission: 0.59
     - _Moss_1_Emission: -0.24
     - _Moss_1_Tile: 0.18
@@ -82,6 +92,7 @@ Material:
     - _QueueOffset: 0
     - _alpha_multiply: 0
     m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _Moss1_offset: {r: 0.81, g: 3.33, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &4348509771002407675
