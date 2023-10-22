@@ -24,12 +24,6 @@ public class DoorQuest : MonoBehaviour {
         vcam.m_Priority = 9;
     }
 
-    private void Start() {
-        if (door.IsQuestState()) {
-            Activate();
-        }
-    }
-
     public void Activate() {
         active = true;
         vcam.m_Priority += 2;
