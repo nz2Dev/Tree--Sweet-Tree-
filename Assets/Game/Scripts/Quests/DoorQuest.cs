@@ -51,6 +51,7 @@ public class DoorQuest : MonoBehaviour {
     private bool transportationSelection;
     private DoorQuestElement transported;
     private Vector3 startPosition;
+    private Quaternion startRotation;
     private float startTime;
     private DoorQuestZone destination;
     private bool transporting;
@@ -71,6 +72,7 @@ public class DoorQuest : MonoBehaviour {
                     if (selectedSurface != null && selectedSurface.TryGetComponent<DoorQuestZone>(out var zone) && !zone.HasResident) {                        
                         startTime = Time.time;
                         startPosition = transported.transform.position;
+                        startRotation = transported.transform.rotation;
                         destination = zone;
                         transporting = true;
                     }
@@ -95,6 +97,7 @@ public class DoorQuest : MonoBehaviour {
                 if (Time.time < endTime) {
                     var progress = (Time.time - startTime) / duration;
                     transported.transform.position = Vector3.Lerp(startPosition, destination.transform.position, progress);
+                    transported.transform.rotation = Quaternion.Lerp(startRotation, destination.transform.rotation, progress);
                 } else {
                     destination.SetResident(transported);
                     transporting = false;

@@ -26,6 +26,7 @@ public class DoorQuestZone : MonoBehaviour {
         this.resident = resident;
         if (resident != null) {
             resident.transform.position = transform.position;
+            resident.transform.rotation = transform.rotation;
         }
         if (resident != null) {
             resident.OnHostAssigned(this);
