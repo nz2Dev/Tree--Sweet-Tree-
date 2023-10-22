@@ -33,7 +33,7 @@ public class DoorQuest : MonoBehaviour {
     private DoorQuestElement transported;
     private Vector3 startPosition;
     private float startTime;
-    private Transform destination;
+    private DoorQuestZone destination;
     private bool transporting;
 
     private void Update() {
@@ -45,22 +45,23 @@ public class DoorQuest : MonoBehaviour {
                     selector.CancelOverrideMask();
                     transportationSelection = false;
                     
-                    if (selectedSurface != null) {
+                    if (selectedSurface != null && selectedSurface.TryGetComponent<DoorQuestZone>(out var zone) && !zone.HasResident) {                        
                         startTime = Time.time;
                         startPosition = transported.transform.position;
-                        destination = selectedSurface.transform;
+                        destination = zone;
                         transporting = true;
                     }
                 }
             }
 
             if (!transportationSelection) {
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && selector.Selected != null) {
+                if (!transporting && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && selector.Selected != null) {
                     if (selector.Selected.TryGetComponent<DoorQuestElement>(out var element)) {
                         selector.Selected.Highlight();
                         selector.OverrideMask(transportationMask);
-                        transported = element;
                         transportationSelection = true;
+                        transported = element;
+                        transported.SetTransported();
                     }
                 }
             }
@@ -70,8 +71,9 @@ public class DoorQuest : MonoBehaviour {
                 var endTime = startTime + duration;
                 if (Time.time < endTime) {
                     var progress = (Time.time - startTime) / duration;
-                    transported.transform.position = Vector3.Lerp(startPosition, destination.position, progress);
+                    transported.transform.position = Vector3.Lerp(startPosition, destination.transform.position, progress);
                 } else {
+                    destination.SetResident(transported);
                     transporting = false;
                 }
             }
