@@ -29,6 +29,12 @@ public class DoorQuest : MonoBehaviour {
         door.SetState(DoorStates.State.Quest);
     }
 
+    public void Deactivate() {
+        active = false;
+        vcam.m_Priority -= 2;
+        door.SetState(DoorStates.State.Activator);
+    }
+
     private bool transportationSelection;
     private DoorQuestElement transported;
     private Vector3 startPosition;
@@ -38,6 +44,10 @@ public class DoorQuest : MonoBehaviour {
 
     private void Update() {
         if (active) {
+            if (Input.GetMouseButtonDown(1)) {
+                Deactivate();
+            }
+
             if (transportationSelection) {
                 if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                     transported.GetComponent<SelectableObject>().StopHighlighting();
