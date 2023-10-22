@@ -75,6 +75,7 @@ public class DoorQuest : MonoBehaviour {
                         startRotation = transported.transform.rotation;
                         destination = zone;
                         transporting = true;
+                        transported.SetTransported();
                     }
                 }
             }
@@ -86,7 +87,6 @@ public class DoorQuest : MonoBehaviour {
                         selector.OverrideMask(transportationMask);
                         transportationSelection = true;
                         transported = element;
-                        transported.SetTransported();
                     }
                 }
             }
