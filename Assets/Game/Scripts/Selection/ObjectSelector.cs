@@ -9,11 +9,22 @@ public class ObjectSelector : MonoBehaviour {
     [SerializeField] private LayerMask selectableObjectsMask;
 
     private SelectableObject selectedObject;
+    private LayerMask overrideMask;
+    private bool overridingMask;
 
     public SelectableObject Selected => selectedObject;
 
     private void Update() {
         UpdateSelection();
+    }
+
+    public void OverrideMask(LayerMask overrideMask) {
+        this.overrideMask = overrideMask;
+        overridingMask = true;
+    }
+
+    public void CancelOverrideMask() {
+        this.overridingMask = false;
     }
 
     private void UpdateSelection() {
@@ -46,7 +57,8 @@ public class ObjectSelector : MonoBehaviour {
     private bool TryRaycastSelectable(out SelectableObject raycastedSelectable) {
         var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         
-        if (Physics.Raycast(mouseRay, out var hitInfo, 100, selectableObjectsMask)) {
+        var mask = overridingMask ? overrideMask : selectableObjectsMask;
+        if (Physics.Raycast(mouseRay, out var hitInfo, 100, mask)) {
             raycastedSelectable = hitInfo.collider.GetComponentInParent<SelectableObject>();
         } else {
             raycastedSelectable = null;
