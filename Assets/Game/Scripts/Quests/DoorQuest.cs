@@ -82,13 +82,15 @@ public class DoorQuest : MonoBehaviour {
                     selector.CancelOverrideMask();
                     transportationSelection = false;
                     
-                    if (selectedSurface != null && selectedSurface.TryGetComponent<DoorQuestZone>(out var zone) && !zone.HasResident) {                        
-                        startTime = Time.time;
-                        startPosition = transported.transform.position;
-                        startRotation = transported.transform.rotation;
-                        destination = zone;
-                        transporting = true;
-                        transported.SetTransported();
+                    if (selectedSurface != null && selectedSurface.TryGetComponent<DoorQuestZone>(out var zone)) {                        
+                        if (!zone.HasResident && (zone.IsSiblingTo(transported.Host) || transported.gameObject == placedElementGO)) {
+                            startTime = Time.time;
+                            startPosition = transported.transform.position;
+                            startRotation = transported.transform.rotation;
+                            destination = zone;
+                            transporting = true;
+                            transported.SetTransported();
+                        }
                     }
                 }
             }

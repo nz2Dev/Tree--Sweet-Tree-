@@ -5,6 +5,7 @@ using UnityEngine;
 public class DoorQuestZone : MonoBehaviour {
 
     [SerializeField] private DoorQuestElement initResident;
+    [SerializeField] private DoorQuestZone[] siblings;
 
     private DoorQuestElement resident;
 
@@ -16,6 +17,15 @@ public class DoorQuestZone : MonoBehaviour {
 
     public void UpliftResident() {
         SetResident(null);
+    }
+
+    public bool IsSiblingTo(DoorQuestZone zone) {
+        foreach (var sibling in siblings) {
+            if (sibling == zone) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void SetResident(DoorQuestElement resident) {
