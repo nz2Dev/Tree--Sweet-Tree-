@@ -55,12 +55,12 @@ public class DoorQuest : MonoBehaviour {
         Debug.Log("Quest Finished!");
     }
 
-    private bool transportationSelection;
-    private DoorQuestElement transported;
+    private DoorQuestElement selectedTransportationElement;
     private Vector3 startPosition;
     private Quaternion startRotation;
     private float startTime;
     private DoorQuestZone destination;
+    private DoorQuestElement transportationElement;
     private bool transporting;
 
     private void Update() {
@@ -69,16 +69,8 @@ public class DoorQuest : MonoBehaviour {
                 Deactivate();
             }
 
-            if (transportationSelection) {
-                if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-                    TryChooseTransportationZone();
-                }
-            }
-
-            if (!transportationSelection) {
-                if (!transporting && Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-                    TrySetTransportationElement();
-                }
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+                HandleClick();
             }
 
             if (transporting) {
@@ -86,13 +78,77 @@ public class DoorQuest : MonoBehaviour {
                 var endTime = startTime + duration;
                 if (Time.time < endTime) {
                     var progress = (Time.time - startTime) / duration;
-                    transported.transform.position = Vector3.Lerp(startPosition, destination.transform.position, progress);
-                    transported.transform.rotation = Quaternion.Lerp(startRotation, destination.transform.rotation, progress);
+                    transportationElement.transform.position = Vector3.Lerp(startPosition, destination.transform.position, progress);
+                    transportationElement.transform.rotation = Quaternion.Lerp(startRotation, destination.transform.rotation, progress);
                 } else {
-                    destination.SetResident(transported);
+                    destination.SetResident(transportationElement);
                     transporting = false;
                     OnTransportationFinished();
                 }
+            }
+        }
+    }
+
+    private void HandleClick() {
+        if (IsElementChosen()) {
+            TryChooseZone(selectedTransportationElement);
+            UnsetChosenElement();
+        } else if (TrySelectElement(out var element)) {
+            ChooseElement(element);
+        }
+    }
+
+    private void TryChooseZone(DoorQuestElement transportationElement) {
+        if (selector.Selected != null && selector.Selected.TryGetComponent<DoorQuestZone>(out var zone)) {
+            if (!zone.HasResident && (zone.IsSiblingTo(transportationElement.Host) || transportationElement.gameObject == placedElementGO)) {
+                StartTransportationTo(transportationElement, zone);
+            }
+        }
+    }
+
+    private bool IsElementChosen() {
+        return selectedTransportationElement != null;
+    }
+
+    private bool TrySelectElement(out DoorQuestElement selectedElement) {
+        selectedElement = null;
+        if (!transporting && selector.Selected != null && selector.Selected.TryGetComponent<DoorQuestElement>(out var element)) {
+            selectedElement = element;
+        }
+        return selectedElement != null;
+    }
+
+    private void ChooseElement(DoorQuestElement element) {
+        selector.OverrideMask(transportationMask);
+        selectedTransportationElement = element;
+        selectedTransportationElement.GetComponent<SelectableObject>().Highlight();
+    }
+
+    private void UnsetChosenElement() {
+        selector.CancelOverrideMask();
+        selectedTransportationElement.GetComponent<SelectableObject>().StopHighlighting();
+        selectedTransportationElement = null; 
+    }
+
+    private void StartTransportationTo(DoorQuestElement element, DoorQuestZone zone) {
+        transporting = true;
+        
+        destination = zone;
+        startTime = Time.time;
+        startPosition = element.transform.position;
+        startRotation = element.transform.rotation;
+
+        transportationElement = element;
+        element.SetTransported();
+    }
+
+    private void OnTransportationFinished() {
+        if (transportationElement.gameObject == placedElementGO && destination != dynamicZone) {
+            if (IsAllStaticElementsInPlace()) {
+                transportationElement.gameObject.SetActive(false);
+                Finish();
+            } else {
+                StartTransportationTo(transportationElement, dynamicZone);
             }
         }
     }
@@ -104,47 +160,5 @@ public class DoorQuest : MonoBehaviour {
             }
         }
         return true;
-    }
-
-    private void OnTransportationFinished() {
-        if (transported.gameObject == placedElementGO && destination != dynamicZone) {
-            if (IsAllStaticElementsInPlace()) {
-                transported.gameObject.SetActive(false);
-                Finish();
-            } else {
-                StartTransportationTo(dynamicZone);
-            }
-        }
-    }
-
-    private void TryChooseTransportationZone() {
-        transportationSelection = false;
-
-        transported.GetComponent<SelectableObject>().StopHighlighting();
-        selector.CancelOverrideMask();
-
-        if (selector.Selected != null && selector.Selected.TryGetComponent<DoorQuestZone>(out var zone)) {
-            if (!zone.HasResident && (zone.IsSiblingTo(transported.Host) || transported.gameObject == placedElementGO)) {
-                StartTransportationTo(zone);
-            }
-        }
-    }
-
-    private void TrySetTransportationElement() {
-        if (selector.Selected != null && selector.Selected.TryGetComponent<DoorQuestElement>(out var element)) {
-            selector.Selected.Highlight();
-            selector.OverrideMask(transportationMask);
-            transported = element;
-            transportationSelection = true;
-        }
-    }
-
-    private void StartTransportationTo(DoorQuestZone zone) {
-        destination = zone;
-        startTime = Time.time;
-        startPosition = transported.transform.position;
-        startRotation = transported.transform.rotation;
-        transporting = true;
-        transported.SetTransported();
     }
 }
