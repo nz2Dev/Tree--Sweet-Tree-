@@ -10,7 +10,7 @@ public class DoorQuest : MonoBehaviour {
     
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private ObjectSelector selector;
-    [SerializeField] private LayerMask transportationMask;
+    [SerializeField] private LayerMask zoneMask;
     [SerializeField] private DoorStates door;
     [SerializeField] private Transform inventoryItemPlacement;
     [SerializeField] private DoorQuestElement[] questElements;
@@ -91,16 +91,14 @@ public class DoorQuest : MonoBehaviour {
 
     private void HandleClick() {
         if (IsElementChosen()) {
-            AttemptStartTransportationFor(chosenElement);
+            if (TrySelectZoneFor(chosenElement, out var zone)) {
+                StartTransportation(chosenElement, zone);
+            }
+            selector.CancelOverrideMask();
             UnsetChosenElement();
         } else if (TrySelectElement(out var element)) {
+            selector.OverrideMask(zoneMask);
             ChooseElement(element);
-        }
-    }
-
-    private void AttemptStartTransportationFor(DoorQuestElement element) {
-        if (TrySelectZoneFor(element, out var zone)) {
-            StartTransportation(element, zone);
         }
     }
 
@@ -127,13 +125,11 @@ public class DoorQuest : MonoBehaviour {
     }
 
     private void ChooseElement(DoorQuestElement element) {
-        selector.OverrideMask(transportationMask);
         chosenElement = element;
         chosenElement.GetComponent<SelectableObject>().Highlight();
     }
 
     private void UnsetChosenElement() {
-        selector.CancelOverrideMask();
         chosenElement.GetComponent<SelectableObject>().StopHighlighting();
         chosenElement = null; 
     }
