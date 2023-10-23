@@ -19,9 +19,9 @@ TagManager:
   - Postprocess
   - Interact
   - JumpPlatform
-  - QuestItem
-  - Wall
   - 
+  - Wall
+  - QuestItem
   - 
   - 
   - 
