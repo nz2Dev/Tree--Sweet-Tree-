@@ -12,7 +12,6 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private ObjectSelector selector;
     [SerializeField] private LayerMask zoneMask;
     [SerializeField] private DoorStates door;
-    [SerializeField] private Transform inventoryItemPlacement;
     [SerializeField] private DoorQuestElement[] questElements;
     [SerializeField] private DoorQuestZone dynamicZone;
     [SerializeField] private Player player;
@@ -46,12 +45,13 @@ public class DoorQuest : MonoBehaviour {
         dynamicZone.SetResident(activatedItemGO.GetComponent<DoorQuestElement>());
     }
 
-    private void Finish() {
+    private void OnQuestFinished() {
         active = false;
         vcam.m_Priority -= 2;
         door.SetState(DoorStates.State.Stationar);
 
         player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
+        placedElementGO.SetActive(false);
         Debug.Log("Quest Finished!");
     }
 
@@ -149,8 +149,7 @@ public class DoorQuest : MonoBehaviour {
     private void OnTransportationFinished() {
         if (transportationElement.gameObject == placedElementGO && destination != dynamicZone) {
             if (IsAllStaticElementsInPlace()) {
-                transportationElement.gameObject.SetActive(false);
-                Finish();
+                OnQuestFinished();
             } else {
                 StartTransportation(transportationElement, dynamicZone);
             }
