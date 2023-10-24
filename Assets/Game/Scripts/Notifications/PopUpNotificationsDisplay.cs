@@ -39,6 +39,7 @@ public class PopUpNotificationsDisplay : MonoBehaviour {
 
     public void OnEmmotionClick() {
         activeSuggestion.emotionDuration = 0;
+        activeSuggestion.hintDuration = 0;
         notifications.OnClickEmmotion(activeSuggestion);
     }
 
@@ -85,7 +86,7 @@ public class PopUpNotificationsDisplay : MonoBehaviour {
                 hintImageRect.localScale = new Vector3(scale, scale, scale);
                 hintImageRect.GetComponent<CanvasGroup>().alpha = scale;
             } else {
-                Debug.Log("Done");
+                notifications.OnHintEnd(activeSuggestion);
                 playingHintSequence = false;
                 hintImage.gameObject.SetActive(false);
                 canvas.enabled = false;
