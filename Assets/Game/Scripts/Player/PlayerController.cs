@@ -48,8 +48,6 @@ public class PlayerController : MonoBehaviour {
                         ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
                     } else if (selector.Selected.TryGetComponent<ActivationObject>(out var selectedActivationObject)) {
                         ExecuteActivity(new PlayerActivateObjectActivity(selectedActivationObject));
-                    } else if (selector.Selected.TryGetComponent<MushroomNPC>(out var mushroomNPC)) {
-                        player.ActivateNPCInteraction(mushroomNPC);
                     }
                 } else if (raycastForNavigation) {
                     ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));

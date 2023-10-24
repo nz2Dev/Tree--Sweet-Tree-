@@ -41,10 +41,8 @@ public class Player : MonoBehaviour {
         UpdateJump();
     }
 
-    public void ActivateNPCInteraction(MushroomNPC mushroomNPC) {
-        if (mushroomNPC.TryTouch(out var response)) {
-            notifications.SendNotification(response);
-        }
+    public void ReceiveNotification(Suggestion suggestion) {
+        notifications.SendNotification(suggestion);
     }
 
     private PickUpable activePickUpable;

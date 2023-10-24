@@ -13,9 +13,9 @@ public class MushroomNPC : MonoBehaviour {
         characterAnimator = GetComponentInChildren<Animator>();
     }
 
-    public bool TryTouch(out Suggestion response) {
+    public void OnActivated(Player player) {
         characterAnimator.SetTrigger("Active");
-        response = thirstySuggestion;
-        return true;
+        player.ReceiveNotification(thirstySuggestion);
     }
+
 }
