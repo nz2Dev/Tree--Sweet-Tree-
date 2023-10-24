@@ -14,9 +14,14 @@ public struct Suggestion {
 public class PopUpNotifications : MonoBehaviour {
     
     public event Action<Suggestion> OnShowNotification;
+    public event Action<Suggestion> OnSuggestionClicked;
 
     public void SendNotification(Suggestion suggestion) {
         OnShowNotification?.Invoke(suggestion);
+    }
+
+    public void OnClickEmmotion(Suggestion suggestion) {
+        OnSuggestionClicked?.Invoke(suggestion);
     }
 
 }

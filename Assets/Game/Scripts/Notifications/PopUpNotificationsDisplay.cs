@@ -39,6 +39,7 @@ public class PopUpNotificationsDisplay : MonoBehaviour {
 
     public void OnEmmotionClick() {
         activeSuggestion.emotionDuration = 0;
+        notifications.OnClickEmmotion(activeSuggestion);
     }
 
     private void PlayEmotionDisplay() {
