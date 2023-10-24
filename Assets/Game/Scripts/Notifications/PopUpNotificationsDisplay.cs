@@ -37,6 +37,10 @@ public class PopUpNotificationsDisplay : MonoBehaviour {
         PlayEmotionDisplay();
     }
 
+    public void OnEmmotionClick() {
+        activeSuggestion.emotionDuration = 0;
+    }
+
     private void PlayEmotionDisplay() {
         emotionsImage.gameObject.SetActive(true);
         emotionsImage.sprite = activeSuggestion.emotion;
