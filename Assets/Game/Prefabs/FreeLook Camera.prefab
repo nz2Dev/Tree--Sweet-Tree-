@@ -58,8 +58,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_BindingMode: 5
+  m_FollowOffset: {x: 0, y: 4, z: -7.5}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -138,8 +138,8 @@ GameObject:
   - component: {fileID: 7327833558927257109}
   - component: {fileID: 7985462550800837884}
   - component: {fileID: 7114514530942692923}
-  - component: {fileID: 2825539819768355230}
   - component: {fileID: 8694607418057046278}
+  - component: {fileID: 2825539819768355230}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -163,7 +163,7 @@ Transform:
   - {fileID: 8180875859813777195}
   - {fileID: 7059544680546104118}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7985462550800837884
 MonoBehaviour:
@@ -257,7 +257,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_BindingMode: 5
-  m_SplineCurvature: 0.09
+  m_SplineCurvature: 0.218
   m_Orbits:
   - m_Height: 7
     m_Radius: 5
@@ -285,19 +285,6 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0}
   m_ApplyAfter: 1
   m_PreserveComposition: 0
---- !u!114 &2825539819768355230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1116257697942515041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6ec7ec3f377a49a0a61b5b891f1a1ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scrollSpeed: 0.5
 --- !u!114 &8694607418057046278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,6 +315,22 @@ MonoBehaviour:
   m_Damping: 0.47
   m_DampingWhenOccluded: 0.61
   m_OptimalTargetDistance: 0
+--- !u!114 &2825539819768355230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116257697942515041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ec7ec3f377a49a0a61b5b891f1a1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useOffsetScroll: 0
+  offsetScrollSpeed: 0.5
+  orbitScaleScrollSpeed: 0.01
+  orbitScaleMin: 0.2
 --- !u!1 &1369736808951960468
 GameObject:
   m_ObjectHideFlags: 3
@@ -544,8 +547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_BindingMode: 5
+  m_FollowOffset: {x: 0, y: 4, z: -7.5}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -750,8 +753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 0, z: -10}
+  m_BindingMode: 5
+  m_FollowOffset: {x: 0, y: 4, z: -7.5}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
