@@ -17,6 +17,10 @@ public class Player : MonoBehaviour {
     private HovanetsCharacter character;
     private Inventory inventory;
 
+    private JumpPlatform platformUnder;
+
+    public JumpPlatform PlatformUnder => platformUnder;
+
     private void Awake() {
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.autoTraverseOffMeshLink = false;
@@ -41,6 +45,7 @@ public class Player : MonoBehaviour {
     private Transform pickUpDestination;
     private Vector3 activePickUpableStartPosition;
     private float pickUpActivationStartTime;
+    private bool handleAutomatically;
 
     public bool CanPickUpFromHere(PickUpable pickUpable) {
         return Vector3.Distance(transform.position, pickUpable.transform.position) < pickUpable.PickUpRadius;
@@ -51,7 +56,8 @@ public class Player : MonoBehaviour {
         activePickUpable = null;
     }
 
-    public void ActivatePickUp(PickUpable pickUpable) {
+    public void ActivatePickUp(PickUpable pickUpable, bool handleAutomatically = false) {
+        this.handleAutomatically = handleAutomatically;
         navMeshAgent.ExtResetDestination();
 
         activePickUpable = pickUpable;
@@ -90,6 +96,10 @@ public class Player : MonoBehaviour {
                 activePickUpable.transform.position = pickUpDestination.position;
                 activePickUpable.transform.SetParent(pickUpDestination, true);
                 activePickUpable = null;
+
+                if (handleAutomatically) {
+                    HandlePickedUp();
+                }
             }
         }
     }
@@ -136,6 +146,10 @@ public class Player : MonoBehaviour {
     }
 
     public void ActivateNavigation(Vector3 point) {
+        if (platformUnder != null) {
+            platformUnder.SetPlayerOnTop(false);
+        }
+        platformUnder = null;
         // cancel all the rest
         CancelPickUp();        
 
@@ -219,13 +233,14 @@ public class Player : MonoBehaviour {
     private Vector3 jumpEndPosition;
 
     public void ActivateJump(JumpPlatform target) {
-        if (target.active) {
+        if (target != null && target.IsActive) {
             jumpStarted = true;
             jumpStartTime = Time.time;
             jumpStartPosition = transform.position;
             jumpEndPosition = target.jumpEndPoint.position;
             character.PlayJump();
             navMeshAgent.updatePosition = false;
+            platformUnder = target;
         } else {
             jumpFailStarted = true;
             jumpStartTime = Time.time;
@@ -258,6 +273,7 @@ public class Player : MonoBehaviour {
                         Quaternion.LookRotation(Vector3.ProjectOnPlane(jumpDistanceVector, Vector3.up), Vector3.up), 
                         Time.deltaTime * rotationSpeed);
             } else {
+                platformUnder.SetPlayerOnTop(true);
                 jumpStarted = false;
             }
         }

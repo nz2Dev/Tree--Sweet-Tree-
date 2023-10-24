@@ -9,8 +9,8 @@ public class ObjectSelector : MonoBehaviour {
     [SerializeField] private LayerMask selectableObjectsMask;
 
     private SelectableObject selectedObject;
-    private SelectableObject highlightedObject;
-    private bool selectionLocked;
+    private LayerMask overrideMask;
+    private bool overridingMask;
 
     public SelectableObject Selected => selectedObject;
 
@@ -18,63 +18,47 @@ public class ObjectSelector : MonoBehaviour {
         UpdateSelection();
     }
 
-    public void LockSelection() {
-        if (selectedObject == null) {
-            Debug.LogWarning("Selected Object is null!");
-        }
-        selectionLocked = true;
+    public void OverrideMask(LayerMask overrideMask) {
+        this.overrideMask = overrideMask;
+        overridingMask = true;
     }
 
-    public void HighlightSelection() {
-        if (selectedObject != null) {
-            if (highlightedObject != null) {
-                highlightedObject.StopHighlighting();
-                highlightedObject = null;
-            }
-            
-            highlightedObject = selectedObject;
-            highlightedObject.Highlight();
-        }
-    }
-
-    public void CancelLastHighlight() {
-        if (highlightedObject != null) {
-            highlightedObject.StopHighlighting();
-            highlightedObject = null;
-        }
-    }
-
-    public void UnlockSelection() {
-        selectionLocked = false;
+    public void CancelOverrideMask() {
+        this.overridingMask = false;
     }
 
     private void UpdateSelection() {
-        if (selectionLocked) {
-            return;
-        }
-
-        if (TryRaycastNextSelectableObject(out var raycastedSelectable)) {
-            var isRaycastedNewSelectable = raycastedSelectable != selectedObject;
-            if (isRaycastedNewSelectable) {
-                if (selectedObject != null) {
-                    selectedObject.MarkUnselected();
-                }
-                
-                selectedObject = raycastedSelectable;
-                selectedObject.MarkSelected();
+        if (TryRaycastSelectable(out var raycasted)) {
+            if (raycasted != selectedObject) {
+                MakeSelected(raycasted);
             }
         } else {
-            if (selectedObject != null) {
-                selectedObject.MarkUnselected();
-                selectedObject = null;
-            }
+            UnselectCurrent();
         }
     }
 
-    private bool TryRaycastNextSelectableObject(out SelectableObject raycastedSelectable) {
+    private void MakeSelected(SelectableObject selectable) {
+        UnselectCurrent();
+        Select(selectable);
+    }
+
+    private void UnselectCurrent() {
+        if (selectedObject != null) {
+            selectedObject.OnUnselected();
+        }
+        selectedObject = null;
+    }
+
+    private void Select(SelectableObject selectable) {
+        selectedObject = selectable;
+        selectedObject.OnSelected();
+    }
+
+    private bool TryRaycastSelectable(out SelectableObject raycastedSelectable) {
         var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         
-        if (Physics.Raycast(mouseRay, out var hitInfo, 100, selectableObjectsMask)) {
+        var mask = overridingMask ? overrideMask : selectableObjectsMask;
+        if (Physics.Raycast(mouseRay, out var hitInfo, 100, mask)) {
             raycastedSelectable = hitInfo.collider.GetComponentInParent<SelectableObject>();
         } else {
             raycastedSelectable = null;

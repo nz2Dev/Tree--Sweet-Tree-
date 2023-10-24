@@ -172,7 +172,6 @@ GameObject:
   - component: {fileID: 5831932937360807799}
   - component: {fileID: 5414448039962176378}
   - component: {fileID: 2315702140081223902}
-  - component: {fileID: 2942916069581436695}
   - component: {fileID: 7502926502364869401}
   m_Layer: 0
   m_Name: Player
@@ -246,14 +245,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialIsWorkingState: 0
   initialItems:
-  - icon: {fileID: 21300000, guid: b4c9102f667849238fa89554c7433f4f, type: 3}
-    prefab: {fileID: 0}
-  - icon: {fileID: 21300000, guid: 3de74e0b87c0431ea1b4586d5efc99e2, type: 3}
-    prefab: {fileID: 0}
-  - icon: {fileID: 21300000, guid: 3c976de8a6e1476c8e2714142b31cd0f, type: 3}
-    prefab: {fileID: 0}
-  - icon: {fileID: 21300000, guid: 9b80ed2ac23743d4b51479717aae5645, type: 3}
-    prefab: {fileID: 0}
+  - icon: {fileID: 21300000, guid: 063d5db75b6441b429c837ea74870e94, type: 3}
+    prefab: {fileID: 1395993651089543766, guid: a0f6a437adffd47aba1c00adb95505da, type: 3}
+  - icon: {fileID: 21300000, guid: ba2afbac67d3d824f910516419aadbcc, type: 3}
+    prefab: {fileID: 3658902824281966664, guid: 5eaf6e872268744acb3401e78c7d9d97, type: 3}
+  - icon: {fileID: 21300000, guid: f0351669df66b9444a849861b9b8a4b7, type: 3}
+    prefab: {fileID: 4264028228411995357, guid: 718bda7398cbf49209d124d9e029353b, type: 3}
+  - icon: {fileID: 21300000, guid: 9cc3c3314245b2341b63efc7bbc8ba96, type: 3}
+    prefab: {fileID: 117341925045536919, guid: cb000a73da3dc4efea508323e5b629fa, type: 3}
 --- !u!114 &2315702140081223902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,21 +340,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   rotationSpeed: 10
---- !u!114 &2942916069581436695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 642874682484127438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3aa8e099d027486891902ce02384ff6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectableObjectsMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!114 &7502926502364869401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +361,7 @@ MonoBehaviour:
   navigationCursor: {fileID: 2800000, guid: 74d9dffa5b67243dea00429e754bb624, type: 3}
   benchManipulator: {fileID: 0}
   candleCheckPlatform: {fileID: 0}
+  selector: {fileID: 0}
 --- !u!1 &1303438873492893461
 GameObject:
   m_ObjectHideFlags: 0

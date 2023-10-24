@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public class PlayerNavigateToJumpActivity : IPlayerActivity
-{
+public class PlayerNavigateToJumpActivity : IPlayerActivity {
 
     private JumpPlatform jumpPlatform;
 
@@ -14,11 +13,7 @@ public class PlayerNavigateToJumpActivity : IPlayerActivity
     public bool IsFinished { get; private set; }
 
     public void Begin(Player player) {
-        if (Vector3.Distance(player.transform.position, jumpPlatform.jumpStartPoint.position) < 0.5f) {
-            player.ActivateJump(jumpPlatform);
-        } else {
-            player.ActivateNavigation(jumpPlatform.jumpStartPoint.position);
-        }
+        player.ActivateNavigation(jumpPlatform.jumpStartPoint.position);
     }
 
     public void Update(Player player) {

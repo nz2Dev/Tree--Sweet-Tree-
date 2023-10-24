@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class SelectionStateOutlineActivator : MonoBehaviour {
@@ -22,8 +23,18 @@ public class SelectionStateOutlineActivator : MonoBehaviour {
 
     private void Awake() {
         outline = GetComponent<Outline>();
+    }
+
+    private void OnEnable() {
         selectable.OnSelectionChanged += SelectableOnSelectionChanged;
+        SelectableOnSelectionChanged(selectable.IsSelected);
         selectable.OnHighlightChanged += SelectableOnHighlightChanged;
+        SelectableOnHighlightChanged(selectable.IsHighlighted);
+    }
+
+    private void OnDisable() {
+        selectable.OnSelectionChanged -= SelectableOnSelectionChanged;
+        selectable.OnHighlightChanged -= SelectableOnHighlightChanged;
     }
 
     private void Start() {

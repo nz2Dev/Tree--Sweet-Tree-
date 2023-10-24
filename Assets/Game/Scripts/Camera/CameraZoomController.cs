@@ -35,7 +35,7 @@ public class CameraZoomController : MonoBehaviour {
     }
 
     private void Update() {
-        if (Input.GetKey(KeyCode.LeftAlt)) {
+        if (Input.GetKey(KeyCode.LeftAlt) || Input.GetMouseButton(1)) {
             Cursor.lockState = CursorLockMode.Locked;
         } else {
             Cursor.lockState = CursorLockMode.None;

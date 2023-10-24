@@ -20,9 +20,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Texture2D manipulationCursor;
     [SerializeField] private Texture2D navigationCursor;
     [SerializeField] private BenchManipulator benchManipulator;
-    [SerializeField] private JumpPlatform candleCheckPlatform;
+    [SerializeField] private ObjectSelector selector;
 
-    private ObjectSelector selector;
     private Player player;
 
     private IPlayerActivity currentActivity;
@@ -34,7 +33,6 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake() {
         player = GetComponent<Player>();
-        selector = GetComponent<ObjectSelector>();
     }
 
     private void Update() {
@@ -47,19 +45,9 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (selector.Selected != null) {
                     if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
-                        if (selectedPickUp.gameObject.name == "Candle" && !candleCheckPlatform.active) {
-                            ExecuteActivity(new PlayerNavigateToJumpActivity(candleCheckPlatform));
-                        } else {
-                            ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp, onCancel: () => {
-                                selector.CancelLastHighlight();
-                            }));
-                            selector.HighlightSelection();
-                        }
-                    } else if (selector.Selected.TryGetComponent<ActivationObject>(out var activationObject)) {
-                        ExecuteActivity(new PlayerActivateObjectActivity(activationObject, onCancel: () => {
-                            selector.CancelLastHighlight();
-                        }));
-                        selector.HighlightSelection();
+                        ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
+                    } else if (selector.Selected.TryGetComponent<ActivationObject>(out var selectedActivationObject)) {
+                        ExecuteActivity(new PlayerActivateObjectActivity(selectedActivationObject));
                     }
                 } else if (raycastForNavigation) {
                     ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
