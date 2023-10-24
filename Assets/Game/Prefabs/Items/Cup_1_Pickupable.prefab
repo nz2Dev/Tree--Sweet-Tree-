@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectable: {fileID: 5087293660853211346}
   selectionColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  highlightColor: {r: 0, g: 0.91935134, b: 1, a: 1}
   highlightWidthCurve:
     serializedVersion: 2
     m_Curve:
@@ -238,3 +238,7 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 063d5db75b6441b429c837ea74870e94, type: 3}
     prefab: {fileID: 1395993651089543766, guid: a0f6a437adffd47aba1c00adb95505da, type: 3}
   destructionEffectPrefab: {fileID: 0}
+  pickUpPlatform: {fileID: 0}
+  OnConsumed:
+    m_PersistentCalls:
+      m_Calls: []
