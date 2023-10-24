@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class DoorQuest : MonoBehaviour {
@@ -15,6 +16,7 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private DoorQuestElement[] questElements;
     [SerializeField] private DoorQuestZone dynamicZone;
     [SerializeField] private Player player;
+    [SerializeField] private UnityEvent OnQuestFinishedEvent;
 
     private bool active = false;
     private GameObject placedElementGO;
@@ -51,8 +53,13 @@ public class DoorQuest : MonoBehaviour {
         door.SetState(DoorStates.State.Stationar);
 
         player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
-        placedElementGO.SetActive(false);
-        Debug.Log("Quest Finished!");
+        if (placedElementGO != null) {
+            placedElementGO.SetActive(false);
+        }
+        
+        if (OnQuestFinishedEvent != null) {
+            OnQuestFinishedEvent.Invoke();
+        }
     }
 
     private DoorQuestElement chosenElement;
@@ -65,6 +72,10 @@ public class DoorQuest : MonoBehaviour {
 
     private void Update() {
         if (active) {
+            if (Input.GetKeyDown(KeyCode.F)) {
+                OnQuestFinished();
+            }
+
             if (Input.GetMouseButtonDown(1)) {
                 Deactivate();
             }
