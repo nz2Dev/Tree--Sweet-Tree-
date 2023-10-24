@@ -19,14 +19,14 @@ public class MushroomNPC : MonoBehaviour {
     }
 
     private void NPCNotificationOnSuggestionEmptionEnd(Suggestion suggestion) {
-        var isNeedWaterSuggestion = suggestion.emotion == needWaterSuggestion.emotion;
+        var isNeedWaterSuggestion = suggestion.hint == needWaterSuggestion.hint;
         if (isNeedWaterSuggestion) {
             characterAnimator.SetTrigger("Sleep");
         }
     }
 
     private void NPCNotificationOnSuggestionClicked(Suggestion suggestion) {
-        var isNeedWaterSuggestion = suggestion.emotion == needWaterSuggestion.emotion;
+        var isNeedWaterSuggestion = suggestion.hint == needWaterSuggestion.hint;
         if (isNeedWaterSuggestion) {
             characterAnimator.SetTrigger("Sleep");
         }
