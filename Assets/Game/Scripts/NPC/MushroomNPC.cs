@@ -14,12 +14,19 @@ public class MushroomNPC : MonoBehaviour {
     private void Awake() {
         characterAnimator = GetComponentInChildren<Animator>();
         npcNotifications = GetComponent<PopUpNotifications>();
+        npcNotifications.OnSuggestionClicked += NPCNotificationOnSuggestionClicked;
+    }
+
+    private void NPCNotificationOnSuggestionClicked(Suggestion suggestion) {
+        var isNeedWaterSuggestion = suggestion.emotion == needWaterSuggestion.emotion;
+        if (isNeedWaterSuggestion) {
+            characterAnimator.SetTrigger("Sleep");
+        }
     }
 
     public void OnActivated(Player player) {
         characterAnimator.SetTrigger("Active");
         player.ReceiveNotification(thirstySuggestion);
-
 
         player.GetComponent<PopUpNotifications>().OnSuggestionClicked -= PlayerNotificationOnSuggestionClicked;
         player.GetComponent<PopUpNotifications>().OnSuggestionClicked += PlayerNotificationOnSuggestionClicked;
