@@ -34,24 +34,37 @@ public class MushroomNPC : MonoBehaviour {
         }
     }
 
+    private bool deactiveOnPlayerEmotionEnd;
+
     public void OnActivated(Player player) {
         vcam.m_Priority = 11;
         characterAnimator.SetTrigger("Active");
         player.ReceiveNotification(thirstySuggestion);
+        deactiveOnPlayerEmotionEnd = true;
 
         player.GetComponent<PopUpNotifications>().OnSuggestionClicked -= PlayerNotificationOnSuggestionClicked;
         player.GetComponent<PopUpNotifications>().OnSuggestionClicked += PlayerNotificationOnSuggestionClicked;
+        player.GetComponent<PopUpNotifications>().OnSuggestionEmotionEnd -= PlayerNotificationOnSuggestionEmotionEnd;
+        player.GetComponent<PopUpNotifications>().OnSuggestionEmotionEnd += PlayerNotificationOnSuggestionEmotionEnd;
     }
 
     private void OnDeactivate() {
         characterAnimator.SetTrigger("Sleep");
         vcam.m_Priority = 9;
     }
-
+    
     private void PlayerNotificationOnSuggestionClicked(Suggestion suggestion) {
         var isSendedNotification = suggestion.emotion == thirstySuggestion.emotion;
         if (isSendedNotification) {
             npcNotifications.SendNotification(needWaterSuggestion);
+            deactiveOnPlayerEmotionEnd = false;
+        }
+    }
+
+    private void PlayerNotificationOnSuggestionEmotionEnd(Suggestion suggestion) {
+        var isSendedNotification = suggestion.emotion == thirstySuggestion.emotion;
+        if (isSendedNotification && deactiveOnPlayerEmotionEnd) {
+            OnDeactivate();
         }
     }
 
