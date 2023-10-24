@@ -296,8 +296,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   pickingUpDuration: 0.4
-  jumpMaxHight: 1
-  jumpDuration: 1
+  jumpMaxHight: 0.7
+  jumpDuration: 0.7
   jumpCurve:
     serializedVersion: 2
     m_Curve:
