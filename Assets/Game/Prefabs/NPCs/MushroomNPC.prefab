@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2174213406461923037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9002806699200607601}
+  m_Layer: 0
+  m_Name: ActivationPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9002806699200607601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174213406461923037}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.15, y: -0.98, z: 1.81}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8229258431021135411}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3669795936776692439
 GameObject:
   m_ObjectHideFlags: 0
@@ -50,7 +81,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 1
   prewarm: 1
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4838,6 +4869,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8229258431021135411}
   - component: {fileID: 8626737634778435621}
+  - component: {fileID: 8068778797207602238}
+  - component: {fileID: 1474600463852983999}
   - component: {fileID: 6825529452950521805}
   m_Layer: 0
   m_Name: MushroomNPC
@@ -4853,13 +4886,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5003394607769457895}
-  m_LocalRotation: {x: -0, y: 0.7462259, z: -0, w: 0.6656928}
+  m_LocalRotation: {x: 0, y: 0.7462259, z: 0, w: 0.6656928}
   m_LocalPosition: {x: -7.356, y: 0.94, z: 15.781}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3520592499590404167}
   - {fileID: 2603850452672824614}
+  - {fileID: 9002806699200607601}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 96.529, z: 0}
@@ -4875,6 +4909,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8068778797207602238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5003394607769457895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37d512b518786492db68d0e39c8f2767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activationRadius: 1
+  activationPoint: {fileID: 9002806699200607601}
+  OnActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnActivatedByPlayerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1474600463852983999}
+        m_TargetAssemblyTypeName: NPCActivation, Assembly-CSharp
+        m_MethodName: OnActivate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1474600463852983999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5003394607769457895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb47259349ad54e4085f1412bc1caf6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6825529452950521805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4887,6 +4965,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af151beab509b4b1fbf238291d024611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thirstySuggestion:
+    emotion: {fileID: 0}
+    emotionDuration: 0
+    hint: {fileID: 0}
+    hintDuration: 0
 --- !u!1001 &3985986132281196460
 PrefabInstance:
   m_ObjectHideFlags: 0
