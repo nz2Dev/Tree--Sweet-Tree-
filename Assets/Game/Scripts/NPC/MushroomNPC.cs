@@ -1,18 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MushroomNPC : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class MushroomNPC : MonoBehaviour {
+
+    private Animator characterAnimator;
+
+    private void Awake() {
+        characterAnimator = GetComponentInChildren<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Touch() {
+        characterAnimator.SetTrigger("Active");
     }
 }
