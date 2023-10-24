@@ -41,6 +41,12 @@ public class Player : MonoBehaviour {
         UpdateJump();
     }
 
+    public void ActivateNPCInteraction(MushroomNPC mushroomNPC) {
+        if (mushroomNPC.TryTouch(out var response)) {
+            notifications.SendNotification(response);
+        }
+    }
+
     private PickUpable activePickUpable;
     private Transform pickUpDestination;
     private Vector3 activePickUpableStartPosition;

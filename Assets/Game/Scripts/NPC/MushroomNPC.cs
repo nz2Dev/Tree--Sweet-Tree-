@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class MushroomNPC : MonoBehaviour {
 
+    [SerializeField] private Suggestion thirstySuggestion;
+
     private Animator characterAnimator;
 
     private void Awake() {
         characterAnimator = GetComponentInChildren<Animator>();
     }
 
-    public void Touch() {
+    public bool TryTouch(out Suggestion response) {
         characterAnimator.SetTrigger("Active");
+        response = thirstySuggestion;
+        return true;
     }
 }
