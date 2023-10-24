@@ -52,7 +52,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 2
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -244,15 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialIsWorkingState: 0
-  initialItems:
-  - icon: {fileID: 21300000, guid: 063d5db75b6441b429c837ea74870e94, type: 3}
-    prefab: {fileID: 1395993651089543766, guid: a0f6a437adffd47aba1c00adb95505da, type: 3}
-  - icon: {fileID: 21300000, guid: ba2afbac67d3d824f910516419aadbcc, type: 3}
-    prefab: {fileID: 3658902824281966664, guid: 5eaf6e872268744acb3401e78c7d9d97, type: 3}
-  - icon: {fileID: 21300000, guid: f0351669df66b9444a849861b9b8a4b7, type: 3}
-    prefab: {fileID: 4264028228411995357, guid: 718bda7398cbf49209d124d9e029353b, type: 3}
-  - icon: {fileID: 21300000, guid: 9cc3c3314245b2341b63efc7bbc8ba96, type: 3}
-    prefab: {fileID: 117341925045536919, guid: cb000a73da3dc4efea508323e5b629fa, type: 3}
+  initialItems: []
 --- !u!114 &2315702140081223902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +371,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &684020380455571767
 RectTransform:
   m_ObjectHideFlags: 0
@@ -469,7 +461,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1910478717916496516
 RectTransform:
   m_ObjectHideFlags: 0
@@ -679,7 +671,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 2
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
@@ -1007,7 +999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1056,7 +1048,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9000000, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
     - target: {fileID: 5866666021909216657, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
       propertyPath: m_Controller
       value: 
