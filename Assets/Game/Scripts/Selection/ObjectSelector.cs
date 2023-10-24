@@ -28,7 +28,7 @@ public class ObjectSelector : MonoBehaviour {
     }
 
     private void UpdateSelection() {
-        if (TryRaycastSelectable(out var raycasted)) {
+        if (Cursor.visible && TryRaycastSelectable(out var raycasted)) {
             if (raycasted != selectedObject) {
                 MakeSelected(raycasted);
             }

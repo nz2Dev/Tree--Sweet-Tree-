@@ -85,18 +85,18 @@ public class PlayerController : MonoBehaviour {
 
     private void UpdateCursorIcon() {
         if (EventSystem.current.IsPointerOverGameObject()) {
-            Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.Auto);
+            Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.ForceSoftware);
             return;
         }
 
-        Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.Auto);
+        Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.ForceSoftware);
         if (selector.Selected != null) {
             if (currentActivity is not PlayerPickUpObjectActivity pickUpActivity 
                 || pickUpActivity.TargetPickUpable.gameObject != selector.Selected.gameObject) {
-                Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.Auto);                
+                Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.ForceSoftware);                
             }
         } else if (raycastForNavigation || raycastForJump) {
-            Cursor.SetCursor(navigationCursor, cursorHotSpot, CursorMode.Auto);
+            Cursor.SetCursor(navigationCursor, cursorHotSpot, CursorMode.ForceSoftware);
         }
     }
 

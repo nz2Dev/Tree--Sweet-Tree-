@@ -37,8 +37,10 @@ public class CameraZoomController : MonoBehaviour {
     private void Update() {
         if (Input.GetKey(KeyCode.LeftAlt) || Input.GetMouseButton(1)) {
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         } else {
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         var scrollDelta = Input.mouseScrollDelta.y;
