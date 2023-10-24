@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6548870490045106842}
   - component: {fileID: 7967440585141369757}
   - component: {fileID: 7665782769002143720}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cup_3_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +186,7 @@ GameObject:
   - component: {fileID: 8870926289357381517}
   - component: {fileID: 648643593387479052}
   - component: {fileID: 3959379138245052009}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cup_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

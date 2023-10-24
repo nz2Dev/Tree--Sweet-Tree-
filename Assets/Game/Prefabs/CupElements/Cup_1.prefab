@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7546389002715365290}
   - component: {fileID: 361686294170961945}
   - component: {fileID: 4219896800945178794}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cup_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,8 +58,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4beebbb4bee304a0b9b9a758d02a0730, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultState: {fileID: 7316050685861229697}
-  manipulationState: {fileID: 0}
 --- !u!1 &7316050685861229697
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,7 +72,7 @@ GameObject:
   - component: {fileID: 1900623207355387499}
   - component: {fileID: 2526566785050871964}
   - component: {fileID: 6950585272029062735}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cup_1_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
