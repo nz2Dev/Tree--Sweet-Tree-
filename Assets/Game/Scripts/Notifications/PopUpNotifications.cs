@@ -15,6 +15,7 @@ public class PopUpNotifications : MonoBehaviour {
     
     public event Action<Suggestion> OnShowNotification;
     public event Action<Suggestion> OnSuggestionClicked;
+    public event Action<Suggestion> OnSuggestionEmotionEnd;
 
     public void SendNotification(Suggestion suggestion) {
         OnShowNotification?.Invoke(suggestion);
@@ -22,6 +23,10 @@ public class PopUpNotifications : MonoBehaviour {
 
     public void OnClickEmmotion(Suggestion suggestion) {
         OnSuggestionClicked?.Invoke(suggestion);
+    }
+
+    public void OnEmotionEnd(Suggestion suggestion) {
+        OnSuggestionEmotionEnd?.Invoke(suggestion);
     }
 
 }

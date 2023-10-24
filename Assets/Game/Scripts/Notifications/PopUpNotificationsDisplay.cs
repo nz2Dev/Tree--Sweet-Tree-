@@ -73,6 +73,7 @@ public class PopUpNotificationsDisplay : MonoBehaviour {
             } else {
                 playingEmotionSequence = false;
                 PlayHintDisplay();
+                notifications.OnEmotionEnd(activeSuggestion);
             }
         }
 

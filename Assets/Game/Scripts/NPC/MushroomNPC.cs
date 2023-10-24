@@ -15,6 +15,14 @@ public class MushroomNPC : MonoBehaviour {
         characterAnimator = GetComponentInChildren<Animator>();
         npcNotifications = GetComponent<PopUpNotifications>();
         npcNotifications.OnSuggestionClicked += NPCNotificationOnSuggestionClicked;
+        npcNotifications.OnSuggestionEmotionEnd += NPCNotificationOnSuggestionEmptionEnd;
+    }
+
+    private void NPCNotificationOnSuggestionEmptionEnd(Suggestion suggestion) {
+        var isNeedWaterSuggestion = suggestion.emotion == needWaterSuggestion.emotion;
+        if (isNeedWaterSuggestion) {
+            characterAnimator.SetTrigger("Sleep");
+        }
     }
 
     private void NPCNotificationOnSuggestionClicked(Suggestion suggestion) {
