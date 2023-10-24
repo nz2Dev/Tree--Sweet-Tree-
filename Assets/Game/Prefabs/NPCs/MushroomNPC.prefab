@@ -4870,7 +4870,6 @@ GameObject:
   - component: {fileID: 8229258431021135411}
   - component: {fileID: 8626737634778435621}
   - component: {fileID: 8068778797207602238}
-  - component: {fileID: 1474600463852983999}
   - component: {fileID: 6825529452950521805}
   m_Layer: 0
   m_Name: MushroomNPC
@@ -4929,9 +4928,9 @@ MonoBehaviour:
   OnActivatedByPlayerEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1474600463852983999}
+      - m_Target: {fileID: 6825529452950521805}
         m_TargetAssemblyTypeName: NPCActivation, Assembly-CSharp
-        m_MethodName: OnActivate
+        m_MethodName: OnActivated
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4941,18 +4940,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1474600463852983999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5003394607769457895}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb47259349ad54e4085f1412bc1caf6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6825529452950521805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4966,7 +4953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thirstySuggestion:
-    emotion: {fileID: 0}
+    emotion: {fileID: 21300000, guid: 8e1df98f32b9a4ae69012611e6a5fa0a, type: 3}
     emotionDuration: 0
     hint: {fileID: 0}
     hintDuration: 0
