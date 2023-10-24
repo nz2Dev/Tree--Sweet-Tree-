@@ -329,8 +329,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useOffsetScroll: 0
   offsetScrollSpeed: 0.5
-  orbitScaleScrollSpeed: 0.01
-  orbitScaleMin: 0.2
+  orbitScaleScrollSpeed: -0.01
+  orbitScaleMin: 0.4
+  orbitScaleMax: 1.5
 --- !u!1 &1369736808951960468
 GameObject:
   m_ObjectHideFlags: 3

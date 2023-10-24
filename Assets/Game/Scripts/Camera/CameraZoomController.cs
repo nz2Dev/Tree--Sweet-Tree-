@@ -14,6 +14,7 @@ public class CameraZoomController : MonoBehaviour {
     [SerializeField] private float offsetScrollSpeed = 0.5f;
     [SerializeField] private float orbitScaleScrollSpeed = 0.01f;
     [SerializeField] private float orbitScaleMin = 0.2f;
+    [SerializeField] private float orbitScaleMax = 1f;
 
     private CinemachineFreeLook.Orbit[] initOrbits;
     private float zoomLevel = 1f;
@@ -58,8 +59,8 @@ public class CameraZoomController : MonoBehaviour {
                 var zoomOffset = MathF.Max(0, cameraOffset.m_Offset.z + scrollDelta * offsetScrollSpeed);
                 cameraOffset.m_Offset = new Vector3(cameraOffset.m_Offset.x, cameraOffset.m_Offset.y, zoomOffset);
             } else {
-                zoomLevel += scrollDelta * offsetScrollSpeed;
-                zoomLevel = Mathf.Clamp(zoomLevel, 0.2f, 1.0f);
+                zoomLevel += scrollDelta * orbitScaleScrollSpeed;
+                zoomLevel = Mathf.Clamp(zoomLevel, orbitScaleMin, orbitScaleMax);
 
                 for (int i = 0; i < freeLook.m_Orbits.Length; i++) {
                     freeLook.m_Orbits[i] = new CinemachineFreeLook.Orbit {
