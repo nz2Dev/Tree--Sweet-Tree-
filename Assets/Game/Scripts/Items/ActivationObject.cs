@@ -8,6 +8,7 @@ public class ActivationObject : MonoBehaviour {
     [SerializeField] private float activationRadius = 2f;
     [SerializeField] private Transform activationPoint;
     [SerializeField] private UnityEvent OnActivatedEvent;
+    [SerializeField] private UnityEvent<Player> OnActivatedByPlayerEvent;
 
     public float ActivationRadius => activationRadius;
     public Transform ActivationPoint => activationPoint;
@@ -20,11 +21,15 @@ public class ActivationObject : MonoBehaviour {
         }
     }
 
-    public void Activate() {
+    public void Activate(Player player) {
         OnActivated?.Invoke();
         
         if (OnActivatedEvent != null) {
             OnActivatedEvent.Invoke();
+        }
+
+        if (OnActivatedByPlayerEvent != null) {
+            OnActivatedByPlayerEvent.Invoke(player);
         }
     }
 
