@@ -9,6 +9,9 @@ public class HovanetsCharacter : MonoBehaviour {
     [SerializeField] private GameObject bagVisuals;
     [SerializeField] private Transform handsLocation;
     [SerializeField] private Transform bagLocation;
+    [SerializeField] private bool fixingBagPosition;
+    [SerializeField] private Transform bagTarget;
+    [SerializeField] private Transform bagRoot;
     [SerializeField] private bool resetPosition;
     [SerializeField] private bool applyBuiltinRootMotion;
 
@@ -34,6 +37,11 @@ public class HovanetsCharacter : MonoBehaviour {
     private void LateUpdate() {
         if (resetPosition) {
             transform.localPosition = Vector3.zero;
+        }
+
+        if (fixingBagPosition) {
+            bagRoot.transform.position = bagTarget.position;
+            bagRoot.transform.rotation = bagTarget.rotation;
         }
     }
 

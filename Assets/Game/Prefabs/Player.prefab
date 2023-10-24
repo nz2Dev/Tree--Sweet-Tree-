@@ -596,6 +596,37 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &3007450759334097185
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1176175288535480356}
+  m_Layer: 0
+  m_Name: BagOffset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1176175288535480356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3007450759334097185}
+  m_LocalRotation: {x: -0.54280996, y: 0.4571809, z: 0.5003062, w: 0.49602088}
+  m_LocalPosition: {x: -0.09678626, y: 0.0725162, z: 0.15048382}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6005634130281951234}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4147385757263223633
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,6 +1073,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7986342507013530822}
+    - targetCorrespondingSourceObject: {fileID: -7121633665969020218, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1176175288535480356}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
       insertIndex: -1
@@ -1058,6 +1092,11 @@ GameObject:
 --- !u!4 &3195967025514268689 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2150248275217933611, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
+  m_PrefabInstance: {fileID: 5652742684782023364}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3681239546631016685 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -187761020959129047, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
   m_PrefabInstance: {fileID: 5652742684782023364}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4806460467378909077 stripped
@@ -1152,10 +1191,18 @@ MonoBehaviour:
   bagVisuals: {fileID: 2574829079255397745}
   handsLocation: {fileID: 6453086339710988512}
   bagLocation: {fileID: 3195967025514268689}
+  fixingBagPosition: 1
+  bagTarget: {fileID: 1176175288535480356}
+  bagRoot: {fileID: 3681239546631016685}
   resetPosition: 0
   applyBuiltinRootMotion: 0
 --- !u!4 &5330057407049741615 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
+  m_PrefabInstance: {fileID: 5652742684782023364}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6005634130281951234 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7121633665969020218, guid: 6e621674c03a1f04ebf38f04da3585e3, type: 3}
   m_PrefabInstance: {fileID: 5652742684782023364}
   m_PrefabAsset: {fileID: 0}
