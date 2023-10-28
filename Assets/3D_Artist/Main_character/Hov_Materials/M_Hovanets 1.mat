@@ -53,11 +53,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _1st_ShadeMap:
-        m_Texture: {fileID: 2800000, guid: 94e805d27e40c6f408d00cc8770eb524, type: 3}
+        m_Texture: {fileID: 2800000, guid: b65ba5ef09b4ae547b658ccc1c35566f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _2nd_ShadeMap:
-        m_Texture: {fileID: 2800000, guid: 94e805d27e40c6f408d00cc8770eb524, type: 3}
+        m_Texture: {fileID: 2800000, guid: b65ba5ef09b4ae547b658ccc1c35566f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _AngelRing_Sampler:
@@ -133,7 +133,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Emissive_Tex:
-        m_Texture: {fileID: 2800000, guid: 94e805d27e40c6f408d00cc8770eb524, type: 3}
+        m_Texture: {fileID: 2800000, guid: b65ba5ef09b4ae547b658ccc1c35566f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HeightMap:
@@ -153,7 +153,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 94e805d27e40c6f408d00cc8770eb524, type: 3}
+        m_Texture: {fileID: 2800000, guid: b65ba5ef09b4ae547b658ccc1c35566f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
@@ -181,7 +181,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 577c324dfd3784848b6348b8c2a25f9d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapForMatCap:
@@ -330,7 +330,7 @@ Material:
     - _BlurLevelMatcap: 0
     - _BlurLevelSGM: 0
     - _Brightness: 1.62
-    - _BumpScale: 0
+    - _BumpScale: 1
     - _BumpScaleMatcap: 1
     - _CameraRolling_Stabilizer: 0
     - _ClearCoatMask: 0
@@ -475,8 +475,8 @@ Material:
     - _RimLightOverridden: 0
     - _RimLightVisible: 1
     - _RimLight_FeatherOff: 0
-    - _RimLight_InsideMask: 0.544
-    - _RimLight_Power: 0.827
+    - _RimLight_InsideMask: 0.494
+    - _RimLight_Power: 0.735
     - _RimPower: 0.66
     - _Rim_how: 0.47
     - _Rotate_EmissiveUV: 0
@@ -542,7 +542,7 @@ Material:
     - _TweakHighColorOnShadow: 0
     - _TweakMatCapOnShadow: 0
     - _Tweak_HighColorMaskLevel: 0
-    - _Tweak_LightDirection_MaskLevel: 0
+    - _Tweak_LightDirection_MaskLevel: 0.143
     - _Tweak_MatCapUV: 0
     - _Tweak_MatcapMaskLevel: 0
     - _Tweak_RimLightMaskLevel: 0
@@ -574,8 +574,8 @@ Material:
     - _utsVersionZ: 3
     m_Colors:
     - Toon_Ramp_Tint: {r: 1, g: 1, b: 1, a: 1}
-    - _1st_ShadeColor: {r: 0.38679248, g: 0.38679248, b: 0.38679248, a: 1}
-    - _2nd_ShadeColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
+    - _1st_ShadeColor: {r: 0.6603774, g: 0.6603774, b: 0.6603774, a: 1}
+    - _2nd_ShadeColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
     - _AngelRingMaskColor: {r: 0, g: 1, b: 0, a: 1}
     - _AngelRing_Color: {r: 1, g: 1, b: 1, a: 1}
     - _Ap_RimLightColor: {r: 1, g: 1, b: 1, a: 1}
@@ -589,7 +589,7 @@ Material:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
-    - _Emissive_Color: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
+    - _Emissive_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
     - _FirstShadeMaskColor: {r: 0, g: 1, b: 1, a: 1}
     - _HighColor: {r: 0, g: 0, b: 0, a: 1}
     - _HighlightMaskColor: {r: 1, g: 1, b: 0, a: 1}
