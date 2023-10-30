@@ -13,9 +13,11 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private float cameraCutDuration = 0.9f;
     [SerializeField] private Transform itemHubTransform;
     [SerializeField] private GameObject applyZone;
+    [SerializeField] private Sprite cupElementIcon;
 
     private bool activated;
     private GameObject laidOutObject;
+    private Sprite laidOutObjectIcon;
     private bool applyRegime;
 
     private void Awake() {
@@ -42,6 +44,7 @@ public class TorchQuest : MonoBehaviour {
     private void InventoryOnItemActivated(Item item) {
         laidOutObject = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
         laidOutObject.transform.SetParent(itemHubTransform, false);
+        laidOutObjectIcon = item.icon;
     }
 
     private float startHideCharacterTime;
@@ -52,6 +55,14 @@ public class TorchQuest : MonoBehaviour {
 
     private void OnChangeCharacterVisibility(bool visibility) {
         Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(visibility);
+    }
+
+    private float startApplyingTime;
+    private bool applyingAnimation;
+
+    private void StartApplyingLaidOutObject() {
+        applyingAnimation = true;
+        startApplyingTime = Time.time;
     }
 
     private void Update() {
@@ -68,8 +79,33 @@ public class TorchQuest : MonoBehaviour {
                         applyRegime = true;
                     }
                 }
+                if (applyRegime) {
+                    if (objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone) {
+                        applyZone.SetActive(false);
+                        applyRegime = false;
+
+                        if (laidOutObjectIcon == cupElementIcon) {
+                            StartApplyingLaidOutObject();
+                        }
+                    }
+                }
+            }
+        }
+
+        if (applyingAnimation) {
+            var applyingDuration = 1.0f;
+            var endTime = startApplyingTime + applyingDuration;
+            if (Time.time < endTime) {
+                var progress = (Time.time - startApplyingTime) / applyingDuration;
+                laidOutObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyZone.transform.position, progress);
+            } else {
+                applyingAnimation = false;
+                laidOutObject.transform.position = applyZone.transform.position;
+
+                laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
+                laidOutObject = null;
             }
         }
     }
-    
+
 }
