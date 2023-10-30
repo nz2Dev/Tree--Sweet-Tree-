@@ -14,6 +14,8 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private Transform itemHubTransform;
 
     private bool activated;
+    private GameObject laidOutObject;
+    private bool applyRegime;
 
     private void Awake() {
         vcam.m_Priority = 9;
@@ -33,8 +35,8 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private void InventoryOnItemActivated(Item item) {
-        var itemGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
-        itemGO.transform.SetParent(itemHubTransform, false);
+        laidOutObject = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+        laidOutObject.transform.SetParent(itemHubTransform, false);
     }
 
     private float startHideCharacterTime;
@@ -47,8 +49,6 @@ public class TorchQuest : MonoBehaviour {
         Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(visibility);
     }
 
-    private bool applyRegime;
-
     private void Update() {
         if (activated) {
             if (Time.time > startHideCharacterTime + cameraCutDuration) {
@@ -57,7 +57,7 @@ public class TorchQuest : MonoBehaviour {
 
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (!applyRegime) {
-                    if (objectSelector.Selected != null && objectSelector.Selected.CompareTag("torchElement")) {
+                    if (objectSelector.Selected != null && objectSelector.Selected.gameObject == laidOutObject) {
                         objectSelector.Selected.Highlight();
                         applyRegime = true;
                     }

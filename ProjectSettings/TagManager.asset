@@ -8,7 +8,6 @@ TagManager:
   - InteractiveObject
   - Buildings
   - Ladder
-  - torchElement
   layers:
   - Default
   - TransparentFX

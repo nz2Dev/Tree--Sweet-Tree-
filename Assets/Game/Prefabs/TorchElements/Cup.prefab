@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 4446251902924236455}
   m_Layer: 9
   m_Name: Cup
-  m_TagString: torchElement
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
