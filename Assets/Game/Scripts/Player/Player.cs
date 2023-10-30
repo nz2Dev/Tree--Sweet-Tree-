@@ -19,9 +19,15 @@ public class Player : MonoBehaviour {
 
     private JumpPlatform platformUnder;
 
+    private static Player latestInstance;
+
+    public static Player LatestInstance => latestInstance;
+
     public JumpPlatform PlatformUnder => platformUnder;
 
     private void Awake() {
+        latestInstance = this;
+
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.autoTraverseOffMeshLink = false;
         navMeshAgent.updateRotation = false;
