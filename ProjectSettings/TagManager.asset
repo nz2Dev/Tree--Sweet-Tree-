@@ -8,6 +8,7 @@ TagManager:
   - InteractiveObject
   - Buildings
   - Ladder
+  - torchElement
   layers:
   - Default
   - TransparentFX
@@ -23,8 +24,6 @@ TagManager:
   - SpiderWeb
   - Wall
   - QuestItem
-  - 
-  - 
   - 
   - 
   - 

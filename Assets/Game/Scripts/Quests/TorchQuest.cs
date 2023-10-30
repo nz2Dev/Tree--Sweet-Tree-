@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TorchQuest : MonoBehaviour {
 
     [SerializeField] private SwingStates swingStates;
+    [SerializeField] private ObjectSelector objectSelector;
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private float cameraCutDuration = 0.9f;
     [SerializeField] private Transform itemHubTransform;
@@ -45,10 +47,21 @@ public class TorchQuest : MonoBehaviour {
         Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(visibility);
     }
 
+    private bool applyRegime;
+
     private void Update() {
         if (activated) {
             if (Time.time > startHideCharacterTime + cameraCutDuration) {
                 OnChangeCharacterVisibility(false);
+            }
+
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+                if (!applyRegime) {
+                    if (objectSelector.Selected != null && objectSelector.Selected.CompareTag("torchElement")) {
+                        objectSelector.Selected.Highlight();
+                        applyRegime = true;
+                    }
+                }
             }
         }
     }

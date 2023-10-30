@@ -10,6 +10,7 @@ public class ActivationObject : MonoBehaviour {
     [SerializeField] private JumpPlatform activationPlatform;
     [SerializeField] private UnityEvent OnActivatedEvent;
     [SerializeField] private UnityEvent<Player> OnActivatedByPlayerEvent;
+    [SerializeField] private bool debugActivateOnAwake = false;
 
     public float ActivationRadius => activationRadius;
     public JumpPlatform ActivationPlatform => activationPlatform;
@@ -20,6 +21,12 @@ public class ActivationObject : MonoBehaviour {
     private void Awake() {
         if (activationPoint == null) {
             activationPoint = transform;
+        }
+    }
+
+    private void Start() {
+        if (debugActivateOnAwake) {
+            Activate(Player.LatestInstance);
         }
     }
 
