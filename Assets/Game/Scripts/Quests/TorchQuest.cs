@@ -12,6 +12,7 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private float cameraCutDuration = 0.9f;
     [SerializeField] private Transform itemHubTransform;
+    [SerializeField] private GameObject applyZone;
 
     private bool activated;
     private GameObject laidOutObject;
@@ -19,6 +20,10 @@ public class TorchQuest : MonoBehaviour {
 
     private void Awake() {
         vcam.m_Priority = 9;
+    }
+
+    private void Start() {
+        applyZone.SetActive(false);
     }
 
     public void Activate() {
@@ -59,6 +64,7 @@ public class TorchQuest : MonoBehaviour {
                 if (!applyRegime) {
                     if (objectSelector.Selected != null && objectSelector.Selected.gameObject == laidOutObject) {
                         objectSelector.Selected.Highlight();
+                        applyZone.SetActive(true);
                         applyRegime = true;
                     }
                 }
