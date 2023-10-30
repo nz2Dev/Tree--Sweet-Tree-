@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class SwingQuest : MonoBehaviour {
 
+    [SerializeField] private SwingStates swingStates;
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private float cameraCutDuration = 0.9f;
     [SerializeField] private Transform itemHubTransform;
@@ -22,6 +23,7 @@ public class SwingQuest : MonoBehaviour {
 
         StartHideCharacter();
         BindToInventoryEvents();
+        swingStates.SetState(SwingStates.State.Quest);
     }
 
     private void BindToInventoryEvents() {
