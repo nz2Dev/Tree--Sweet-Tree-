@@ -14,6 +14,7 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private Transform itemHubTransform;
     [SerializeField] private GameObject applyZone;
     [SerializeField] private Sprite cupElementIcon;
+    [SerializeField] private Sprite candleElementIcon;
     [SerializeField] private AnimationCurve shakingCurve;
     [SerializeField] private float shakingCurveScale = 0.1f;
     [SerializeField] private float shakingDuration = 0.5f;
@@ -22,11 +23,11 @@ public class TorchQuest : MonoBehaviour {
     private GameObject laidOutObject;
     private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
     private bool applyRegime;
-    private Stack<Sprite> appliedItemsStack;
+    private List<Sprite> appliedItemsList;
 
     private void Awake() {
         vcam.m_Priority = 9;
-        appliedItemsStack = new Stack<Sprite>();
+        appliedItemsList = new List<Sprite>();
     }
 
     private void Start() {
@@ -103,8 +104,11 @@ public class TorchQuest : MonoBehaviour {
                     bool validToApply = false;
 
                     if (objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone) {
-                        if (appliedItemsStack.Count == 0 && laidOutObjectIcon == cupElementIcon) {
+                        if (laidOutObjectIcon == cupElementIcon && appliedItemsList.Count == 0) {
                             validToApply = true;        
+                        }
+                        if (laidOutObjectIcon == candleElementIcon && appliedItemsList.Count == 1 && appliedItemsList[0] == cupElementIcon) {
+                            validToApply = true;
                         }
                     }
 
@@ -134,7 +138,7 @@ public class TorchQuest : MonoBehaviour {
                 applyingObject.transform.position = applyZone.transform.position;
 
                 applyingObject.GetComponent<SelectableObject>().StopHighlighting();
-                appliedItemsStack.Push(applyingObjectIcon);
+                appliedItemsList.Add(applyingObjectIcon);
             }
         }
 
