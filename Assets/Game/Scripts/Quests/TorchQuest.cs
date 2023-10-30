@@ -20,11 +20,13 @@ public class TorchQuest : MonoBehaviour {
 
     private bool activated;
     private GameObject laidOutObject;
-    private Sprite laidOutObjectIcon;
+    private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
     private bool applyRegime;
+    private Stack<Sprite> appliedItemsStack;
 
     private void Awake() {
         vcam.m_Priority = 9;
+        appliedItemsStack = new Stack<Sprite>();
     }
 
     private void Start() {
@@ -60,10 +62,14 @@ public class TorchQuest : MonoBehaviour {
         Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(visibility);
     }
 
+    private GameObject applyingObject;
+    private Sprite applyingObjectIcon;
     private float startApplyingTime;
     private bool applyingAnimation;
 
-    private void StartApplyingLaidOutObject() {
+    private void StartApplyingObject(GameObject gameObject, Sprite gameObjectSprite) {
+        applyingObject = gameObject;
+        applyingObjectIcon = gameObjectSprite;
         applyingAnimation = true;
         startApplyingTime = Time.time;
     }
@@ -93,21 +99,24 @@ public class TorchQuest : MonoBehaviour {
                         applyZone.SetActive(true);
                         applyRegime = true;
                     }
-                }
-                if (applyRegime) {
+                } else if (applyRegime) {
+                    bool validToApply = false;
+
                     if (objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone) {
-                        applyZone.SetActive(false);
-                        applyRegime = false;
-
-                        if (laidOutObjectIcon == cupElementIcon) {
-                            StartApplyingLaidOutObject();
+                        if (appliedItemsStack.Count == 0 && laidOutObjectIcon == cupElementIcon) {
+                            validToApply = true;        
                         }
-                    } else if (objectSelector.Selected == null) {
-                        applyZone.SetActive(false);
-                        applyRegime = false;
+                    }
 
+                    applyZone.SetActive(false);
+                    applyRegime = false;
+
+                    if (validToApply) {
+                        StartApplyingObject(laidOutObject, laidOutObjectIcon);
+                        laidOutObject = null;
+                        laidOutObjectIcon = null;
+                    } else {
                         StartShakingObject(laidOutObject);
-
                         laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
                     }
                 }
@@ -119,13 +128,13 @@ public class TorchQuest : MonoBehaviour {
             var endTime = startApplyingTime + applyingDuration;
             if (Time.time < endTime) {
                 var progress = (Time.time - startApplyingTime) / applyingDuration;
-                laidOutObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyZone.transform.position, progress);
+                applyingObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyZone.transform.position, progress);
             } else {
                 applyingAnimation = false;
-                laidOutObject.transform.position = applyZone.transform.position;
+                applyingObject.transform.position = applyZone.transform.position;
 
-                laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
-                laidOutObject = null;
+                applyingObject.GetComponent<SelectableObject>().StopHighlighting();
+                appliedItemsStack.Push(applyingObjectIcon);
             }
         }
 
