@@ -14,7 +14,18 @@ public class PlayerActivateObjectActivity : IPlayerActivity {
     public bool IsFinished { get; private set; }
 
     public void Begin(Player player) {
-        player.ActivateNavigation(activationObject.ActivationPoint.position);
+        if (activationObject.ActivationPlatform != null) {
+            if (activationObject.ActivationPlatform.IsActive && activationObject.ActivationPlatform == player.PlatformUnder) {
+                activationObject.Activate(player);
+                IsFinished = true; 
+            } else {
+                player.ActivateJump(null);
+                IsFinished = true;
+            }
+        } else {
+            player.ActivateNavigation(activationObject.ActivationPoint.position);
+        }
+
         if (activationObject.TryGetComponent<SelectableObject>(out var selectable)) {
             selectable.Highlight();
         }

@@ -7,10 +7,12 @@ using UnityEngine.Events;
 public class ActivationObject : MonoBehaviour {
     [SerializeField] private float activationRadius = 2f;
     [SerializeField] private Transform activationPoint;
+    [SerializeField] private JumpPlatform activationPlatform;
     [SerializeField] private UnityEvent OnActivatedEvent;
     [SerializeField] private UnityEvent<Player> OnActivatedByPlayerEvent;
 
     public float ActivationRadius => activationRadius;
+    public JumpPlatform ActivationPlatform => activationPlatform;
     public Transform ActivationPoint => activationPoint;
 
     public event Action OnActivated;
