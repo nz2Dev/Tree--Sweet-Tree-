@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -7,6 +8,7 @@ public class SwingQuest : MonoBehaviour {
 
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private float cameraCutDuration = 0.9f;
+    [SerializeField] private Transform itemHubTransform;
 
     private bool activated;
 
@@ -17,15 +19,18 @@ public class SwingQuest : MonoBehaviour {
     public void Activate() {
         vcam.m_Priority += 2;
         activated = true;
+
         StartHideCharacter();
+        BindToInventoryEvents();
     }
 
-    private void Update() {
-        if (activated) {
-            if (Time.time > startHideCharacterTime + cameraCutDuration) {
-                OnChangeCharacterVisibility(false);
-            }
-        }
+    private void BindToInventoryEvents() {
+        Player.LatestInstance.GetComponent<Inventory>().OnItemActivated += InventoryOnItemActivated;
+    }
+
+    private void InventoryOnItemActivated(Item item) {
+        var itemGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+        itemGO.transform.SetParent(itemHubTransform, false);
     }
 
     private float startHideCharacterTime;
@@ -36,6 +41,14 @@ public class SwingQuest : MonoBehaviour {
 
     private void OnChangeCharacterVisibility(bool visibility) {
         Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(visibility);
+    }
+
+    private void Update() {
+        if (activated) {
+            if (Time.time > startHideCharacterTime + cameraCutDuration) {
+                OnChangeCharacterVisibility(false);
+            }
+        }
     }
     
 }
