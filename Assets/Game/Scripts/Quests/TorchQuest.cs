@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-public class SwingQuest : MonoBehaviour {
+public class TorchQuest : MonoBehaviour {
 
     [SerializeField] private SwingStates swingStates;
     [SerializeField] private CinemachineVirtualCamera vcam;
