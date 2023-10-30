@@ -36,9 +36,6 @@ public class Inventory : MonoBehaviour {
     private void Awake() {
         items = new List<Item>();
         working = initialIsWorkingState;
-    }
-
-    private void Start() {
         items.AddRange(initialItems);
     }
 
