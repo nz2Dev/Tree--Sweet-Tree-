@@ -48,9 +48,11 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private GameObject laidOutObject;
+    private Item laidOutInventoryItem;
     private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
 
     private void LaidOutNewItem(Item item) {
+        laidOutInventoryItem = item;
         laidOutObject = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
         laidOutObject.transform.SetParent(itemHubTransform, false);
         laidOutObjectIcon = item.icon;
@@ -62,6 +64,12 @@ public class TorchQuest : MonoBehaviour {
 
     private void StopHighlightLaidOut() {
         laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
+    }
+
+    private void ReturnLaidOutToInventory() {
+        var pickupable = laidOutObject.AddComponent<PickUpable>();
+        pickupable.Setup(laidOutInventoryItem);
+        Player.LatestInstance.ActivatePickUp(pickupable, handleAutomatically: true);
     }
 
     private void ForgetLaidOutItem() {
@@ -197,16 +205,21 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private void HandleApplying() {
-        if (IsApplyZoneIsSelected() && IsLaidOutCanBeApplied()) {
-            StartApplyingObject(laidOutObject, laidOutObjectIcon);
-            ForgetLaidOutItem();
+        if (IsApplyZoneIsSelected()) {
+            applyZone.SetActive(false);
+            isElementChosen = false;
+
+            if (IsLaidOutCanBeApplied()) {
+                StartApplyingObject(laidOutObject, laidOutObjectIcon);
+                StopHighlightLaidOut();
+                ForgetLaidOutItem();
+            } else {
+                StartShakingObject(laidOutObject);
+                ReturnLaidOutToInventory();
+            }
         } else {
             StartShakingObject(laidOutObject);
-            StopHighlightLaidOut();
         }
-
-        applyZone.SetActive(false);
-        isElementChosen = false;
     }
 
     private void Update() {

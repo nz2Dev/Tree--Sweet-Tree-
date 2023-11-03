@@ -15,6 +15,10 @@ public class PickUpable : MonoBehaviour {
     public JumpPlatform PickUpPlatform => pickUpPlatform;
     public Item InventoryItem => inventoryItem;
 
+    public void Setup(Item item) {
+        inventoryItem = item;
+    }
+
     public void Release() {
         if (Physics.Raycast(transform.position, -Vector3.up, out var hitInfo, 10)) {
             transform.position = hitInfo.point;

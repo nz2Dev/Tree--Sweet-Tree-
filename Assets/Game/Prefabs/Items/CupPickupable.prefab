@@ -48,8 +48,12 @@ MonoBehaviour:
   pickUpRadius: 1
   inventoryItem:
     icon: {fileID: 21300000, guid: 9ad495a9e0f30ed41b59ecc745944bd9, type: 3}
-    prefab: {fileID: 0}
+    prefab: {fileID: 5258962099444572903, guid: 0790dcf5a01e4490982c822a352ba665, type: 3}
   destructionEffectPrefab: {fileID: 4891524985456741298, guid: 7afa761b5545c46c78be8bfdde4ab9e0, type: 3}
+  pickUpPlatform: {fileID: 0}
+  OnConsumed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &8651041105039613399
 PrefabInstance:
   m_ObjectHideFlags: 0
