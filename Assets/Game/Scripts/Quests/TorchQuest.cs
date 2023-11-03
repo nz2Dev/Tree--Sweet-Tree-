@@ -22,30 +22,45 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private int selectionIgnoreLayer;
     [SerializeField] private float applyingDuration = 0.8f;
     [SerializeField] private AnimationCurve applyingCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+    [SerializeField] private GameObject torch;
 
     private bool activated;
-    private List<Sprite> appliedItemsList;
+    private List<GameObject> appliedObjectsList;
 
     private void Awake() {
         vcam.m_Priority = 9;
-        appliedItemsList = new List<Sprite>();
+        appliedObjectsList = new List<GameObject>();
     }
 
     private void Start() {
         applyZone.SetActive(false);
+        torch.SetActive(false);
     }
 
     public void Activate() {
         vcam.m_Priority += 2;
         activated = true;
 
-        StartHideCharacter();
+        StartChangeCharacterVisibility(false);
         BindToInventoryEvents();
         swingStates.SetState(SwingStates.State.Quest);
     }
 
+    public void Deactivate() {
+        vcam.m_Priority -= 2;
+        activated = false;
+
+        StartChangeCharacterVisibility(true);
+        UnbindFromInventoryEvents();
+        swingStates.SetState(SwingStates.State.Stationar);
+    }
+
     private void BindToInventoryEvents() {
         Player.LatestInstance.GetComponent<Inventory>().OnItemActivated += LaidOutNewItem;
+    }
+
+    private void UnbindFromInventoryEvents() {
+        Player.LatestInstance.GetComponent<Inventory>().OnItemActivated -= LaidOutNewItem;
     }
 
     private GameObject laidOutObject;
@@ -78,18 +93,20 @@ public class TorchQuest : MonoBehaviour {
         laidOutObjectIcon = null;
     }
 
-    private float startHideCharacterTime;
-    private bool hidingCharacter;
+    private float startChangeCharacterVisibilityTime;
+    private bool changingCharacterVisibility;
+    private bool visibilityFlag;
 
-    private void StartHideCharacter() {
-        startHideCharacterTime = Time.time;   
-        hidingCharacter = true;
+    private void StartChangeCharacterVisibility(bool visibilityFlag) {
+        this.visibilityFlag = visibilityFlag;
+        startChangeCharacterVisibilityTime = Time.time;   
+        changingCharacterVisibility = true;
     }
 
     private void UpdateHideCharacter() {
-        if (hidingCharacter && Time.time > startHideCharacterTime + cameraCutDuration) {
-            Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(false);
-            hidingCharacter = false;
+        if (changingCharacterVisibility && Time.time > startChangeCharacterVisibilityTime + cameraCutDuration) {
+            Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(visibilityFlag);
+            changingCharacterVisibility = false;
         }
     }
 
@@ -123,7 +140,16 @@ public class TorchQuest : MonoBehaviour {
     private void OnApplyingFinished() {
         applyingObject.GetComponent<SelectableObject>().StopHighlighting();
         applyingObject.GetComponent<SelectableObject>().OverrideCollidingLayer(selectionIgnoreLayer);
-        appliedItemsList.Add(applyingObjectIcon);
+        appliedObjectsList.Add(applyingObject);
+        
+        if (applyingObjectIcon == matchElementIcon) {
+            foreach (var appliedObject in appliedObjectsList) {
+                Destroy(appliedObject);
+            }
+
+            torch.SetActive(true);
+            Deactivate();
+        }
     }
 
     private GameObject shakingObject;
@@ -163,13 +189,13 @@ public class TorchQuest : MonoBehaviour {
 
     private bool IsLaidOutCanBeApplied() {
         if (laidOutObjectIcon == cupElementIcon) {
-            return appliedItemsList.Count == 0;
+            return appliedObjectsList.Count == 0;
         }
         if (laidOutObjectIcon == candleElementIcon) {
-            return appliedItemsList.Count == 1;
+            return appliedObjectsList.Count == 1;
         }
         if (laidOutObjectIcon == matchElementIcon) {
-            return appliedItemsList.Count == 2;
+            return appliedObjectsList.Count == 2;
         }
         return false;
     }

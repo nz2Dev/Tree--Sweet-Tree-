@@ -6,11 +6,13 @@ public class SwingStates : MonoBehaviour {
 
     public enum State {
         Activator,
-        Quest
+        Quest,
+        Stationar
     }
 
     [SerializeField] private GameObject activatorState;
     [SerializeField] private GameObject questState;
+    [SerializeField] private GameObject stationarState;
     [SerializeField] private State initState;
 
     private void Start() {
@@ -24,6 +26,7 @@ public class SwingStates : MonoBehaviour {
     public void SetState(State state) {
         activatorState.SetActive(state == State.Activator);
         questState.SetActive(state == State.Quest);
+        stationarState.SetActive(state == State.Stationar);
     }
 
 }
