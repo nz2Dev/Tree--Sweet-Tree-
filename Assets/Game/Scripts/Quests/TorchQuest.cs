@@ -18,6 +18,7 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private AnimationCurve shakingCurve;
     [SerializeField] private float shakingCurveScale = 0.1f;
     [SerializeField] private float shakingDuration = 0.5f;
+    [SerializeField] private int selectionIgnoreLayer;
 
     private bool activated;
     private List<Sprite> appliedItemsList;
@@ -111,6 +112,7 @@ public class TorchQuest : MonoBehaviour {
 
     private void OnApplyingFinished() {
         applyingObject.GetComponent<SelectableObject>().StopHighlighting();
+        applyingObject.GetComponent<SelectableObject>().OverrideCollidingLayer(selectionIgnoreLayer);
         appliedItemsList.Add(applyingObjectIcon);
     }
 
