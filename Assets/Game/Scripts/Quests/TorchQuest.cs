@@ -19,6 +19,8 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private float shakingCurveScale = 0.1f;
     [SerializeField] private float shakingDuration = 0.5f;
     [SerializeField] private int selectionIgnoreLayer;
+    [SerializeField] private float applyingDuration = 0.8f;
+    [SerializeField] private AnimationCurve applyingCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     private bool activated;
     private List<Sprite> appliedItemsList;
@@ -96,10 +98,9 @@ public class TorchQuest : MonoBehaviour {
 
     private void UpdateApplyingAnimation() {
         if (applyingAnimation) {
-            var applyingDuration = 1.0f;
             var endTime = startApplyingTime + applyingDuration;
             if (Time.time < endTime) {
-                var progress = (Time.time - startApplyingTime) / applyingDuration;
+                var progress = applyingCurve.Evaluate((Time.time - startApplyingTime) / applyingDuration);
                 applyingObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyZone.transform.position, progress);
             } else {
                 applyingAnimation = false;
