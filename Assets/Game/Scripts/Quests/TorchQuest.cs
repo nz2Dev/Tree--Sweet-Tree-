@@ -148,7 +148,6 @@ public class TorchQuest : MonoBehaviour {
             }
 
             torch.SetActive(true);
-            Deactivate();
         }
     }
 
@@ -187,6 +186,10 @@ public class TorchQuest : MonoBehaviour {
         return objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone;
     }
 
+    private bool IsTorchIsSelected() {
+        return objectSelector.Selected != null && objectSelector.Selected.gameObject == torch;
+    }
+
     private bool IsLaidOutCanBeApplied() {
         if (laidOutObjectIcon == cupElementIcon) {
             return appliedObjectsList.Count == 0;
@@ -209,10 +212,20 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private void HandleClick() {
+        if (torch.activeSelf) {
+            HandleDeactivation();
+        }
+
         if (!isElementChosen) {
             HandleChosing();
         } else {
             HandleApplying();
+        }
+    }
+
+    private void HandleDeactivation() {
+        if (IsTorchIsSelected()) {
+            Deactivate();
         }
     }
 
