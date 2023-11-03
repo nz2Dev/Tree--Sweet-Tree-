@@ -22,7 +22,6 @@ public class TorchQuest : MonoBehaviour {
     private bool activated;
     private GameObject laidOutObject;
     private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
-    private bool applyRegime;
     private List<Sprite> appliedItemsList;
 
     private void Awake() {
@@ -124,11 +123,11 @@ public class TorchQuest : MonoBehaviour {
         }
     }
 
-    private bool IsLaidOutIsChosen() {
+    private bool IsLaidOutIsSelected() {
         return objectSelector.Selected != null && objectSelector.Selected.gameObject == laidOutObject;
     }
 
-    private bool IsApplyZoneIsChosen() {
+    private bool IsApplyZoneIsSelected() {
         return objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone;
     }
 
@@ -150,32 +149,50 @@ public class TorchQuest : MonoBehaviour {
         return false;
     }
 
-    private void Update() {
+    private void HandleQuestInput() {
         if (activated) {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-                if (!applyRegime) {
-                    if (IsLaidOutIsChosen()) {
-                        laidOutObject.GetComponent<SelectableObject>().Highlight();
-                        applyZone.SetActive(true);
-                        applyRegime = true;
-                    }
-                } else if (applyRegime) {
-                    applyZone.SetActive(false);
-                    applyRegime = false;
-
-                    if (IsApplyZoneIsChosen() && IsLaidOutCanBeApplied()) {
-                        StartApplyingObject(laidOutObject, laidOutObjectIcon);
-                        laidOutObject = null;
-                        laidOutObjectIcon = null;
-                    } else {
-                        StartShakingObject(laidOutObject);
-                        laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
-                    }
-                }
+                HandleClick();
             }
         }
+    }
 
+    private void HandleClick() {
+        if (!isElementChosen) {
+            HandleChosing();
+        } else {
+            HandleApplying();
+        }
+    }
+
+    private bool isElementChosen;
+
+    private void HandleChosing() {
+        if (IsLaidOutIsSelected()) {
+            laidOutObject.GetComponent<SelectableObject>().Highlight();
+            applyZone.SetActive(true);
+            isElementChosen = true;
+        }
+    }
+
+    private void HandleApplying() {
+        if (IsApplyZoneIsSelected() && IsLaidOutCanBeApplied()) {
+            StartApplyingObject(laidOutObject, laidOutObjectIcon);
+            laidOutObject = null;
+            laidOutObjectIcon = null;
+        } else {
+            StartShakingObject(laidOutObject);
+            laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
+        }
+
+        applyZone.SetActive(false);
+        isElementChosen = false;
+    }
+
+    private void Update() {
         UpdateHideCharacter();
+
+        HandleQuestInput();
 
         UpdateApplyingAnimation();
 
