@@ -54,13 +54,18 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private float startHideCharacterTime;
+    private bool hidingCharacter;
 
     private void StartHideCharacter() {
         startHideCharacterTime = Time.time;   
+        hidingCharacter = true;
     }
 
-    private void OnChangeCharacterVisibility(bool visibility) {
-        Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(visibility);
+    private void UpdateHideCharacter() {
+        if (hidingCharacter && Time.time > startHideCharacterTime + cameraCutDuration) {
+            Player.LatestInstance.GetComponentInChildren<HovanetsCharacter>(true).gameObject.SetActive(false);
+            hidingCharacter = false;
+        }
     }
 
     private GameObject applyingObject;
@@ -75,6 +80,23 @@ public class TorchQuest : MonoBehaviour {
         startApplyingTime = Time.time;
     }
 
+    private void UpdateApplyingAnimation() {
+        if (applyingAnimation) {
+            var applyingDuration = 1.0f;
+            var endTime = startApplyingTime + applyingDuration;
+            if (Time.time < endTime) {
+                var progress = (Time.time - startApplyingTime) / applyingDuration;
+                applyingObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyZone.transform.position, progress);
+            } else {
+                applyingAnimation = false;
+                applyingObject.transform.position = applyZone.transform.position;
+
+                applyingObject.GetComponent<SelectableObject>().StopHighlighting();
+                appliedItemsList.Add(applyingObjectIcon);
+            }
+        }
+    }
+
     private GameObject shakingObject;
     private Vector3 shakingObjectStartPosition;
     private float startShakingTime;
@@ -87,12 +109,23 @@ public class TorchQuest : MonoBehaviour {
         shakingObjectStartPosition = gameObject.transform.position;
     }
 
+    private void UpdateShakingObject() {
+        if (shakingAnimation) {
+            var endTime = startShakingTime + shakingDuration;
+            if (Time.time < endTime) {
+                var progress = (Time.time - startShakingTime) / shakingDuration;
+                var shakingValue = shakingCurve.Evaluate(progress) * shakingCurveScale;
+                var shakingDelta = itemHubTransform.right * shakingValue;
+                shakingObject.transform.position = shakingObjectStartPosition + shakingDelta;
+            } else {
+                shakingAnimation = false;
+                shakingObject.transform.position = shakingObjectStartPosition;
+            }
+        }
+    }
+
     private void Update() {
         if (activated) {
-            if (Time.time > startHideCharacterTime + cameraCutDuration) {
-                OnChangeCharacterVisibility(false);
-            }
-
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (!applyRegime) {
                     if (objectSelector.Selected != null && objectSelector.Selected.gameObject == laidOutObject) {
@@ -127,33 +160,11 @@ public class TorchQuest : MonoBehaviour {
             }
         }
 
-        if (applyingAnimation) {
-            var applyingDuration = 1.0f;
-            var endTime = startApplyingTime + applyingDuration;
-            if (Time.time < endTime) {
-                var progress = (Time.time - startApplyingTime) / applyingDuration;
-                applyingObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyZone.transform.position, progress);
-            } else {
-                applyingAnimation = false;
-                applyingObject.transform.position = applyZone.transform.position;
+        UpdateHideCharacter();
 
-                applyingObject.GetComponent<SelectableObject>().StopHighlighting();
-                appliedItemsList.Add(applyingObjectIcon);
-            }
-        }
+        UpdateApplyingAnimation();
 
-        if (shakingAnimation) {
-            var endTime = startShakingTime + shakingDuration;
-            if (Time.time < endTime) {
-                var progress = (Time.time - startShakingTime) / shakingDuration;
-                var shakingValue = shakingCurve.Evaluate(progress) * shakingCurveScale;
-                var shakingDelta = itemHubTransform.right * shakingValue;
-                shakingObject.transform.position = shakingObjectStartPosition + shakingDelta;
-            } else {
-                shakingAnimation = false;
-                shakingObject.transform.position = shakingObjectStartPosition;
-            }
-        }
+        UpdateShakingObject();
     }
 
 }
