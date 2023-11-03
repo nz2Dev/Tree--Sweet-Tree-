@@ -52,7 +52,12 @@ public class TorchQuest : MonoBehaviour {
 
         StartChangeCharacterVisibility(true);
         UnbindFromInventoryEvents();
-        swingStates.SetState(SwingStates.State.Stationar);
+
+        if (torch.activeSelf) {
+            swingStates.SetState(SwingStates.State.Stationar);
+        } else {
+            swingStates.SetState(SwingStates.State.Activator);
+        }
     }
 
     private void BindToInventoryEvents() {
@@ -208,6 +213,10 @@ public class TorchQuest : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 HandleClick();
             }
+
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Deactivate();
+            }
         }
     }
 
@@ -225,6 +234,7 @@ public class TorchQuest : MonoBehaviour {
 
     private void HandleDeactivation() {
         if (IsTorchIsSelected()) {
+            torch.GetComponent<SelectableObject>().OverrideCollidingLayer(selectionIgnoreLayer);
             Deactivate();
         }
     }
