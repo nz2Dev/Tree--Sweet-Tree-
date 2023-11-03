@@ -14,7 +14,9 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private Transform itemHubTransform;
     [SerializeField] private GameObject applyZone;
     [SerializeField] private Sprite cupElementIcon;
+    [SerializeField] private Transform cupElementDestination;
     [SerializeField] private Sprite candleElementIcon;
+    [SerializeField] private Transform candleElementDestination;
     [SerializeField] private Sprite matchElementIcon;
     [SerializeField] private AnimationCurve shakingCurve;
     [SerializeField] private float shakingCurveScale = 0.1f;
@@ -117,12 +119,14 @@ public class TorchQuest : MonoBehaviour {
 
     private GameObject applyingObject;
     private Sprite applyingObjectIcon;
+    private Transform applyingTargetTransform;
     private float startApplyingTime;
     private bool applyingAnimation;
 
-    private void StartApplyingObject(GameObject gameObject, Sprite gameObjectSprite) {
+    private void StartApplyingObject(GameObject gameObject, Sprite gameObjectSprite, Transform targetTransform) {
         applyingObject = gameObject;
         applyingObjectIcon = gameObjectSprite;
+        applyingTargetTransform = targetTransform;
         applyingAnimation = true;
         startApplyingTime = Time.time;
     }
@@ -132,11 +136,11 @@ public class TorchQuest : MonoBehaviour {
             var endTime = startApplyingTime + applyingDuration;
             if (Time.time < endTime) {
                 var progress = applyingCurve.Evaluate((Time.time - startApplyingTime) / applyingDuration);
-                applyingObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyZone.transform.position, progress);
+                applyingObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyingTargetTransform.position, progress);
+                applyingObject.transform.rotation = Quaternion.Lerp(itemHubTransform.rotation, applyingTargetTransform.rotation, progress);
+                applyingObject.transform.localScale = Vector3.Lerp(itemHubTransform.localScale, applyingTargetTransform.localScale, progress);
             } else {
                 applyingAnimation = false;
-                applyingObject.transform.position = applyZone.transform.position;
-
                 OnApplyingFinished();
             }
         }
@@ -208,6 +212,16 @@ public class TorchQuest : MonoBehaviour {
         return false;
     }
 
+    private Transform GetLaidOutObjectDestinationTransform() {
+        if (laidOutObjectIcon == cupElementIcon) {
+            return cupElementDestination;
+        }
+        if (laidOutObjectIcon == candleElementIcon) {
+            return candleElementDestination;
+        }
+        return applyZone.transform;
+    }
+
     private void HandleQuestInput() {
         if (activated) {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
@@ -255,7 +269,7 @@ public class TorchQuest : MonoBehaviour {
             isElementChosen = false;
 
             if (IsLaidOutCanBeApplied()) {
-                StartApplyingObject(laidOutObject, laidOutObjectIcon);
+                StartApplyingObject(laidOutObject, laidOutObjectIcon, GetLaidOutObjectDestinationTransform());
                 StopHighlightLaidOut();
                 ForgetLaidOutItem();
             } else {
