@@ -61,7 +61,7 @@ MonoBehaviour:
   pickUpRadius: 1
   inventoryItem:
     icon: {fileID: 21300000, guid: 4b91a5b3cb35f7c4095602427fa3d2b5, type: 3}
-    prefab: {fileID: 0}
+    prefab: {fileID: 8102731062588793774, guid: ec4a49bdc5cce45f391cdbf43dcc7301, type: 3}
   destructionEffectPrefab: {fileID: 0}
   pickUpPlatform: {fileID: 0}
   OnConsumed:
