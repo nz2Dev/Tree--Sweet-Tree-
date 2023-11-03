@@ -124,31 +124,46 @@ public class TorchQuest : MonoBehaviour {
         }
     }
 
+    private bool IsLaidOutIsChosen() {
+        return objectSelector.Selected != null && objectSelector.Selected.gameObject == laidOutObject;
+    }
+
+    private bool IsApplyZoneIsChosen() {
+        return objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone;
+    }
+
+    private bool IsCupElementCanBeApplied() {
+        return appliedItemsList.Count == 0;
+    }
+
+    private bool IsCandleElementCanBeApplied() {
+        return appliedItemsList.Count == 1 && appliedItemsList[0] == cupElementIcon;
+    }
+
+    private bool IsLaidOutCanBeApplied() {
+        if (laidOutObjectIcon == cupElementIcon) {
+            return IsCupElementCanBeApplied();
+        }
+        if (laidOutObjectIcon == candleElementIcon) {
+            return IsCandleElementCanBeApplied();
+        }
+        return false;
+    }
+
     private void Update() {
         if (activated) {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (!applyRegime) {
-                    if (objectSelector.Selected != null && objectSelector.Selected.gameObject == laidOutObject) {
-                        objectSelector.Selected.Highlight();
+                    if (IsLaidOutIsChosen()) {
+                        laidOutObject.GetComponent<SelectableObject>().Highlight();
                         applyZone.SetActive(true);
                         applyRegime = true;
                     }
                 } else if (applyRegime) {
-                    bool validToApply = false;
-
-                    if (objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone) {
-                        if (laidOutObjectIcon == cupElementIcon && appliedItemsList.Count == 0) {
-                            validToApply = true;        
-                        }
-                        if (laidOutObjectIcon == candleElementIcon && appliedItemsList.Count == 1 && appliedItemsList[0] == cupElementIcon) {
-                            validToApply = true;
-                        }
-                    }
-
                     applyZone.SetActive(false);
                     applyRegime = false;
 
-                    if (validToApply) {
+                    if (IsApplyZoneIsChosen() && IsLaidOutCanBeApplied()) {
                         StartApplyingObject(laidOutObject, laidOutObjectIcon);
                         laidOutObject = null;
                         laidOutObjectIcon = null;
