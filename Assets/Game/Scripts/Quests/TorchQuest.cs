@@ -15,6 +15,7 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private GameObject applyZone;
     [SerializeField] private Sprite cupElementIcon;
     [SerializeField] private Sprite candleElementIcon;
+    [SerializeField] private Sprite matchElementIcon;
     [SerializeField] private AnimationCurve shakingCurve;
     [SerializeField] private float shakingCurveScale = 0.1f;
     [SerializeField] private float shakingDuration = 0.5f;
@@ -160,20 +161,15 @@ public class TorchQuest : MonoBehaviour {
         return objectSelector.Selected != null && objectSelector.Selected.gameObject == applyZone;
     }
 
-    private bool IsCupElementCanBeApplied() {
-        return appliedItemsList.Count == 0;
-    }
-
-    private bool IsCandleElementCanBeApplied() {
-        return appliedItemsList.Count == 1 && appliedItemsList[0] == cupElementIcon;
-    }
-
     private bool IsLaidOutCanBeApplied() {
         if (laidOutObjectIcon == cupElementIcon) {
-            return IsCupElementCanBeApplied();
+            return appliedItemsList.Count == 0;
         }
         if (laidOutObjectIcon == candleElementIcon) {
-            return IsCandleElementCanBeApplied();
+            return appliedItemsList.Count == 1;
+        }
+        if (laidOutObjectIcon == matchElementIcon) {
+            return appliedItemsList.Count == 2;
         }
         return false;
     }
