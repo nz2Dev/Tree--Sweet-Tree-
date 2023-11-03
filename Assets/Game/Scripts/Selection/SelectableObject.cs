@@ -11,6 +11,8 @@ public class SelectableObject : MonoBehaviour {
     private bool isSelected;
     private bool isHighlighted;
 
+    private int nativeColliderLayer;
+
     public bool IsSelected => isSelected;
     public bool IsHighlighted => isHighlighted;
 
@@ -19,6 +21,17 @@ public class SelectableObject : MonoBehaviour {
         if (collider == null) {
             Debug.LogError("no physic collider in SelectaleObject children");
         }
+        nativeColliderLayer = collider.gameObject.layer;
+    }
+
+    public void OverrideCollidingLayer(int layer) {
+        var collider = GetComponentInChildren<Collider>();
+        collider.gameObject.layer = layer;
+    }
+
+    public void ResetCollidingLayer() {
+        var collider = GetComponentInChildren<Collider>();
+        collider.gameObject.layer = nativeColliderLayer;
     }
 
     public void OnSelected() {
