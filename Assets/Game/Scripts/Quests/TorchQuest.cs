@@ -104,10 +104,14 @@ public class TorchQuest : MonoBehaviour {
                 applyingAnimation = false;
                 applyingObject.transform.position = applyZone.transform.position;
 
-                applyingObject.GetComponent<SelectableObject>().StopHighlighting();
-                appliedItemsList.Add(applyingObjectIcon);
+                OnApplyingFinished();
             }
         }
+    }
+
+    private void OnApplyingFinished() {
+        applyingObject.GetComponent<SelectableObject>().StopHighlighting();
+        appliedItemsList.Add(applyingObjectIcon);
     }
 
     private GameObject shakingObject;
