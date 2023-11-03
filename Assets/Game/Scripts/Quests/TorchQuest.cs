@@ -20,8 +20,6 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private float shakingDuration = 0.5f;
 
     private bool activated;
-    private GameObject laidOutObject;
-    private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
     private List<Sprite> appliedItemsList;
 
     private void Awake() {
@@ -43,13 +41,29 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private void BindToInventoryEvents() {
-        Player.LatestInstance.GetComponent<Inventory>().OnItemActivated += InventoryOnItemActivated;
+        Player.LatestInstance.GetComponent<Inventory>().OnItemActivated += LaidOutNewItem;
     }
 
-    private void InventoryOnItemActivated(Item item) {
+    private GameObject laidOutObject;
+    private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
+
+    private void LaidOutNewItem(Item item) {
         laidOutObject = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
         laidOutObject.transform.SetParent(itemHubTransform, false);
         laidOutObjectIcon = item.icon;
+    }
+
+    private void HighlightLaidOut() {
+        laidOutObject.GetComponent<SelectableObject>().Highlight();
+    }
+
+    private void StopHighlightLaidOut() {
+        laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
+    }
+
+    private void ForgetLaidOutItem() {
+        laidOutObject = null;
+        laidOutObjectIcon = null;
     }
 
     private float startHideCharacterTime;
@@ -169,7 +183,7 @@ public class TorchQuest : MonoBehaviour {
 
     private void HandleChosing() {
         if (IsLaidOutIsSelected()) {
-            laidOutObject.GetComponent<SelectableObject>().Highlight();
+            HighlightLaidOut();
             applyZone.SetActive(true);
             isElementChosen = true;
         }
@@ -178,11 +192,10 @@ public class TorchQuest : MonoBehaviour {
     private void HandleApplying() {
         if (IsApplyZoneIsSelected() && IsLaidOutCanBeApplied()) {
             StartApplyingObject(laidOutObject, laidOutObjectIcon);
-            laidOutObject = null;
-            laidOutObjectIcon = null;
+            ForgetLaidOutItem();
         } else {
             StartShakingObject(laidOutObject);
-            laidOutObject.GetComponent<SelectableObject>().StopHighlighting();
+            StopHighlightLaidOut();
         }
 
         applyZone.SetActive(false);
