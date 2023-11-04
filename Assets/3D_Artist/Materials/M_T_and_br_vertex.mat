@@ -79,7 +79,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _BaseEmission: 0.59
-    - _Moss_1_Emission: -0.43
+    - _Moss_1_Emission: 1.03
     - _Moss_1_Tile: 0.18
     - _Moss_2_Emission: 0
     - _Moss_2_Tile: 0.74
