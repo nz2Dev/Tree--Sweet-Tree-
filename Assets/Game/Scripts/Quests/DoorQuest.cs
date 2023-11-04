@@ -63,12 +63,9 @@ public class DoorQuest : MonoBehaviour {
     }
 
     private DoorQuestElement chosenElement;
-    private Vector3 startPosition;
-    private Quaternion startRotation;
-    private float startTime;
-    private DoorQuestZone destination;
+    private DoorQuestZone transportationDestination;
     private DoorQuestElement transportationElement;
-    private bool transporting;
+    private LerpState transportationLerpState;
 
     private void Update() {
         if (active) {
@@ -83,21 +80,9 @@ public class DoorQuest : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 HandleClick();
             }
-
-            if (transporting) {
-                var duration = 1.0f;
-                var endTime = startTime + duration;
-                if (Time.time < endTime) {
-                    var progress = (Time.time - startTime) / duration;
-                    transportationElement.transform.position = Vector3.Lerp(startPosition, destination.transform.position, progress);
-                    transportationElement.transform.rotation = Quaternion.Lerp(startRotation, destination.transform.rotation, progress);
-                } else {
-                    destination.SetResident(transportationElement);
-                    transporting = false;
-                    OnTransportationFinished();
-                }
-            }
         }
+
+        UpdateTransportation();
     }
 
     private void HandleClick() {
@@ -129,7 +114,7 @@ public class DoorQuest : MonoBehaviour {
 
     private bool TrySelectElement(out DoorQuestElement selectedElement) {
         selectedElement = null;
-        if (!transporting && selector.Selected != null && selector.Selected.TryGetComponent<DoorQuestElement>(out var element)) {
+        if (!transportationLerpState.active && selector.Selected != null && selector.Selected.TryGetComponent<DoorQuestElement>(out var element)) {
             selectedElement = element;
         }
         return selectedElement != null;
@@ -146,19 +131,21 @@ public class DoorQuest : MonoBehaviour {
     }
 
     private void StartTransportation(DoorQuestElement element, DoorQuestZone zone) {
-        transporting = true;
-        
-        destination = zone;
-        startTime = Time.time;
-        startPosition = element.transform.position;
-        startRotation = element.transform.rotation;
-
+        transportationDestination = zone;
         transportationElement = element;
+        transportationLerpState = LerpUtils.StartLerp(element.transform, zone.transform, 1.0f);
         element.SetTransported();
     }
 
+    private void UpdateTransportation() {
+        if (LerpUtils.TryMoveLerpTowardFinish(ref transportationLerpState)) {
+            transportationDestination.SetResident(transportationElement);
+            OnTransportationFinished();
+        }
+    }
+
     private void OnTransportationFinished() {
-        if (transportationElement.gameObject == placedElementGO && destination != dynamicZone) {
+        if (transportationElement.gameObject == placedElementGO && transportationDestination != dynamicZone) {
             if (IsAllStaticElementsInPlace()) {
                 OnQuestFinished();
             } else {
