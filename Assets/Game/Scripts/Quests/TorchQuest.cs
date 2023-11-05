@@ -124,12 +124,12 @@ public class TorchQuest : MonoBehaviour {
     private void StartApplyingObject(GameObject gameObject, Sprite gameObjectSprite, Transform destination) {
         applyingObject = gameObject;
         applyingObjectIcon = gameObjectSprite;
-        applyingTweenState = TweenUtils.StartCurveTween(
+        applyingTweenState = TweenUtils.StartTween(
             target: applyingObject.transform, destination: destination, duration: applyingDuration, curve: applyingCurve);
     }
 
     private void UpdateApplyingAnimation() {
-        if (TweenUtils.TryFinishCurveTween(ref applyingTweenState)) {
+        if (TweenUtils.TryFinishTween(ref applyingTweenState)) {
             OnApplyingFinished();
         }
     }

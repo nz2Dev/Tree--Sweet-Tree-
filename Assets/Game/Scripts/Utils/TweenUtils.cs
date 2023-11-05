@@ -27,23 +27,7 @@ public struct DeltaTweenState {
 
 public static class TweenUtils {
     
-    public static TweenState StartLerpTween(Transform target, Transform destination, float duration) {
-        return new TweenState {
-            active = true,
-            startTime = Time.time,
-            duration = duration,
-            curve = AnimationCurve.Linear(0, 0, 1, 1),
-            target = target,
-            startPosition = target.position,
-            startRotation = target.rotation,
-            startScale = target.localScale,
-            endPosition = destination.position,
-            endRotation = destination.rotation,
-            endScale = destination.localScale
-        };
-    }
-
-    public static TweenState StartCurveTween(Transform target, Transform destination, float duration, AnimationCurve curve) {
+    public static TweenState StartTween(Transform target, Transform destination, float duration, AnimationCurve curve = null) {
         return new TweenState {
             active = true,
             startTime = Time.time,
@@ -59,7 +43,7 @@ public static class TweenUtils {
         };
     }
 
-    public static bool TryFinishLerpTween(ref TweenState state) {
+    public static bool TryFinishTween(ref TweenState state) {
         if (!state.active) {
             return false;
         }
@@ -67,27 +51,13 @@ public static class TweenUtils {
         var endTime = state.startTime + state.duration;
         if (Time.time < endTime) {
             var progress = (Time.time - state.startTime) / state.duration;
-            state.target.position = Vector3.Lerp(state.startPosition, state.endPosition, progress);
-            state.target.rotation = Quaternion.Lerp(state.startRotation, state.endRotation, progress);
-            state.target.localScale = Vector3.Lerp(state.startScale, state.endScale, progress);
-            return false;
-        } else {
-            state.active = false;
-            return true;
-        }
-    }
-
-    public static bool TryFinishCurveTween(ref TweenState state) {
-        if (!state.active) {
-            return false;
-        }
-
-        var endTime = state.startTime + state.duration;
-        if (Time.time < endTime) {
-            var progress = state.curve.Evaluate((Time.time - state.startTime) / state.duration);
-            state.target.position = Vector3.Lerp(state.startPosition, state.endPosition, progress);
-            state.target.rotation = Quaternion.Lerp(state.startRotation, state.endRotation, progress);
-            state.target.localScale = Vector3.Lerp(state.startScale, state.endScale, progress);
+            var progressScale = progress;
+            if (state.curve != null) {
+                progressScale = state.curve.Evaluate(progress);
+            }
+            state.target.position = Vector3.Lerp(state.startPosition, state.endPosition, progressScale);
+            state.target.rotation = Quaternion.Lerp(state.startRotation, state.endRotation, progressScale);
+            state.target.localScale = Vector3.Lerp(state.startScale, state.endScale, progressScale);
             return false;
         } else {
             state.active = false;
