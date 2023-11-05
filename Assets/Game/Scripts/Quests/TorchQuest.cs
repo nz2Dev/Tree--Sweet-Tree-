@@ -160,31 +160,19 @@ public class TorchQuest : MonoBehaviour {
         }
     }
 
-    private GameObject shakingObject;
-    private Vector3 shakingObjectStartPosition;
-    private float startShakingTime;
-    private bool shakingAnimation;
+    private DeltaTweenState shakingTweenState;
 
     private void StartShakingObject(GameObject gameObject) {
-        shakingAnimation = true;
-        startShakingTime = Time.time;
-        shakingObject = gameObject;
-        shakingObjectStartPosition = gameObject.transform.position;
+        shakingTweenState = TweenUtils.StartCurveDeltaTween(
+            target: gameObject.transform, 
+            direction: itemHubTransform.right, 
+            scale: shakingCurveScale, 
+            duration: shakingDuration, 
+            curve: shakingCurve);
     }
 
     private void UpdateShakingObject() {
-        if (shakingAnimation) {
-            var endTime = startShakingTime + shakingDuration;
-            if (Time.time < endTime) {
-                var progress = (Time.time - startShakingTime) / shakingDuration;
-                var shakingValue = shakingCurve.Evaluate(progress) * shakingCurveScale;
-                var shakingDelta = itemHubTransform.right * shakingValue;
-                shakingObject.transform.position = shakingObjectStartPosition + shakingDelta;
-            } else {
-                shakingAnimation = false;
-                shakingObject.transform.position = shakingObjectStartPosition;
-            }
-        }
+        TweenUtils.TryFinishCurveDeltaTween(ref shakingTweenState);
     }
 
     private bool IsLaidOutIsSelected() {

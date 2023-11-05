@@ -65,7 +65,7 @@ public class DoorQuest : MonoBehaviour {
     private DoorQuestElement chosenElement;
     private DoorQuestZone transportationDestination;
     private DoorQuestElement transportationElement;
-    private LerpState transportationLerpState;
+    private TweenState transportationLerpState;
 
     private void Update() {
         if (active) {
@@ -133,12 +133,12 @@ public class DoorQuest : MonoBehaviour {
     private void StartTransportation(DoorQuestElement element, DoorQuestZone zone) {
         transportationDestination = zone;
         transportationElement = element;
-        transportationLerpState = LerpUtils.StartLerp(element.transform, zone.transform, 1.0f);
+        transportationLerpState = TweenUtils.StartLerpTween(element.transform, zone.transform, 1.0f);
         element.SetTransported();
     }
 
     private void UpdateTransportation() {
-        if (LerpUtils.TryMoveLerpTowardFinish(ref transportationLerpState)) {
+        if (TweenUtils.TryMoveLerpTowardFinish(ref transportationLerpState)) {
             transportationDestination.SetResident(transportationElement);
             OnTransportationFinished();
         }
