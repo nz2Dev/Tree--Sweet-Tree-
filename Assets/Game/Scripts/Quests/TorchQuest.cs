@@ -119,30 +119,18 @@ public class TorchQuest : MonoBehaviour {
 
     private GameObject applyingObject;
     private Sprite applyingObjectIcon;
-    private Transform applyingTargetTransform;
-    private float startApplyingTime;
-    private bool applyingAnimation;
+    private TweenState applyingTweenState;
 
-    private void StartApplyingObject(GameObject gameObject, Sprite gameObjectSprite, Transform targetTransform) {
+    private void StartApplyingObject(GameObject gameObject, Sprite gameObjectSprite, Transform destination) {
         applyingObject = gameObject;
         applyingObjectIcon = gameObjectSprite;
-        applyingTargetTransform = targetTransform;
-        applyingAnimation = true;
-        startApplyingTime = Time.time;
+        applyingTweenState = TweenUtils.StartCurveTween(
+            target: applyingObject.transform, destination: destination, duration: applyingDuration, curve: applyingCurve);
     }
 
     private void UpdateApplyingAnimation() {
-        if (applyingAnimation) {
-            var endTime = startApplyingTime + applyingDuration;
-            if (Time.time < endTime) {
-                var progress = applyingCurve.Evaluate((Time.time - startApplyingTime) / applyingDuration);
-                applyingObject.transform.position = Vector3.Lerp(itemHubTransform.position, applyingTargetTransform.position, progress);
-                applyingObject.transform.rotation = Quaternion.Lerp(itemHubTransform.rotation, applyingTargetTransform.rotation, progress);
-                applyingObject.transform.localScale = Vector3.Lerp(itemHubTransform.localScale, applyingTargetTransform.localScale, progress);
-            } else {
-                applyingAnimation = false;
-                OnApplyingFinished();
-            }
+        if (TweenUtils.TryFinishCurveTween(ref applyingTweenState)) {
+            OnApplyingFinished();
         }
     }
 
