@@ -138,7 +138,7 @@ public class DoorQuest : MonoBehaviour {
     }
 
     private void UpdateTransportation() {
-        if (TweenUtils.TryMoveLerpTowardFinish(ref transportationLerpState)) {
+        if (TweenUtils.TryFinishLerpTween(ref transportationLerpState)) {
             transportationDestination.SetResident(transportationElement);
             OnTransportationFinished();
         }

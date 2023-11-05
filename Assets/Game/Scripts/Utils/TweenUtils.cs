@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public struct TweenState {
@@ -43,7 +41,7 @@ public static class TweenUtils {
         };
     }
 
-    public static bool TryMoveLerpTowardFinish(ref TweenState item) {
+    public static bool TryFinishLerpTween(ref TweenState item) {
         if (!item.active) {
             return false;
         }
