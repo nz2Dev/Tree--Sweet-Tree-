@@ -65,7 +65,7 @@ public static class TweenUtils {
         }
     }
 
-    public static DeltaTweenState StartCurveDeltaTween(Transform target, Vector3 direction, float scale, float duration, AnimationCurve curve) {
+    public static DeltaTweenState StartDeltaTween(Transform target, Vector3 direction, float scale, float duration, AnimationCurve curve = null) {
         return new DeltaTweenState {
             active = true,
             startTime = Time.time,
@@ -78,7 +78,7 @@ public static class TweenUtils {
         };
     }
 
-    public static bool TryFinishCurveDeltaTween(ref DeltaTweenState state) {
+    public static bool TryFinishDeltaTween(ref DeltaTweenState state) {
         if (!state.active) {
             return false;
         }
@@ -86,8 +86,12 @@ public static class TweenUtils {
         var endTime = state.startTime + state.duration;
         if (Time.time < endTime) {
             var progress = (Time.time - state.startTime) / state.duration;
-            var scaleByDurationValue = state.curve.Evaluate(progress) * state.scale;
-            var deltaValue = state.direction * scaleByDurationValue;
+            var progressScale = progress;
+            if (state.curve != null) {
+                progressScale = state.curve.Evaluate(progress);
+            }
+            
+            var deltaValue = state.direction * (progressScale * state.scale);
             state.target.position = state.startPosition + deltaValue;
             return false;
         } else {

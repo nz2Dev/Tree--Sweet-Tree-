@@ -151,7 +151,7 @@ public class TorchQuest : MonoBehaviour {
     private DeltaTweenState shakingTweenState;
 
     private void StartShakingObject(GameObject gameObject) {
-        shakingTweenState = TweenUtils.StartCurveDeltaTween(
+        shakingTweenState = TweenUtils.StartDeltaTween(
             target: gameObject.transform, 
             direction: itemHubTransform.right, 
             scale: shakingCurveScale, 
@@ -160,7 +160,7 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private void UpdateShakingObject() {
-        TweenUtils.TryFinishCurveDeltaTween(ref shakingTweenState);
+        TweenUtils.TryFinishDeltaTween(ref shakingTweenState);
     }
 
     private bool IsLaidOutIsSelected() {
