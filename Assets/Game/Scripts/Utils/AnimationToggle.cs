@@ -6,12 +6,14 @@ public class AnimationToggle : MonoBehaviour {
 
     [SerializeField] private string openAnimationName;
     [SerializeField] private string closeAnimationName;
+    [SerializeField] private bool initialIsOpen;
 
     private Animation thisAnimation;
     private bool open;
 
     private void Awake() {
         thisAnimation = GetComponent<Animation>();
+        open = initialIsOpen;
     }
 
     public void TogglePlay() {
