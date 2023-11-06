@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Texture2D defaultCursor;
     [SerializeField] private Texture2D manipulationCursor;
     [SerializeField] private Texture2D navigationCursor;
-    [SerializeField] private BenchManipulator benchManipulator;
     [SerializeField] private ObjectSelector selector;
 
     private Player player;
@@ -39,21 +38,17 @@ public class PlayerController : MonoBehaviour {
         RaycastNavigationPoint();
         UpdateCursorIcon();
 
-        if (benchManipulator != null && benchManipulator.InFocus) {
-            benchManipulator.UpdateControl();
-        } else {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-                if (selector.Selected != null) {
-                    if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
-                        ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
-                    } else if (selector.Selected.TryGetComponent<ActivationObject>(out var selectedActivationObject)) {
-                        ExecuteActivity(new PlayerActivateObjectActivity(selectedActivationObject));
-                    }
-                } else if (raycastForNavigation) {
-                    ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
-                } else if (raycastForJump) {
-                    ExecuteActivity(new PlayerNavigateToJumpActivity(raycastedPlatform));
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+            if (selector.Selected != null) {
+                if (selector.Selected.TryGetComponent<PickUpable>(out var selectedPickUp)) {
+                    ExecuteActivity(new PlayerPickUpObjectActivity(selectedPickUp));
+                } else if (selector.Selected.TryGetComponent<ActivationObject>(out var selectedActivationObject)) {
+                    ExecuteActivity(new PlayerActivateObjectActivity(selectedActivationObject));
                 }
+            } else if (raycastForNavigation) {
+                ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
+            } else if (raycastForJump) {
+                ExecuteActivity(new PlayerNavigateToJumpActivity(raycastedPlatform));
             }
         }
 

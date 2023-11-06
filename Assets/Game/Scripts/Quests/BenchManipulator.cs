@@ -2,27 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BenchManipulator : MonoBehaviour {
 
     [SerializeField] private BenchStates benchStates;
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
+    [SerializeField] private ObjectSelector objectSelector;
     [SerializeField] private Color snappedColor = Color.blue;
     [SerializeField] private GameObject benchTransformReference;
     [SerializeField] private LayerMask manipulationSurface;
     [SerializeField] private float snapSpeed = 10;
     [SerializeField] private float snapDistance = 0.3f;
 
+    private bool activated;
     private bool manipulating;
     private bool approving;
     private Vector3 raycastPosition;
 
-    public bool InFocus => manipulating || approving;
-
     private void Awake() {
         benchStates.Activator.OnActivated += ActivationObjectOnActivated;
-        benchStates.Starter.OnActivated += ManipulationActivatorOnActivated;
     }
 
     private void Start() {
@@ -30,6 +31,7 @@ public class BenchManipulator : MonoBehaviour {
     }
 
     private void ActivationObjectOnActivated() {
+        activated = true;
         benchStates.SetState(BenchStates.State.Starter);
         manipulatorVCam.m_Priority++;
         manipulatorVCam.m_Priority++;
@@ -49,6 +51,7 @@ public class BenchManipulator : MonoBehaviour {
     }
 
     private void ManipulationApproved() {
+        activated = false;
         approving = false;
         benchStates.SetState(BenchStates.State.Stationar);
 
@@ -56,7 +59,15 @@ public class BenchManipulator : MonoBehaviour {
         manipulatorVCam.m_Priority--;
     }
 
-    public void UpdateControl() {
+    private void Update() {
+        if (activated) {
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+                if (objectSelector.Selected != null && objectSelector.Selected == benchStates.Starter) {
+                    ManipulationActivatorOnActivated();
+                }
+            }
+        }
+
         if (manipulating) {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 100, manipulationSurface)) {
                 raycastPosition = hit.point;

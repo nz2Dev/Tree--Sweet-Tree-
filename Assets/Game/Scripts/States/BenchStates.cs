@@ -15,14 +15,14 @@ public class BenchStates : MonoBehaviour {
     [SerializeField] private GameObject activationState;
     [SerializeField] private ActivationObject activator;
     [SerializeField] private GameObject starterState;
-    [SerializeField] private ActivationObject starter;
+    [SerializeField] private SelectableObject starter;
     [SerializeField] private GameObject manipulatableState;
     [SerializeField] private GameObject manipulatedBench;
     [SerializeField] private GameObject stationarState;
     [SerializeField] private State initState;
 
     public ActivationObject Activator => activator;
-    public ActivationObject Starter => starter;
+    public SelectableObject Starter => starter;
     public GameObject Manipulated => manipulatedBench;
 
     private void Start() {
