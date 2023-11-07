@@ -25,8 +25,66 @@ public struct DeltaTweenState {
     public float scale;
 }
 
+public struct SequenceState {
+    public bool active;
+    public float startTime;
+    public float startDelay;
+    public float duration;
+}
+
+public struct TransformCapture {
+    public Vector3 position;
+    public Quaternion rotation;
+    public Vector3 localScale;
+}
+
 public static class TweenUtils {
     
+    public static TransformCapture CaptureTransforms(Transform transform) {
+        return new TransformCapture {
+            position = transform.position,
+            rotation = transform.rotation,
+            localScale = transform.localScale,
+        };
+    }
+
+    public static void TweenAll(Transform target, TransformCapture start, Transform end, float t) {
+        target.position = Vector3.Lerp(start.position, end.position, t);
+        target.rotation = Quaternion.Lerp(start.rotation, end.rotation, t);
+        target.localScale = Vector3.Lerp(start.localScale, end.localScale, t);
+    }
+
+    public static SequenceState StartSequence(float duration, float startDelay = 0.0f) {
+        return new SequenceState {
+            active = true,
+            startTime = Time.time,
+            startDelay = startDelay,
+            duration = duration
+        };
+    }
+
+    public static bool TryUpdateSequence(SequenceState sequence, out float progress) {
+        progress = -1;
+        var delayEndTime = sequence.startTime + sequence.startDelay;
+        if (Time.time > delayEndTime) {
+            var sequenceStartTime = delayEndTime;
+            var sequenceEndTime = delayEndTime + sequence.duration; 
+            if (Time.time < sequenceEndTime) {
+                progress = (Time.time - sequenceStartTime) / sequence.duration;
+                return true;
+            }
+        }
+        return false;
+    } 
+
+    public static bool TryFinishSequence(ref SequenceState sequence) {
+        if (sequence.active && Time.time > sequence.startTime + sequence.startDelay + sequence.duration) {
+            sequence.active = false;
+            return true;
+        }
+        return false;
+    }
+
     public static TweenState StartTween(Transform target, Transform destination, float duration, AnimationCurve curve = null) {
         return new TweenState {
             active = true,
