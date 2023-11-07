@@ -68,7 +68,12 @@ public class Player : MonoBehaviour {
         }
         if (TweenUtils.TryFinishSequence(ref grabSequenceState)) {
             grabedObject.transform.SetParent(grabEnd, true);
+            OnGrabingFinished();
         }
+    }
+
+    private void OnGrabingFinished() {
+        grabedObject.OnGrabbed();
     }
 
     private PickUpable activePickUpable;
