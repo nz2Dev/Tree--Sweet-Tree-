@@ -56,6 +56,8 @@ public class Player : MonoBehaviour {
     private TransformCapture grabbingStartTransformCapture;
     private Transform grabbingDestination;
 
+    public TransportableObject GrabbedObject => grabbingSequenceState.active ? null : grabbingObject;
+
     public void ActivateGrab(TransportableObject transportable) {
         grabbingSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
         grabbingStartTransformCapture = TweenUtils.CaptureTransforms(transportable.transform);
@@ -90,7 +92,7 @@ public class Player : MonoBehaviour {
 
         var layingOutParent = layingOutObject.transform.parent;
         layingOutObject.transform.SetParent(null, true);
-        Destroy(layingOutParent);
+        Destroy(layingOutParent.gameObject);
     }
 
     private void UpdateLayingOut() {
