@@ -50,30 +50,30 @@ public class Player : MonoBehaviour {
         notifications.SendNotification(suggestion);
     }
 
-    private TransportableObject grabedObject;
-    private SequenceState grabSequenceState;
-    private TransformCapture grabedObjectCapture;
-    private Transform grabEnd;
+    private TransportableObject grabbingObject;
+    private SequenceState grabbingSequenceState;
+    private TransformCapture grabbingStartTransformCapture;
+    private Transform grabbingDestination;
 
     public void ActivateGrab(TransportableObject transportable) {
-        grabSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
-        grabedObjectCapture = TweenUtils.CaptureTransforms(transportable.transform);
-        grabEnd = Instantiate(transportable.Offsets, transform, false);
-        grabedObject = transportable;
+        grabbingSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
+        grabbingStartTransformCapture = TweenUtils.CaptureTransforms(transportable.transform);
+        grabbingDestination = Instantiate(transportable.Offsets, transform, false);
+        grabbingObject = transportable;
     }
 
     private void UpdateGrabing() {
-        if (TweenUtils.TryUpdateSequence(grabSequenceState, out var progress)) {
-            TweenUtils.TweenAll(grabedObject.transform, grabedObjectCapture, grabEnd, progress);
+        if (TweenUtils.TryUpdateSequence(grabbingSequenceState, out var progress)) {
+            TweenUtils.TweenAll(grabbingObject.transform, grabbingStartTransformCapture, grabbingDestination, progress);
         }
-        if (TweenUtils.TryFinishSequence(ref grabSequenceState)) {
-            grabedObject.transform.SetParent(grabEnd, true);
+        if (TweenUtils.TryFinishSequence(ref grabbingSequenceState)) {
+            grabbingObject.transform.SetParent(grabbingDestination, true);
             OnGrabingFinished();
         }
     }
 
     private void OnGrabingFinished() {
-        grabedObject.OnGrabbed();
+        grabbingObject.OnGrabbed();
     }
 
     private PickUpable activePickUpable;
