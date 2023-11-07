@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class GrabActivator : MonoBehaviour {
     
-    private TransportableObject transportableObject;
-
-    private void Awake() {
-        transportableObject = GetComponent<TransportableObject>();
-    }
+    [SerializeField] private TransportableObject transportableObject;
 
     public void Trigger(Player player) {
         player.ActivateGrab(transportableObject);
