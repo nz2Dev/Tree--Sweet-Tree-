@@ -18,11 +18,9 @@ public class Player : MonoBehaviour {
     private Inventory inventory;
 
     private JumpPlatform platformUnder;
-
     private static Player latestInstance;
 
     public static Player LatestInstance => latestInstance;
-
     public JumpPlatform PlatformUnder => platformUnder;
 
     private void Awake() {
@@ -43,12 +41,34 @@ public class Player : MonoBehaviour {
 
     private void Update() {
         UpdatePickUp();
+        UpdateGrabing();
         UpdateNavigation();
         UpdateJump();
     }
 
     public void ReceiveNotification(Suggestion suggestion) {
         notifications.SendNotification(suggestion);
+    }
+
+    private TransportableObject grabedObject;
+    private SequenceState grabSequenceState;
+    private TransformCapture grabedObjectCapture;
+    private Transform grabEnd;
+
+    public void ActivateGrab(TransportableObject transportable) {
+        grabSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
+        grabedObjectCapture = TweenUtils.CaptureTransforms(transportable.transform);
+        grabEnd = Instantiate(transportable.Offsets, transform, false);
+        grabedObject = transportable;
+    }
+
+    private void UpdateGrabing() {
+        if (TweenUtils.TryUpdateSequence(grabSequenceState, out var progress)) {
+            TweenUtils.TweenAll(grabedObject.transform, grabedObjectCapture, grabEnd, progress);
+        }
+        if (TweenUtils.TryFinishSequence(ref grabSequenceState)) {
+            grabedObject.transform.SetParent(grabEnd, true);
+        }
     }
 
     private PickUpable activePickUpable;
