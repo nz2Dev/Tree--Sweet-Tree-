@@ -7,6 +7,7 @@ using UnityEngine;
 public class SelectionStateOutlineActivator : MonoBehaviour {
 
     [SerializeField] private SelectableObject selectable;
+    [SerializeField] private Outline definedOutline;
     [SerializeField] private Color selectionColor = Color.white;
     [SerializeField] private Color highlightColor = Color.red;
     [SerializeField] private AnimationCurve highlightWidthCurve;
@@ -22,7 +23,11 @@ public class SelectionStateOutlineActivator : MonoBehaviour {
     private bool highlighted;
 
     private void Awake() {
-        outline = GetComponent<Outline>();
+        if (definedOutline != null) {
+            outline = definedOutline;
+        } else {
+            outline = GetComponent<Outline>();
+        }
     }
 
     private void OnEnable() {
