@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SelectableObject : MonoBehaviour {
 
+    [SerializeField] private bool initIsDetectable = true;
+
     public event Action<bool> OnSelectionChanged;
     public event Action<bool> OnHighlightChanged;
 
@@ -22,6 +24,7 @@ public class SelectableObject : MonoBehaviour {
             Debug.LogError("no physic collider in SelectaleObject children");
         }
         nativeColliderLayer = collider.gameObject.layer;
+        SetIsDetectable(initIsDetectable);
     }
 
     public void OverrideCollidingLayer(int layer) {
@@ -32,6 +35,11 @@ public class SelectableObject : MonoBehaviour {
     public void ResetCollidingLayer() {
         var collider = GetComponentInChildren<Collider>();
         collider.gameObject.layer = nativeColliderLayer;
+    }
+
+    public void SetIsDetectable(bool detectable) {
+        var collider = GetComponentInChildren<Collider>();
+        collider.enabled = detectable;
     }
 
     public void OnSelected() {
