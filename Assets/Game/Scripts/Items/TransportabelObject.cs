@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,4 +15,7 @@ public class TransportableObject : MonoBehaviour {
         OnGrabbedEvent?.Invoke();
     }
 
+    public void OnLayedOut() {
+        throw new NotImplementedException();
+    }
 }

@@ -42,6 +42,7 @@ public class Player : MonoBehaviour {
     private void Update() {
         UpdatePickUp();
         UpdateGrabing();
+        UpdateLayingOut();
         UpdateNavigation();
         UpdateJump();
     }
@@ -74,6 +75,31 @@ public class Player : MonoBehaviour {
 
     private void OnGrabingFinished() {
         grabbingObject.OnGrabbed();
+    }
+
+    private TransportableObject layingOutObject;
+    private SequenceState layingOutSequenceState;
+    private TransformCapture layingOutStartTransformCapture;
+    private Transform layingOutDestination;
+
+    public void ActivateLayOut(Transform targetPlace) {
+        layingOutSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
+        layingOutStartTransformCapture = TweenUtils.CaptureTransforms(grabbingObject.transform);
+        layingOutDestination = targetPlace;
+        layingOutObject = grabbingObject;
+
+        var layingOutParent = layingOutObject.transform.parent;
+        layingOutObject.transform.SetParent(null, true);
+        Destroy(layingOutParent);
+    }
+
+    private void UpdateLayingOut() {
+        if (TweenUtils.TryUpdateSequence(layingOutSequenceState, out var progress)) {
+            TweenUtils.TweenAll(layingOutObject.transform, layingOutStartTransformCapture, layingOutDestination, progress);
+        }
+        if (TweenUtils.TryFinishSequence(ref layingOutSequenceState)) {
+            layingOutObject.OnLayedOut();
+        }
     }
 
     private PickUpable activePickUpable;
