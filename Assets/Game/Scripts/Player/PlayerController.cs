@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviour {
 
     private Player player;
 
+    private Queue<IPlayerActivity> activitiesQueue;
     private IPlayerActivity currentActivity;
-    private Action onActivityFinished;
 
     private bool raycastForNavigation;
     private Vector3 raycastPoint;
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Awake() {
         player = GetComponent<Player>();
+        activitiesQueue = new Queue<IPlayerActivity>();
     }
 
     private void Update() {
@@ -54,7 +55,9 @@ public class PlayerController : MonoBehaviour {
             } else if (raycastForJump) {
                 ExecuteActivity(new PlayerNavigateToJumpActivity(raycastedPlatform));
             } else if (raycastForClimbing) {
-                ExecuteActivity(new PlayerClimbMovePlatformActivity(raycastedClimbingNode.MovePlatform));
+                EnqueueActivity(new PlayerNavigateToJumpActivity(raycastedClimbingNode.HopPlatform));
+                EnqueueActivity(new PlayerClimbMovePlatformActivity(raycastedClimbingNode.MovePlatform));
+                EnqueueActivity(new PlayerNavigateToJumpActivity(raycastedClimbingNode.DropPlatform, force: true));
             }
         }
 
@@ -64,8 +67,12 @@ public class PlayerController : MonoBehaviour {
             if (currentActivity.IsFinished) {
                 currentActivity.Cancel(player);
                 currentActivity = null;
-                onActivityFinished?.Invoke();
-                onActivityFinished = null;
+            }
+        }
+
+        if (currentActivity == null) {
+            if (activitiesQueue.TryDequeue(out var nextActivity)) {
+                ExecuteActivity(nextActivity);
             }
         }
     }
@@ -107,15 +114,17 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void ExecuteActivity(IPlayerActivity activity, Action onFinishedCallback = null) {
+    private void ExecuteActivity(IPlayerActivity activity) {
         if (currentActivity != null) {
             currentActivity.Cancel(player);
         }
 
         currentActivity = activity;
         currentActivity.Begin(player);
+    }
 
-        onActivityFinished = onFinishedCallback;
+    private void EnqueueActivity(IPlayerActivity activity) {
+        activitiesQueue.Enqueue(activity);
     }
 
 }

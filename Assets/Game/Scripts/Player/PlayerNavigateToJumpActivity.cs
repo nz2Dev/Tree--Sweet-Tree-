@@ -3,26 +3,31 @@ using UnityEngine;
 public class PlayerNavigateToJumpActivity : IPlayerActivity {
 
     private JumpPlatform jumpPlatform;
+    private bool force;
 
     private bool startedJump;
 
-    public PlayerNavigateToJumpActivity(JumpPlatform jumpPlatform) {
+    public PlayerNavigateToJumpActivity(JumpPlatform jumpPlatform, bool force = false) {
         this.jumpPlatform = jumpPlatform;
+        this.force = force;
     }
 
     public bool IsFinished { get; private set; }
 
     public void Begin(Player player) {
-        player.ActivateNavigation(jumpPlatform.jumpStartPoint.position);
+        if (force) {
+            startedJump = true;
+            player.ActivateJump(jumpPlatform);
+        } else {
+            player.ActivateNavigation(jumpPlatform.jumpStartPoint.position);
+        }
     }
 
     public void Update(Player player) {
-        if (player.GetRemainingNavigationDistance() < 0.1f) {
+        if (!startedJump && player.GetRemainingNavigationDistance() < 0.1f) {
+            startedJump = true;
             player.StopNavigation();
-            if (!startedJump) {
-                startedJump = true;
-                player.ActivateJump(jumpPlatform);
-            }
+            player.ActivateJump(jumpPlatform);
         }
 
         IsFinished = startedJump && !player.IsInJump();
