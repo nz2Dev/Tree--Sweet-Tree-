@@ -44,6 +44,7 @@ public class Player : MonoBehaviour {
         UpdateGrabing();
         UpdateLayingOut();
         UpdateNavigation();
+        UpdateMovePlatform();
         UpdateJump();
     }
 
@@ -344,5 +345,38 @@ public class Player : MonoBehaviour {
 
     public bool IsInJump() {
         return jumpStarted;
+    }
+
+    private MovePlatform activeMovePlatform;
+
+    public void ActivateMovePlatform(MovePlatform movePlatform) {
+        activeMovePlatform = movePlatform;
+        navMeshAgent.updatePosition = false;
+        transform.position = movePlatform.Start.position;
+    }
+
+    private void UpdateMovePlatform() {
+        if (activeMovePlatform != null) {
+            var movementSpeed = navMeshAgent.speed * 0.5f;
+
+            var platformVector = activeMovePlatform.End.position - activeMovePlatform.Start.position;
+            var moveDelta = platformVector.normalized * movementSpeed * Time.deltaTime;;
+
+            var endVector = activeMovePlatform.End.position - transform.position;
+            var isApproachingEnd = endVector.magnitude > moveDelta.magnitude * 3f;
+
+            if (isApproachingEnd) {
+                transform.position += moveDelta;
+                character.SetIsWalking(true);
+                character.SetWalkMotionSpeed(movementSpeed);
+            } else {
+                character.SetIsWalking(false);
+                activeMovePlatform = null;
+            }
+
+            transform.rotation = Quaternion.Lerp(transform.rotation, 
+                        Quaternion.LookRotation(Vector3.ProjectOnPlane(platformVector, Vector3.up), Vector3.up), 
+                        Time.deltaTime * rotationSpeed);
+        }
     }
 }
