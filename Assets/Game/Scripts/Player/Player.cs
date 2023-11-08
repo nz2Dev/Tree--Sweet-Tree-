@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Playables;
@@ -378,5 +379,14 @@ public class Player : MonoBehaviour {
                         Quaternion.LookRotation(Vector3.ProjectOnPlane(platformVector, Vector3.up), Vector3.up), 
                         Time.deltaTime * rotationSpeed);
         }
+    }
+
+    public bool IsPlatforming() {
+        return activeMovePlatform != null;
+    }
+
+    public void CancelMovePlatform() {
+        activeMovePlatform = null;
+        character.SetIsWalking(false);
     }
 }
