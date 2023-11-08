@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -24,11 +25,14 @@ public class PlayerController : MonoBehaviour {
     private Player player;
 
     private IPlayerActivity currentActivity;
+    private Action onActivityFinished;
 
     private bool raycastForNavigation;
     private Vector3 raycastPoint;
     private bool raycastForJump;
     private JumpPlatform raycastedPlatform;
+    private bool raycastForClimbing;
+    private ClimbingNode raycastedClimbingNode;
 
     private void Awake() {
         player = GetComponent<Player>();
@@ -49,6 +53,8 @@ public class PlayerController : MonoBehaviour {
                 ExecuteActivity(new PlayerNavigateToPointActivity(raycastPoint));
             } else if (raycastForJump) {
                 ExecuteActivity(new PlayerNavigateToJumpActivity(raycastedPlatform));
+            } else if (raycastForClimbing) {
+                ExecuteActivity(new PlayerClimbMovePlatformActivity(raycastedClimbingNode.MovePlatform));
             }
         }
 
@@ -58,6 +64,8 @@ public class PlayerController : MonoBehaviour {
             if (currentActivity.IsFinished) {
                 currentActivity.Cancel(player);
                 currentActivity = null;
+                onActivityFinished?.Invoke();
+                onActivityFinished = null;
             }
         }
     }
@@ -65,12 +73,16 @@ public class PlayerController : MonoBehaviour {
     private void RaycastNavigationPoint() {
         raycastForNavigation = false;
         raycastForJump = false;
+        raycastForClimbing = false;
         
         var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(mouseRay, out var hit, 100f, navigationMap)) {
             if (hit.collider.TryGetComponent<JumpPlatform>(out var jumpPlatform)) {
                 raycastedPlatform = jumpPlatform;
                 raycastForJump = true;
+            } else if (hit.collider.TryGetComponent<ClimbingNode>(out var climbingNode)) {
+                raycastedClimbingNode = climbingNode;
+                raycastForClimbing = true; 
             } else if (NavMesh.SamplePosition(hit.point, out var navMeshHit, 0.5f, NavMesh.AllAreas)) {    
                 raycastPoint = hit.point;
                 raycastForNavigation = true;
@@ -90,18 +102,20 @@ public class PlayerController : MonoBehaviour {
                 || pickUpActivity.TargetPickUpable.gameObject != selector.Selected.gameObject) {
                 Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.ForceSoftware);                
             }
-        } else if (raycastForNavigation || raycastForJump) {
+        } else if (raycastForNavigation || raycastForJump || raycastForClimbing) {
             Cursor.SetCursor(navigationCursor, cursorHotSpot, CursorMode.ForceSoftware);
         }
     }
 
-    private void ExecuteActivity(IPlayerActivity activity) {
+    private void ExecuteActivity(IPlayerActivity activity, Action onFinishedCallback = null) {
         if (currentActivity != null) {
             currentActivity.Cancel(player);
         }
 
         currentActivity = activity;
         currentActivity.Begin(player);
+
+        onActivityFinished = onFinishedCallback;
     }
 
 }
