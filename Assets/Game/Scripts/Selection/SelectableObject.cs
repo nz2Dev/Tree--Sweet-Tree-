@@ -9,7 +9,6 @@ public class SelectableObject : MonoBehaviour {
 
     public event Action<bool> OnSelectionChanged;
     public event Action<bool> OnHighlightChanged;
-    public event Action OnClicked;
 
     private bool isSelected;
     private bool isHighlighted;
@@ -41,10 +40,6 @@ public class SelectableObject : MonoBehaviour {
     public void SetIsDetectable(bool detectable) {
         var collider = GetComponentInChildren<Collider>();
         collider.enabled = detectable;
-    }
-
-    public void Click() {
-        OnClicked?.Invoke();
     }
 
     public void OnSelected() {
