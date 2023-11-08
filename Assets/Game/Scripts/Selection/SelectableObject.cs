@@ -11,6 +11,8 @@ public class SelectableObject : MonoBehaviour {
     public event Action<bool> OnHighlightChanged;
     public event Action OnClicked;
 
+    public static event Action<SelectableObject> OnAnyClicked;
+
     private bool isSelected;
     private bool isHighlighted;
 
@@ -44,6 +46,7 @@ public class SelectableObject : MonoBehaviour {
     }
 
     public void Click() {
+        OnAnyClicked?.Invoke(this);
         OnClicked?.Invoke();
     }
 
