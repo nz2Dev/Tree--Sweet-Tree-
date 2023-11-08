@@ -23,6 +23,11 @@ public class BeamManipulationController : MonoBehaviour {
         vcam.m_Priority += 2;
     }
 
+    public void OnDeactivated() {
+        activated = false;
+        vcam.m_Priority -= 2;
+    }
+
     private void Update() {
         HandleInput();
     }
@@ -37,14 +42,14 @@ public class BeamManipulationController : MonoBehaviour {
 
     private void HandleClick() {
         if (!choosing) {
-            if (objectSelector.Selected != null && objectSelector.Selected.gameObject == Player.LatestInstance.GrabbedObject.gameObject) {
-                Player.LatestInstance.GrabbedObject.GetComponent<SelectableObject>().Highlight();
+            if (objectSelector.Selected != null && objectSelector.Selected.transform.parent.gameObject == Player.LatestInstance.GrabbedObject.gameObject) {
+                Player.LatestInstance.GrabbedObject.GetComponentInChildren<SelectableObject>().Highlight();
                 destinationTrigger.gameObject.SetActive(true);
                 choosing = true;
             }
         } else {
             if (objectSelector.Selected != null && objectSelector.Selected == destinationTrigger) {
-                Player.LatestInstance.GrabbedObject.GetComponent<SelectableObject>().StopHighlighting();
+                Player.LatestInstance.GrabbedObject.GetComponentInChildren<SelectableObject>().StopHighlighting();
                 Player.LatestInstance.ActivateLayOut(destinationTrigger.transform);
                 destinationTrigger.gameObject.SetActive(false);
                 choosing = false;

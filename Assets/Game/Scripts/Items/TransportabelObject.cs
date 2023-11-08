@@ -8,6 +8,7 @@ public class TransportableObject : MonoBehaviour {
     
     [SerializeField] private Transform hostOffset;
     [SerializeField] private UnityEvent OnGrabbedEvent;
+    [SerializeField] private UnityEvent OnLayedOutEvent;
 
     public Transform Offsets => hostOffset;
 
@@ -16,6 +17,6 @@ public class TransportableObject : MonoBehaviour {
     }
 
     public void OnLayedOut() {
-        throw new NotImplementedException();
+        OnLayedOutEvent?.Invoke();
     }
 }
