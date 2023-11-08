@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private float pickingUpDuration = 0.4f;
     [SerializeField] private float jumpMaxHight = 1f;
     [SerializeField] private float jumpDuration = 1f;
+    [SerializeField] private float jumpStartDelay = 0.25f;
     [SerializeField] private AnimationCurve jumpCurve;
     [SerializeField] private float rotationSpeed = 5;
 
@@ -291,61 +292,43 @@ public class Player : MonoBehaviour {
         navMeshAgent.ExtResetDestination();
     }
 
-    private bool jumpStarted;
-    private bool jumpFailStarted;
-    private float jumpStartTime;
     private Vector3 jumpStartPosition;
     private Vector3 jumpEndPosition;
+    private SequenceState jumpSequenceState;
 
     public void ActivateJump(JumpPlatform target) {
         if (target != null && target.IsActive) {
-            jumpStarted = true;
-            jumpStartTime = Time.time;
+            jumpSequenceState = TweenUtils.StartSequence(jumpDuration, jumpStartDelay);
             jumpStartPosition = transform.position;
             jumpEndPosition = target.jumpEndPoint.position;
             character.PlayJump();
             navMeshAgent.updatePosition = false;
             platformUnder = target;
         } else {
-            jumpFailStarted = true;
-            jumpStartTime = Time.time;
             character.PlayJump();
         }
     }
 
     private void UpdateJump() {
-        if (jumpFailStarted) {
-            var jumpEndTime = jumpStartTime + jumpDuration;
-            if (Time.time > jumpEndTime) {
-                jumpFailStarted = false;
-            }
+        if (TweenUtils.TryUpdateSequence(jumpSequenceState, out var jumpProgress)) {
+            var jumpStart = jumpStartPosition;
+            var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight * Vector3.up;
+            var jumpDistanceVector = jumpEndPosition - jumpStart;
+            var jumpWidthDelta = jumpDistanceVector * jumpProgress;
+
+            var desiredPosition = jumpStart + jumpHightDelta + jumpWidthDelta;
+            transform.position = desiredPosition;
+            transform.rotation = Quaternion.Lerp(transform.rotation, 
+                    Quaternion.LookRotation(Vector3.ProjectOnPlane(jumpDistanceVector, Vector3.up), Vector3.up), 
+                    Time.deltaTime * rotationSpeed);
         }
-
-        if (jumpStarted) {
-            var jumpEndTime = jumpStartTime + jumpDuration;
-            if (Time.time < jumpEndTime) {
-                var jumpTime = Time.time - jumpStartTime;
-                var jumpProgress = jumpTime / jumpDuration;
-
-                var jumpStart = jumpStartPosition;
-                var jumpHightDelta = jumpCurve.Evaluate(jumpProgress) * jumpMaxHight * Vector3.up;
-                var jumpDistanceVector = jumpEndPosition - jumpStart;
-                var jumpWidthDelta = jumpDistanceVector * jumpProgress;
-
-                var desiredPosition = jumpStart + jumpHightDelta + jumpWidthDelta;
-                transform.position = desiredPosition;
-                transform.rotation = Quaternion.Lerp(transform.rotation, 
-                        Quaternion.LookRotation(Vector3.ProjectOnPlane(jumpDistanceVector, Vector3.up), Vector3.up), 
-                        Time.deltaTime * rotationSpeed);
-            } else {
-                platformUnder.SetPlayerOnTop(true);
-                jumpStarted = false;
-            }
+        if (TweenUtils.TryFinishSequence(ref jumpSequenceState)) {
+            platformUnder.SetPlayerOnTop(true);
         }
     }
 
     public bool IsInJump() {
-        return jumpStarted;
+        return jumpSequenceState.active;
     }
 
     private MovePlatform activeMovePlatform;
