@@ -21,6 +21,8 @@ public class TransportableObject : MonoBehaviour {
     public CinemachineVirtualCamera OverviewCam => vcam;
     public SelectableObject[] DestinationTriggers => destinationTriggerers;
 
+    public event Action<GameObject> OnLayedOutAt;
+
     private void Awake() {
         foreach (SelectableObject trigger in destinationTriggerers) {
             trigger.gameObject.SetActive(false);
@@ -42,5 +44,6 @@ public class TransportableObject : MonoBehaviour {
         OnLayedOutEvent?.Invoke();
         destination.GetComponentInChildren<JumpPlatform>().SetActive(true);
         layOutPlace = destination;
+        OnLayedOutAt?.Invoke(destination);
     }
 }

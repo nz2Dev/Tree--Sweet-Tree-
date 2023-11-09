@@ -54,6 +54,10 @@ public static class TweenUtils {
         target.localScale = Vector3.Lerp(start.localScale, end.localScale, t);
     }
 
+    public static void TweenDeltaDirection(Transform target, Vector3 position, Vector3 direction, float deltaScale, float t) {
+        target.position = position + direction * (t * deltaScale);
+    }
+
     public static SequenceState StartSequence(float duration, float startDelay = 0.0f) {
         return new SequenceState {
             active = true,
