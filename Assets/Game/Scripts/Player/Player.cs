@@ -59,7 +59,8 @@ public class Player : MonoBehaviour {
     private TransformCapture grabbingStartTransformCapture;
     private Transform grabbingDestination;
 
-    public TransportableObject GrabbedObject => grabbingSequenceState.active ? null : grabbingObject;
+    private TransportableObject grabbedObject;
+    public TransportableObject GrabbedObject => grabbedObject;
 
     public void ActivateGrab(TransportableObject transportable) {
         grabbingSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
@@ -74,12 +75,9 @@ public class Player : MonoBehaviour {
         }
         if (TweenUtils.TryFinishSequence(ref grabbingSequenceState)) {
             grabbingObject.transform.SetParent(grabbingDestination, true);
-            OnGrabingFinished();
+            grabbingObject.OnGrabbed();
+            grabbedObject = grabbingObject;
         }
-    }
-
-    private void OnGrabingFinished() {
-        grabbingObject.OnGrabbed();
     }
 
     private TransportableObject layingOutObject;
@@ -104,6 +102,7 @@ public class Player : MonoBehaviour {
         }
         if (TweenUtils.TryFinishSequence(ref layingOutSequenceState)) {
             layingOutObject.OnLayedOut();
+            grabbedObject = null;
         }
     }
 
