@@ -5,6 +5,7 @@ using System.Linq;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class TransportableObject : MonoBehaviour {
     
@@ -19,7 +20,16 @@ public class TransportableObject : MonoBehaviour {
     public Transform Offsets => hostOffset;
     public CinemachineVirtualCamera OverviewCam => vcam;
     public SelectableObject[] DestinationTriggers => destinationTriggerers;
-    public bool IsDestinationTrigger(SelectableObject destination) => destinationTriggerers.Contains(destination);
+
+    private void Awake() {
+        foreach (SelectableObject trigger in destinationTriggerers) {
+            trigger.gameObject.SetActive(false);
+        }
+    }
+
+    public bool IsDestinationTrigger(SelectableObject destination) {
+        return destinationTriggerers.Contains(destination);
+    }
 
     public void Grabed() {
         OnGrabbedEvent?.Invoke();
