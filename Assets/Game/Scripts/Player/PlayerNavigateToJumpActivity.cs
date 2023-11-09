@@ -3,19 +3,17 @@ using UnityEngine;
 public class PlayerNavigateToJumpActivity : IPlayerActivity {
 
     private JumpPlatform jumpPlatform;
-    private bool force;
 
     private bool startedJump;
 
-    public PlayerNavigateToJumpActivity(JumpPlatform jumpPlatform, bool force = false) {
+    public PlayerNavigateToJumpActivity(JumpPlatform jumpPlatform) {
         this.jumpPlatform = jumpPlatform;
-        this.force = force;
     }
 
     public bool IsFinished { get; private set; }
 
     public void Begin(Player player) {
-        if (force) {
+        if (Vector3.Distance(jumpPlatform.jumpStartPoint.position, player.transform.position) < 0.4f) {
             startedJump = true;
             player.ActivateJump(jumpPlatform);
         } else {
