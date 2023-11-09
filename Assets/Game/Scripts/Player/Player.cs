@@ -75,7 +75,7 @@ public class Player : MonoBehaviour {
         }
         if (TweenUtils.TryFinishSequence(ref grabbingSequenceState)) {
             grabbingObject.transform.SetParent(grabbingDestination, true);
-            grabbingObject.OnGrabbed();
+            grabbingObject.Grabed();
             grabbedObject = grabbingObject;
         }
     }
@@ -83,12 +83,12 @@ public class Player : MonoBehaviour {
     private TransportableObject layingOutObject;
     private SequenceState layingOutSequenceState;
     private TransformCapture layingOutStartTransformCapture;
-    private Transform layingOutDestination;
+    private GameObject layingOutDestination;
 
-    public void ActivateLayOut(Transform targetPlace) {
+    public void ActivateLayOut(GameObject layOutDestination) {
         layingOutSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
         layingOutStartTransformCapture = TweenUtils.CaptureTransforms(grabbingObject.transform);
-        layingOutDestination = targetPlace;
+        layingOutDestination = layOutDestination;
         layingOutObject = grabbingObject;
 
         var layingOutParent = layingOutObject.transform.parent;
@@ -98,10 +98,10 @@ public class Player : MonoBehaviour {
 
     private void UpdateLayingOut() {
         if (TweenUtils.TryUpdateSequence(layingOutSequenceState, out var progress)) {
-            TweenUtils.TweenAll(layingOutObject.transform, layingOutStartTransformCapture, layingOutDestination, progress);
+            TweenUtils.TweenAll(layingOutObject.transform, layingOutStartTransformCapture, layingOutDestination.transform, progress);
         }
         if (TweenUtils.TryFinishSequence(ref layingOutSequenceState)) {
-            layingOutObject.OnLayedOut();
+            layingOutObject.LayOut(layingOutDestination);
             grabbedObject = null;
         }
     }

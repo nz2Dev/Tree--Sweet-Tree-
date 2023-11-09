@@ -51,14 +51,18 @@ public class PlayerTransportableObjectController {
         if (!choosing) {
             if (objectSelector.Selected != null && objectSelector.Selected.transform.parent.gameObject == transportable.gameObject) {
                 transportable.GetComponentInChildren<SelectableObject>().Highlight();
-                transportable.DestinationTrigger.gameObject.SetActive(true);
+                foreach (SelectableObject trigger in transportable.DestinationTriggers) {
+                    trigger.gameObject.SetActive(true);
+                }
                 choosing = true;
             }
         } else {
-            if (objectSelector.Selected != null && objectSelector.Selected == transportable.DestinationTrigger) {
+            if (objectSelector.Selected != null && transportable.IsDestinationTrigger(objectSelector.Selected)) {
                 transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
-                transportable.DestinationTrigger.gameObject.SetActive(false);
-                player.ActivateLayOut(transportable.DestinationTrigger.transform);
+                foreach (SelectableObject trigger in transportable.DestinationTriggers) {
+                    trigger.gameObject.SetActive(false);
+                }
+                player.ActivateLayOut(objectSelector.Selected.gameObject);
                 choosing = false;
             }
         }
