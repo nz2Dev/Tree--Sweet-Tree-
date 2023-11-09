@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrabActivator : MonoBehaviour {
+public class TransportableGrabber : MonoBehaviour {
     
     [SerializeField] private TransportableObject transportableObject;
 
