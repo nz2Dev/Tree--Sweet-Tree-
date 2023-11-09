@@ -23,7 +23,12 @@ public class PlayerActivateObjectActivity : IPlayerActivity {
                 IsFinished = true;
             }
         } else {
-            player.ActivateNavigation(activationObject.ActivationPoint.position);
+            if (Vector3.Distance(player.transform.position, activationObject.ActivationPoint.position) > activationObject.ActivationRadius) {
+                player.ActivateNavigation(activationObject.ActivationPoint.position);
+            } else {
+                activationObject.Activate(player);
+                IsFinished = true;
+            }
         }
 
         if (activationObject.TryGetComponent<SelectableObject>(out var selectable)) {
