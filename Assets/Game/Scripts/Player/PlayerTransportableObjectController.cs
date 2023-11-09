@@ -5,7 +5,7 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BeamManipulationController {
+public class PlayerTransportableObjectController {
     
     private ObjectSelector objectSelector;
 
@@ -18,7 +18,7 @@ public class BeamManipulationController {
 
     public bool IsActivated => activated;
 
-    public BeamManipulationController(ObjectSelector objectSelector) {
+    public PlayerTransportableObjectController(ObjectSelector objectSelector) {
         this.objectSelector = objectSelector;
     }
 

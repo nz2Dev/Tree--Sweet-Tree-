@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 
     private Queue<IPlayerActivity> activitiesQueue;
     private IPlayerActivity currentActivity;
-    private BeamManipulationController transportationObjectController;
+    private PlayerTransportableObjectController transportationObjectController;
 
     private bool raycastForNavigation;
     private Vector3 raycastPoint;
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         player = GetComponent<Player>();
         activitiesQueue = new Queue<IPlayerActivity>();
-        transportationObjectController = new BeamManipulationController(selector);
+        transportationObjectController = new PlayerTransportableObjectController(selector);
     }
 
     private void Update() {
