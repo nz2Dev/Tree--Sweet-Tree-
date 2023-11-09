@@ -5,31 +5,38 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BeamManipulationController : MonoBehaviour {
+public class BeamManipulationController {
     
-    [SerializeField] private CinemachineVirtualCamera vcam;
-    [SerializeField] private ObjectSelector objectSelector;
-    [SerializeField] private SelectableObject destinationTrigger;
+    private ObjectSelector objectSelector;
+
+    private Player player;
+    private TransportableObject transportable;
+    private CinemachineVirtualCamera vcam;
 
     private bool activated;
     private bool choosing;
 
-    private void Awake() {
-        vcam.m_Priority = 9;
+    public bool IsActivated => activated;
+
+    public BeamManipulationController(ObjectSelector objectSelector) {
+        this.objectSelector = objectSelector;
     }
 
-    public void OnActivated() {
-        activated = true;
+    public void OnActivated(Player player, CinemachineVirtualCamera vcam) {
+        this.activated = true;
+        this.transportable = player.GrabbedObject;
+        this.player = player;
+        this.vcam = vcam;
         vcam.m_Priority += 2;
+    }
+
+    public void OnUpdate() {
+        HandleInput();
     }
 
     public void OnDeactivated() {
         activated = false;
         vcam.m_Priority -= 2;
-    }
-
-    private void Update() {
-        HandleInput();
     }
 
     private void HandleInput() {
@@ -42,16 +49,16 @@ public class BeamManipulationController : MonoBehaviour {
 
     private void HandleClick() {
         if (!choosing) {
-            if (objectSelector.Selected != null && objectSelector.Selected.transform.parent.gameObject == Player.LatestInstance.GrabbedObject.gameObject) {
-                Player.LatestInstance.GrabbedObject.GetComponentInChildren<SelectableObject>().Highlight();
-                destinationTrigger.gameObject.SetActive(true);
+            if (objectSelector.Selected != null && objectSelector.Selected.transform.parent.gameObject == transportable.gameObject) {
+                transportable.GetComponentInChildren<SelectableObject>().Highlight();
+                transportable.DestinationTrigger.gameObject.SetActive(true);
                 choosing = true;
             }
         } else {
-            if (objectSelector.Selected != null && objectSelector.Selected == destinationTrigger) {
-                Player.LatestInstance.GrabbedObject.GetComponentInChildren<SelectableObject>().StopHighlighting();
-                Player.LatestInstance.ActivateLayOut(destinationTrigger.transform);
-                destinationTrigger.gameObject.SetActive(false);
+            if (objectSelector.Selected != null && objectSelector.Selected == transportable.DestinationTrigger) {
+                transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
+                transportable.DestinationTrigger.gameObject.SetActive(false);
+                player.ActivateLayOut(transportable.DestinationTrigger.transform);
                 choosing = false;
             }
         }

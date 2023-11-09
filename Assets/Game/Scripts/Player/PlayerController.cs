@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 
     private Queue<IPlayerActivity> activitiesQueue;
     private IPlayerActivity currentActivity;
+    private BeamManipulationController transportationObjectController;
 
     private bool raycastForNavigation;
     private Vector3 raycastPoint;
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         player = GetComponent<Player>();
         activitiesQueue = new Queue<IPlayerActivity>();
+        transportationObjectController = new BeamManipulationController(selector);
     }
 
     private void Update() {
@@ -68,6 +70,16 @@ public class PlayerController : MonoBehaviour {
                 currentActivity.Cancel(player);
                 currentActivity = null;
             }
+        }
+
+        if (player.GrabbedObject != null && !transportationObjectController.IsActivated) { 
+            transportationObjectController.OnActivated(player, player.GrabbedObject.OverviewCam);
+        }
+        if (player.GrabbedObject == null && transportationObjectController.IsActivated) {
+            transportationObjectController.OnDeactivated();
+        }
+        if (transportationObjectController.IsActivated) {
+            transportationObjectController.OnUpdate();
         }
 
         if (currentActivity == null) {
