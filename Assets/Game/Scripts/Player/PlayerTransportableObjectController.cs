@@ -44,6 +44,13 @@ public class PlayerTransportableObjectController {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 HandleClick();
             }
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
+                foreach (SelectableObject trigger in transportable.DestinationTriggers) {
+                    trigger.gameObject.SetActive(false);
+                }
+                choosing = false;
+            }
         }
     }
 
