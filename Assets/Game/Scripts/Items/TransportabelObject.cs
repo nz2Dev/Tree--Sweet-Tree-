@@ -35,14 +35,16 @@ public class TransportableObject : MonoBehaviour {
 
     public void Grabed() {
         OnGrabbedEvent?.Invoke();
-        if (layOutPlace != null) {
-            layOutPlace.GetComponentInChildren<JumpPlatform>().SetActive(false);
+        if (layOutPlace != null && layOutPlace.TryGetComponent<TransportableObjectDestination>(out var dstCompnent)) {
+            dstCompnent.SetContainObject(false);
         }
     }
 
     public void LayOut(GameObject destination) {
         OnLayedOutEvent?.Invoke();
-        destination.GetComponentInChildren<JumpPlatform>().SetActive(true);
+        if (destination.TryGetComponent<TransportableObjectDestination>(out var dstCompnent)) {
+            dstCompnent.SetContainObject(true);
+        }
         layOutPlace = destination;
         OnLayedOutAt?.Invoke(destination);
     }
