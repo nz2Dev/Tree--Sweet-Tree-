@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_Walls
     second: {fileID: 2100000, guid: 752fbc321d4c09844be0418fdf382711, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Walls1
+    second: {fileID: 2100000, guid: 752fbc321d4c09844be0418fdf382711, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
