@@ -63,6 +63,11 @@ public class Player : MonoBehaviour {
     public TransportableObject GrabbedObject => grabbedObject;
 
     public void ActivateGrab(TransportableObject transportable) {
+        if (grabbedObject != null) {
+            character.PlayJump();
+            return;
+        }
+
         grabbingSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
         grabbingStartTransformCapture = TweenUtils.CaptureTransforms(transportable.transform);
         grabbingDestination = Instantiate(transportable.Offsets, transform, false);
