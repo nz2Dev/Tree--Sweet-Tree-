@@ -23,7 +23,7 @@ public class TransportableObject : MonoBehaviour {
 
     public event Action<GameObject> OnLayedOutAt;
 
-    private void Awake() {
+    private void Start() {
         foreach (var destination in destinations) {
             destination.gameObject.SetActive(false);
         }
