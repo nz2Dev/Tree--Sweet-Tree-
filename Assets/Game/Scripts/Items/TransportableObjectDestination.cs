@@ -6,26 +6,31 @@ using UnityEngine.Events;
 
 public class TransportableObjectDestination : MonoBehaviour {
 
-    [SerializeField] private bool initIsExcluded;
-    [SerializeField] private UnityEvent<bool> OnContainObjectIsChangedEvent;
+    [SerializeField] private bool initIsIncluded = true;
+    [SerializeField] private UnityEvent OnObjectPlaced;
+    [SerializeField] private UnityEvent OnObjectRemoved;
 
-    private bool exludedFromActivation;
+    private bool includeInActivation;
 
     public event Action<bool> OnContainObjectIsChanged;
 
-    public bool IsExcludedFromActivation => exludedFromActivation;
+    public bool IsExcludedFromActivation => !includeInActivation;
 
     private void Awake() {
-        SetIsExcluded(initIsExcluded);
+        SetIsIncluded(initIsIncluded);
     }
 
     public void SetContainObject(bool containObject) {
         OnContainObjectIsChanged?.Invoke(containObject);
-        OnContainObjectIsChangedEvent?.Invoke(containObject);
+        if (containObject) {
+            OnObjectPlaced?.Invoke();
+        } else {
+            OnObjectRemoved?.Invoke();
+        }
     }
 
-    public void SetIsExcluded(bool excluded) {
-        exludedFromActivation = excluded;
+    public void SetIsIncluded(bool included) {
+        includeInActivation = included;
     }
 
 }

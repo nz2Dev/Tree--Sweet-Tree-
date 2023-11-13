@@ -12,6 +12,7 @@ public class TransportableObject : MonoBehaviour {
     [SerializeField] private Transform hostOffset;
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private TransportableObjectDestination[] destinations;
+    [SerializeField] private int initDestinationIndex;
     [SerializeField] private UnityEvent OnGrabbedEvent;
     [SerializeField] private UnityEvent OnLayedOutEvent;
 
@@ -25,6 +26,9 @@ public class TransportableObject : MonoBehaviour {
     private void Awake() {
         foreach (var destination in destinations) {
             destination.gameObject.SetActive(false);
+        }
+        if (destinations.Length > 0) {
+            destinations[initDestinationIndex].SetContainObject(true);
         }
     }
 
