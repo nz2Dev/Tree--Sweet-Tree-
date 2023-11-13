@@ -46,9 +46,7 @@ public class PlayerTransportableObjectController {
             }
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
-                foreach (SelectableObject trigger in transportable.DestinationTriggers) {
-                    trigger.gameObject.SetActive(false);
-                }
+                transportable.SetDestinationsActive(false);
                 choosing = false;
             }
         }
@@ -58,17 +56,13 @@ public class PlayerTransportableObjectController {
         if (!choosing) {
             if (objectSelector.Selected != null && objectSelector.Selected.transform.parent.gameObject == transportable.gameObject) {
                 transportable.GetComponentInChildren<SelectableObject>().Highlight();
-                foreach (SelectableObject trigger in transportable.DestinationTriggers) {
-                    trigger.gameObject.SetActive(true);
-                }
+                transportable.SetDestinationsActive(true);
                 choosing = true;
             }
         } else {
             if (objectSelector.Selected != null && transportable.IsDestinationTrigger(objectSelector.Selected)) {
                 transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
-                foreach (SelectableObject trigger in transportable.DestinationTriggers) {
-                    trigger.gameObject.SetActive(false);
-                }
+                transportable.SetDestinationsActive(false);
                 player.ActivateLayOut(objectSelector.Selected.gameObject);
                 choosing = false;
             }

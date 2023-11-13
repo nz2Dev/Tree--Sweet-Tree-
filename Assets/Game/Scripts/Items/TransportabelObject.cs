@@ -11,7 +11,7 @@ public class TransportableObject : MonoBehaviour {
     
     [SerializeField] private Transform hostOffset;
     [SerializeField] private CinemachineVirtualCamera vcam;
-    [SerializeField] private SelectableObject[] destinationTriggerers;
+    [SerializeField] private TransportableObjectDestination[] destinations;
     [SerializeField] private UnityEvent OnGrabbedEvent;
     [SerializeField] private UnityEvent OnLayedOutEvent;
 
@@ -19,18 +19,29 @@ public class TransportableObject : MonoBehaviour {
 
     public Transform Offsets => hostOffset;
     public CinemachineVirtualCamera OverviewCam => vcam;
-    public SelectableObject[] DestinationTriggers => destinationTriggerers;
 
     public event Action<GameObject> OnLayedOutAt;
 
     private void Awake() {
-        foreach (SelectableObject trigger in destinationTriggerers) {
-            trigger.gameObject.SetActive(false);
+        foreach (var destination in destinations) {
+            destination.gameObject.SetActive(false);
         }
     }
 
-    public bool IsDestinationTrigger(SelectableObject destination) {
-        return destinationTriggerers.Contains(destination);
+    public bool IsDestinationTrigger(SelectableObject selectable) {
+        foreach (var destination in destinations) {
+            // todo add selectable object reference in destination component
+            if (destination.GetComponent<SelectableObject>() == selectable) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void SetDestinationsActive(bool activeState) {
+        foreach (var destination in destinations) {
+            destination.gameObject.SetActive(activeState && !destination.IsExcludedFromActivation);
+        }
     }
 
     public void Grabed() {
