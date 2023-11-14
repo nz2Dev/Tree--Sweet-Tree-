@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ObjectSelector : MonoBehaviour {
 
@@ -16,6 +13,11 @@ public class ObjectSelector : MonoBehaviour {
 
     private void Update() {
         UpdateSelection();
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+            if (selectedObject != null) {
+                selectedObject.Click();
+            }
+        }
     }
 
     public void OverrideMask(LayerMask overrideMask) {
