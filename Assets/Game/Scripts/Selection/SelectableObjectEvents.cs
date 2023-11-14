@@ -9,6 +9,10 @@ public class SelectableObjectEvents : MonoBehaviour {
 
     private SelectableObject selectableObject;
 
+    private void Awake() {
+        selectableObject = GetComponent<SelectableObject>();
+    }
+
     private void OnEnable() {
         selectableObject.OnClicked += SelectableObjectOnClicked;
     }
