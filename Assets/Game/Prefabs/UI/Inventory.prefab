@@ -325,7 +325,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  moveMultiplier: 100
+  moveMultiplier: 60
   highlightDelay: 0.3
   highlightDuration: 0.6
 --- !u!1 &2279904217256130727
