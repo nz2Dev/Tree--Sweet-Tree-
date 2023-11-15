@@ -10,6 +10,7 @@ public class TableStates : MonoBehaviour {
         Stationar
     }
     
+    [SerializeField] private PickUpable candlePickupable;
     [SerializeField] private GameObject jumpPlatformState;
     [SerializeField] private GameObject questActivationState;
     [SerializeField] private GameObject stationarState;
@@ -18,18 +19,22 @@ public class TableStates : MonoBehaviour {
     private State currentState;
     private State stateStack;
 
+    private void Awake() {
+        candlePickupable.OnConsumedEvent += StateOnCandleConsumed;
+    }
+
     private void Start() {
-        currentState = State.JumpPlatform;
-        UpdateStateGameObjects();
+        SetState(State.JumpPlatform);
     }
 
     private void OnValidate() {
-        currentState = previewState;
-        UpdateStateGameObjects();
+        SetState(previewState);
     }
 
-    public void SetQuestState() {
-        SetState(State.QuestActivation);
+    private void StateOnCandleConsumed() {
+        if (currentState == State.JumpPlatform) {
+            SetState(State.QuestActivation);
+        }
     }
 
     public void SetState(State newState) {

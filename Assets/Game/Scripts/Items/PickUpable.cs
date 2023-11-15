@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class PickUpable : MonoBehaviour {
     public JumpPlatform PickUpPlatform => pickUpPlatform;
     public Item InventoryItem => inventoryItem;
 
+    public event Action OnConsumedEvent;
+
     public void Setup(Item item) {
         inventoryItem = item;
     }
@@ -28,6 +31,7 @@ public class PickUpable : MonoBehaviour {
     public void DestroySelf(bool consumed) {
         if (consumed) {
             OnConsumed?.Invoke();
+            OnConsumedEvent?.Invoke();
         }
         if (consumed && destructionEffectPrefab != null) {
             var destructionEffectInstance = Instantiate(destructionEffectPrefab, transform.position, Quaternion.identity);
