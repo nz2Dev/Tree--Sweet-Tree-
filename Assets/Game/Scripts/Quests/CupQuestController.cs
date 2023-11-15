@@ -5,41 +5,19 @@ using Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class QuestElementItem {
-    public GameObject elementGO;
-    public Vector3 initialPosition;
-    public bool isInSpot;
-}
-
 public class CupQuestController : MonoBehaviour {
 
     [SerializeField] private ObjectSelector selector;
-    [SerializeField] private CinemachineVirtualCamera questCamera;
-    [SerializeField] private Transform elementsLocation;
-    [SerializeField] private GameObject assemblyCenter;
-    [SerializeField] private float elementsPlacementsOffset = 1.0f;
+    [SerializeField] private CinemachineVirtualCamera questCamera;   
+    [SerializeField] private CupAssembler cupAssembler; 
     [SerializeField] private Player player;
-    [SerializeField] private GameObject assembledCupPickupablePrefab;
     [SerializeField] private float cameraCutDuration = 0.9f;
 
     private bool activated;
     private float activationStartTime;
-
-    private Vector3 nextElementPlacementPosition;
-    private List<QuestElementItem> questElementItems;
-
     private QuestElementItem activatedQuestItem;
 
     public event Action OnExit;
-
-    private void Awake() {
-        questElementItems = new List<QuestElementItem>();
-    }
-
-    private void Start() {
-        nextElementPlacementPosition = elementsLocation.position;
-        assemblyCenter.SetActive(false);
-    }
 
     public void OnActivated() {
         activationStartTime = Time.time;
@@ -51,15 +29,8 @@ public class CupQuestController : MonoBehaviour {
     }
 
     private void PlayerInventoryOnItemActivated(Item item) {
-        var placementPosition = nextElementPlacementPosition;
-        var elementGO = GameObject.Instantiate(item.prefab, placementPosition, Quaternion.identity);
-        questElementItems.Add(new QuestElementItem {
-            elementGO = elementGO,
-            initialPosition = placementPosition,
-            isInSpot = false,
-        });
-
-        nextElementPlacementPosition = placementPosition + elementsLocation.forward * elementsPlacementsOffset;
+        var elementGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+        cupAssembler.PutOutNextPiece(elementGO);
     }
 
     private void OnDeactivate() {
@@ -79,12 +50,9 @@ public class CupQuestController : MonoBehaviour {
     private void OnFinish() {
         OnDeactivate();
 
-        foreach (var item in questElementItems) {
-            Destroy(item.elementGO);
-        }
-        questElementItems.Clear();
+        cupAssembler.ClearPieces();
 
-        pickUpable = Instantiate(assembledCupPickupablePrefab, assemblyCenter.transform.position, Quaternion.identity).GetComponent<PickUpable>();
+        pickUpable = cupAssembler.CreateCupPickupable();
         waitForPickUp = true;
         waitStartTime = Time.time;
     }
@@ -118,16 +86,7 @@ public class CupQuestController : MonoBehaviour {
                 if (activatedQuestItem != null) {
                     HandleManipulationResult();
                 } else if (selector.Selected != null) {
-                    var questItemSelected = false;
-                    var selectedQuestItem = default (QuestElementItem);
-                    foreach (var questItem in questElementItems) {
-                        if (questItem.elementGO == selector.Selected.gameObject) {
-                            selectedQuestItem = questItem;
-                            questItemSelected = true;
-                        }
-                    }
-
-                    if (questItemSelected) {
+                    if (cupAssembler.TryGetAssocicatedPieceItem(selector.Selected.gameObject, out var selectedQuestItem)) {
                         ActivateManipulationState(selectedQuestItem);
                     }
                 }
@@ -135,14 +94,14 @@ public class CupQuestController : MonoBehaviour {
 
             if (activatedQuestItem != null) {
                 var mousePointer = Camera.main.ScreenPointToRay(Input.mousePosition);
-                var raycastCenter = new Plane(Vector3.up, assemblyCenter.transform.position);
-                if (raycastCenter.Raycast(mousePointer, out float enter)) {
+                var assemblyPlane = cupAssembler.GetAssemblyPlane();
+                if (assemblyPlane.Raycast(mousePointer, out float enter)) {
                     var raycastPoint = mousePointer.GetPoint(enter);
                     var finalTranslationPoint = raycastPoint;
-                    var isSnappedToAssemblyCenter = Vector3.Distance(raycastPoint, assemblyCenter.transform.position) < 0.3;
+                    var isSnappedToAssemblyCenter = Vector3.Distance(raycastPoint, cupAssembler.GetAssemblyCenter()) < 0.3;
                     SetIsRotationStage(isSnappedToAssemblyCenter);
                     if (isSnappedToAssemblyCenter) {
-                        finalTranslationPoint = assemblyCenter.transform.position;
+                        finalTranslationPoint = cupAssembler.GetAssemblyCenter();
                     } else {
                         SetIsRotationInSpot(false);
                     }
@@ -167,7 +126,7 @@ public class CupQuestController : MonoBehaviour {
     private void ActivateManipulationState(QuestElementItem questElementItem) {
         activatedQuestItem = questElementItem;
         activatedQuestItem.elementGO.GetComponent<CupQuestElement>().SetIsManipulationVisuals();
-        assemblyCenter.SetActive(true);
+        cupAssembler.SetAsseblyCenterHighlighted(true);
     }
 
     private void HandleManipulationResult() {
@@ -179,20 +138,9 @@ public class CupQuestController : MonoBehaviour {
         }
 
         activatedQuestItem = null;
-        assemblyCenter.SetActive(false);
+        cupAssembler.SetAsseblyCenterHighlighted(false);
 
-        var allInSpot = true;
-        if (questElementItems.Count == 0) {
-            allInSpot = false;
-        }
-        foreach (var questElementItem in questElementItems) {
-            if (!questElementItem.isInSpot) {
-                allInSpot = false;
-                break;
-            }
-        }
-
-        if (allInSpot) {
+        if (cupAssembler.IsAllPiecesInSpot()) {
             OnFinish();
         }
     }
@@ -202,7 +150,7 @@ public class CupQuestController : MonoBehaviour {
             rotationProgres = activatedQuestItem.elementGO.transform.rotation;
         }
         this.rotationStage = rotationStage;
-        assemblyCenter.SetActive(!rotationStage);
+        cupAssembler.SetAsseblyCenterHighlighted(!rotationStage);
     }
 
     private void SetIsRotationInSpot(bool isInSpot) {
