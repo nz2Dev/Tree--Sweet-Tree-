@@ -15,8 +15,6 @@ public class CupQuestController : MonoBehaviour {
 
     [SerializeField] private ObjectSelector selector;
     [SerializeField] private CinemachineVirtualCamera questCamera;
-    [SerializeField] private ActivationObject activationObject;
-    [SerializeField] private TableStates tableStates;
     [SerializeField] private Transform elementsLocation;
     [SerializeField] private GameObject assemblyCenter;
     [SerializeField] private float elementsPlacementsOffset = 1.0f;
@@ -32,8 +30,9 @@ public class CupQuestController : MonoBehaviour {
 
     private QuestElementItem activatedQuestItem;
 
+    public event Action OnExit;
+
     private void Awake() {
-        activationObject.OnActivated += ActivationObjectOnActivated;
         questElementItems = new List<QuestElementItem>();
     }
 
@@ -42,10 +41,9 @@ public class CupQuestController : MonoBehaviour {
         assemblyCenter.SetActive(false);
     }
 
-    private void ActivationObjectOnActivated() {
+    public void OnActivated() {
         activationStartTime = Time.time;
         questCamera.m_Priority += 2;
-        tableStates.PushState(TableStates.State.Stationar);
         activated = true;
         
         var playerInventory = player.GetComponent<Inventory>();
@@ -67,7 +65,7 @@ public class CupQuestController : MonoBehaviour {
     private void OnDeactivate() {
         questCamera.m_Priority -= 2;
         player.GetComponentInChildren<Animator>(true).gameObject.SetActive(true);
-        tableStates.PopState();
+        OnExit?.Invoke();
         activated = false;
 
         var playerInventory = player.GetComponent<Inventory>();

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class TableStates : MonoBehaviour {
 
@@ -12,6 +14,8 @@ public class TableStates : MonoBehaviour {
     
     [SerializeField] private PickUpable candlePickupable;
     [SerializeField] private GameObject jumpPlatformState;
+    [SerializeField] private ActivationObject questActivator;
+    [SerializeField] private CupQuestController questcontroller;
     [SerializeField] private GameObject questActivationState;
     [SerializeField] private GameObject stationarState;
     [SerializeField] private State previewState;
@@ -21,6 +25,8 @@ public class TableStates : MonoBehaviour {
 
     private void Awake() {
         candlePickupable.OnConsumedEvent += StateOnCandleConsumed;
+        questActivator.OnActivated += StateOnActivateQuest;
+        questcontroller.OnExit += StateOnQuestExit;
     }
 
     private void Start() {
@@ -31,8 +37,26 @@ public class TableStates : MonoBehaviour {
         SetState(previewState);
     }
 
+    private bool TryAssertState(State state) {
+        Assert.AreEqual(currentState, state);
+        return currentState == state;
+    }
+
     private void StateOnCandleConsumed() {
-        if (currentState == State.JumpPlatform) {
+        if (TryAssertState(State.JumpPlatform)) {
+            SetState(State.QuestActivation);
+        }
+    }
+
+    private void StateOnActivateQuest() {
+        if (TryAssertState(State.QuestActivation)) {
+            SetState(State.Stationar);
+            questcontroller.OnActivated();
+        }
+    }
+
+    private void StateOnQuestExit() {
+        if (TryAssertState(State.Stationar)) {
             SetState(State.QuestActivation);
         }
     }
