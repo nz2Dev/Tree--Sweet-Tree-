@@ -37,6 +37,11 @@ public class PlayerActivateObjectActivity : IPlayerActivity {
     }
 
     public void Update(Player player) {
+        // double activation might occure if we check for activation in the Begin method because of "IsFinished" state of system design 
+        if (IsFinished) {
+            return;
+        }
+
         if (Vector3.Distance(player.transform.position, activationObject.ActivationPoint.position) < activationObject.ActivationRadius) {
             player.StopNavigation();
             activationObject.Activate(player);
