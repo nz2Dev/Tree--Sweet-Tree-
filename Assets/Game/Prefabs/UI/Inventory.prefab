@@ -326,8 +326,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   moveMultiplier: 100
-  highlightDelay: 0.5
-  highlightDuration: 1
+  highlightDelay: 0.3
+  highlightDuration: 0.6
 --- !u!1 &2279904217256130727
 GameObject:
   m_ObjectHideFlags: 0
