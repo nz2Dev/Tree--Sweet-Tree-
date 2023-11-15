@@ -18,10 +18,10 @@ public class TableStates : MonoBehaviour {
     [SerializeField] private CupQuestController questcontroller;
     [SerializeField] private GameObject questActivationState;
     [SerializeField] private GameObject stationarState;
-    [SerializeField] private State previewState;
+    [SerializeField] private State initState;
+    [SerializeField] private bool debugStateTransition = false;
 
     private State currentState;
-    private State stateStack;
 
     private void Awake() {
         candlePickupable.OnConsumedEvent += StateOnCandleConsumed;
@@ -30,52 +30,40 @@ public class TableStates : MonoBehaviour {
     }
 
     private void Start() {
-        SetState(State.JumpPlatform);
+        SetState(initState);
     }
 
-    private void OnValidate() {
-        SetState(previewState);
-    }
-
-    private bool TryAssertState(State state) {
-        Assert.AreEqual(currentState, state);
+    private bool CheckCurrentStateIs(State state) {
+        if (currentState != state) {
+            Debug.LogError("State " + state + " was expected, instead of: " + currentState);
+        }
         return currentState == state;
     }
 
     private void StateOnCandleConsumed() {
-        if (TryAssertState(State.JumpPlatform)) {
+        if (CheckCurrentStateIs(State.JumpPlatform)) {
             SetState(State.QuestActivation);
         }
     }
 
     private void StateOnActivateQuest() {
-        if (TryAssertState(State.QuestActivation)) {
+        if (CheckCurrentStateIs(State.QuestActivation)) {
             SetState(State.Stationar);
             questcontroller.OnActivated();
         }
     }
 
     private void StateOnQuestExit() {
-        if (TryAssertState(State.Stationar)) {
+        if (CheckCurrentStateIs(State.Stationar)) {
             SetState(State.QuestActivation);
         }
     }
 
-    public void SetState(State newState) {
-        stateStack = default;
+    private void SetState(State newState) {
+        if (debugStateTransition) {
+            Debug.Log("Table transition state from " + currentState + " -> " + newState);
+        }
         currentState = newState;
-        UpdateStateGameObjects();
-    }
-
-    public void PushState(State newState) {
-        stateStack = currentState;
-        currentState = newState;
-        UpdateStateGameObjects();
-    }
-
-    public void PopState() {
-        currentState = stateStack;
-        stateStack = default;
         UpdateStateGameObjects();
     }
 
