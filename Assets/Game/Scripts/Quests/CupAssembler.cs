@@ -79,9 +79,10 @@ public class CupAssembler : MonoBehaviour {
 
     public bool IsAllPiecesInSpot() {
         var allInSpot = true;
-        if (questElementItems.Count == 0) {
+        if (questElementItems.Count < 4) {
             allInSpot = false;
         }
+        
         foreach (var questElementItem in questElementItems) {
             if (!questElementItem.isInSpot) {
                 allInSpot = false;
