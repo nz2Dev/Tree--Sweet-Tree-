@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 public class TableStates : MonoBehaviour {
 
@@ -13,11 +9,10 @@ public class TableStates : MonoBehaviour {
     }
     
     [SerializeField] private PickUpable candlePickupable;
-    [SerializeField] private GameObject jumpPlatformState;
-    [SerializeField] private ActivationObject questActivator;
+    [SerializeField] private JumpPlatform jumpPlatform;
+    [SerializeField] private ActivationObject activationVisuals;
+    [SerializeField] private GameObject stationarVisuals;
     [SerializeField] private CupQuestController questcontroller;
-    [SerializeField] private GameObject questActivationState;
-    [SerializeField] private GameObject stationarState;
     [SerializeField] private State initState;
     [SerializeField] private bool debugStateTransition = false;
 
@@ -25,7 +20,7 @@ public class TableStates : MonoBehaviour {
 
     private void Awake() {
         candlePickupable.OnConsumedEvent += StateOnCandleConsumed;
-        questActivator.OnActivated += StateOnActivateQuest;
+        activationVisuals.OnActivated += StateOnActivateQuest;
         questcontroller.OnExit += StateOnQuestExit;
     }
 
@@ -68,9 +63,34 @@ public class TableStates : MonoBehaviour {
     }
 
     private void UpdateStateGameObjects() {
-        jumpPlatformState.SetActive(currentState == State.JumpPlatform);
-        questActivationState.SetActive(currentState == State.QuestActivation);
-        stationarState.SetActive(currentState == State.Stationar);
+        switch (currentState) {
+            case State.JumpPlatform:
+                SetObjects(
+                    jumpPlatform: true, 
+                    stationar: true, 
+                    activation: false);
+                break;
+
+            case State.QuestActivation:
+                SetObjects(
+                    jumpPlatform: false, 
+                    stationar: false, 
+                    activation: true);
+                break;
+
+            case State.Stationar:
+                SetObjects(
+                    jumpPlatform: false, 
+                    stationar: true, 
+                    activation: false);
+                break;
+        }
+    }
+
+    private void SetObjects(bool jumpPlatform = false, bool stationar = true, bool activation = false) {
+        this.jumpPlatform.gameObject.SetActive(jumpPlatform);
+        this.stationarVisuals.gameObject.SetActive(stationar);
+        this.activationVisuals.gameObject.SetActive(activation);
     }
 
 }
