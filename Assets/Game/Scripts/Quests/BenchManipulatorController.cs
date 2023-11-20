@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BenchManipulator : MonoBehaviour {
+public class BenchManipulatorController : MonoBehaviour {
 
     [SerializeField] private BenchStates benchStates;
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
