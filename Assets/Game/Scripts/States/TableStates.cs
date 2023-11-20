@@ -10,8 +10,7 @@ public class TableStates : MonoBehaviour {
     
     [SerializeField] private PickUpable candlePickupable;
     [SerializeField] private JumpPlatform jumpPlatform;
-    [SerializeField] private ActivationObject activationVisuals;
-    [SerializeField] private GameObject stationarVisuals;
+    [SerializeField] private ActivationObject activation;
     [SerializeField] private CupQuestController questcontroller;
     [SerializeField] private State initState;
     [SerializeField] private bool debugStateTransition = false;
@@ -20,7 +19,7 @@ public class TableStates : MonoBehaviour {
 
     private void Awake() {
         candlePickupable.OnConsumedEvent += StateOnCandleConsumed;
-        activationVisuals.OnActivated += StateOnActivateQuest;
+        activation.OnActivated += StateOnActivateQuest;
         questcontroller.OnExit += StateOnQuestExit;
     }
 
@@ -67,30 +66,26 @@ public class TableStates : MonoBehaviour {
             case State.JumpPlatform:
                 SetObjects(
                     jumpPlatform: true, 
-                    stationar: true, 
                     activation: false);
                 break;
 
             case State.QuestActivation:
                 SetObjects(
                     jumpPlatform: false, 
-                    stationar: false, 
                     activation: true);
                 break;
 
             case State.Stationar:
                 SetObjects(
                     jumpPlatform: false, 
-                    stationar: true, 
                     activation: false);
                 break;
         }
     }
 
-    private void SetObjects(bool jumpPlatform = false, bool stationar = true, bool activation = false) {
+    private void SetObjects(bool jumpPlatform = false, bool activation = false) {
         this.jumpPlatform.gameObject.SetActive(jumpPlatform);
-        this.stationarVisuals.gameObject.SetActive(stationar);
-        this.activationVisuals.gameObject.SetActive(activation);
+        this.activation.GetComponent<SelectableObject>().SetIsDetectable(activation);
     }
 
 }
