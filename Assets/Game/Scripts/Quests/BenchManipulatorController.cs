@@ -54,8 +54,10 @@ public class BenchManipulatorController : MonoBehaviour {
         }
 
         if (manipulating) {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit, 100, benchManipulator.ManipulationSurface)) {
-                raycastPosition = hit.point;
+            var movePlane = benchManipulator.GetMovePlane();
+            var cameraRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (movePlane.Raycast(cameraRay, out var enterDist)) {
+                raycastPosition = cameraRay.GetPoint(enterDist);
             }
 
             bool isPositionSnapped = benchManipulator.TryMoveToSnap(raycastPosition);

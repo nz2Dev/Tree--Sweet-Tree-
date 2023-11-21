@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BenchManipulator : MonoBehaviour {
@@ -28,6 +29,10 @@ public class BenchManipulator : MonoBehaviour {
         benchTransformReference.SetActive(false);
     }
 
+    public Plane GetMovePlane() {
+        return new Plane(Vector3.up, benchTransformReference.transform.position);
+    }
+
     public bool TryMoveToSnap(in Vector3 targetPosition) {
         var snapped = false;
         var movePosition = targetPosition;
@@ -37,7 +42,11 @@ public class BenchManipulator : MonoBehaviour {
             snapped = true;
         } 
         
+        benchTransformReference.SetActive(!snapped);
         manipulated.transform.position = Vector3.Lerp(manipulated.transform.position, movePosition, Time.deltaTime * snapSpeed);
+        if (!snapped) {
+            manipulated.transform.rotation = Quaternion.Lerp(manipulated.transform.rotation, Quaternion.LookRotation(Vector3.up, Vector3.forward), Time.deltaTime * snapSpeed);
+        }
         return snapped;
     }
 
