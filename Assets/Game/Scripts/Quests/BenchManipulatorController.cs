@@ -63,7 +63,7 @@ public class BenchManipulatorController : MonoBehaviour {
             bool isPositionSnapped = benchManipulator.TryMoveToSnap(raycastPosition);
 
             if (isPositionSnapped) {
-                if (benchManipulator.TryRotateToSnap(Input.mouseScrollDelta.y)) {
+                if (benchManipulator.TryRotateToSnap(-Input.mouseScrollDelta.y)) {
                     benchManipulator.Stop();
                     bench.SetManipulatableSnapped();
                     manipulating = false;
