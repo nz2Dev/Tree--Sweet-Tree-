@@ -52,9 +52,6 @@ public class DoorQuest : MonoBehaviour {
         door.SetState(DoorStates.State.Stationar);
 
         player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
-        if (placedElementGO != null) {
-            placedElementGO.SetActive(false);
-        }
         
         if (OnQuestFinishedEvent != null) {
             OnQuestFinishedEvent.Invoke();

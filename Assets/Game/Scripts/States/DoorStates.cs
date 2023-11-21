@@ -10,29 +10,34 @@ public class DoorStates : MonoBehaviour {
         Stationar
     }
 
-    [SerializeField] private GameObject activatorState;
-    [SerializeField] private GameObject emptyState; // QuestState
-    [SerializeField] private GameObject stationarState;
-    [SerializeField] private State initState;
+    private SelectableObject selectable;
 
     private State currentState;
 
-    private void Start() {
-        SetState(initState);
+    private void Awake() {
+        selectable = GetComponent<SelectableObject>();
     }
 
-    private void OnValidate() {
-        SetState(initState);
+    private void Start() {
+        SetState(State.Activator);
     }
 
     public void SetState(State state) {
         currentState = state;
-        activatorState.SetActive(state == State.Activator);
-        emptyState.SetActive(state == State.Quest);
-        stationarState.SetActive(state == State.Stationar);
+        switch (state) {
+            case State.Activator:
+                selectable.enabled = true;
+                selectable.SetIsDetectable(true);
+                break;
+            case State.Quest:
+                selectable.enabled = false;
+                selectable.SetIsDetectable(false);
+                break;
+            case State.Stationar:
+                selectable.enabled = false;
+                selectable.SetIsDetectable(false);
+                break; 
+        }
     }
 
-    public bool IsQuestState() {
-        return currentState == State.Quest;
-    }
 }
