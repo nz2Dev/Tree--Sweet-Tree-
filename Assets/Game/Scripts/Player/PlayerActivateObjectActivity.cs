@@ -14,6 +14,11 @@ public class PlayerActivateObjectActivity : IPlayerActivity {
     public bool IsFinished { get; private set; }
 
     public void Begin(Player player) {
+        if (!activationObject.IsActivatable) {
+            IsFinished = true;
+            return;
+        }
+        
         if (activationObject.ActivationPlatform != null) {
             if (activationObject.ActivationPlatform.IsActive && activationObject.ActivationPlatform == player.PlatformUnder) {
                 activationObject.Activate(player);

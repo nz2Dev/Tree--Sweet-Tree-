@@ -12,9 +12,12 @@ public class ActivationObject : MonoBehaviour {
     [SerializeField] private UnityEvent<Player> OnActivatedByPlayerEvent;
     [SerializeField] private bool debugActivateOnAwake = false;
 
+    private bool activatable = true;
+
     public float ActivationRadius => activationRadius;
     public JumpPlatform ActivationPlatform => activationPlatform;
     public Transform ActivationPoint => activationPoint;
+    public bool IsActivatable => activatable;
 
     public event Action OnActivated;
 
@@ -30,7 +33,16 @@ public class ActivationObject : MonoBehaviour {
         }
     }
 
+    public void SetIsActivatable(bool activatable) {
+        this.activatable = activatable;
+    }
+
     public void Activate(Player player) {
+        if (!IsActivatable) {
+            Debug.LogError(name + " Is not activatable");
+            return;
+        }
+
         OnActivated?.Invoke();
         
         if (OnActivatedEvent != null) {
