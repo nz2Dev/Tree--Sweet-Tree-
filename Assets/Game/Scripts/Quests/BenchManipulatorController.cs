@@ -8,42 +8,46 @@ using UnityEngine.EventSystems;
 
 public class BenchManipulatorController : MonoBehaviour {
 
-    [SerializeField] private BenchStates benchStates;
     [SerializeField] private BenchManipulator benchManipulator;
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
     [SerializeField] private ObjectSelector objectSelector;
-    [SerializeField] private Color snappedColor = Color.blue;
+
+    private BenchStates bench;
 
     private bool activated;
     private bool manipulating;
     private bool approving;
     private Vector3 raycastPosition;
 
-    private void Awake() {
-        benchStates.Activator.OnActivated += OnActivated;
-    }
-
     private void Start() {
         benchManipulator.Stop();
     }
 
-    private void OnActivated() {
+    public void Activate(BenchStates bench) {
+        this.bench = bench;
         activated = true;
-        benchStates.SetState(BenchStates.State.Starter);
+        OnActivated();
+    }
+
+    private void OnActivated() {
         manipulatorVCam.m_Priority += 2;
     }
 
-    private void OnDeactivated() {
+    public void Deactivate() {
         activated = false;
+        OnDeactivated();
+    }
+
+    private void OnDeactivated() {
         manipulatorVCam.m_Priority -= 2;
     }
 
     private void Update() {
         if (activated) {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
-                if (objectSelector.Selected != null && objectSelector.Selected == benchStates.Starter) {
-                    benchStates.SetState(BenchStates.State.Manipulatable);
-                    benchManipulator.Begin(benchStates.Manipulated);
+                if (objectSelector.Selected != null && objectSelector.Selected == bench.Selectable) {
+                    bench.SetManipulatableMoveable();
+                    benchManipulator.Begin(bench.gameObject);
                     manipulating = true;
                 }
             }
@@ -59,7 +63,7 @@ public class BenchManipulatorController : MonoBehaviour {
             if (isPositionSnapped) {
                 if (benchManipulator.TryRotateToSnap(Input.mouseScrollDelta.y)) {
                     benchManipulator.Stop();
-                    benchStates.SetManipulatedSnappedColor(snappedColor);
+                    bench.SetManipulatableSnapped();
                     manipulating = false;
                     approving = true;
                 }
@@ -69,7 +73,7 @@ public class BenchManipulatorController : MonoBehaviour {
         if (approving) {
             if (Input.GetMouseButtonDown(0)) {
                 approving = false;
-                benchStates.SetState(BenchStates.State.Stationar);
+                bench.SetManipulatableStationar();
                 OnDeactivated();
             }
         }

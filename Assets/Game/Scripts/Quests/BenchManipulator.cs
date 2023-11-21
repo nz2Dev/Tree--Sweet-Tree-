@@ -15,6 +15,10 @@ public class BenchManipulator : MonoBehaviour {
     public bool IsManipulating => manipulated != null;
     public LayerMask ManipulationSurface => manipulationSurface;
 
+    private void Start() {
+        benchTransformReference.SetActive(false);
+    }
+
     public void Begin(GameObject manipulated) {
         this.manipulated = manipulated;
         benchTransformReference.SetActive(true);
