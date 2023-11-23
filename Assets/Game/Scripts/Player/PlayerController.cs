@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour {
             } else if (hit.collider.TryGetComponent<ClimbingNode>(out var climbingNode)) {
                 raycastedClimbingNode = climbingNode;
                 raycastForClimbing = true; 
-            } else if (NavMesh.SamplePosition(hit.point, out var navMeshHit, 0.5f, NavMesh.AllAreas)) {    
+            } else {    
                 raycastPoint = hit.point;
                 raycastForNavigation = true;
             }
