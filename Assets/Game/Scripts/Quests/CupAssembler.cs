@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class CupAssembler : MonoBehaviour {
     [SerializeField] private GameObject assemblyCenter;
     [SerializeField] private float elementsPlacementsOffset = 0.25f;
     [SerializeField] private GameObject assembledCupPickupablePrefab;
+    [SerializeField] private Sprite[] availablePieces;
 
     private Vector3 nextElementPlacementPosition;
     private List<QuestElementItem> questElementItems;
@@ -26,6 +28,10 @@ public class CupAssembler : MonoBehaviour {
     private void Start() {
         nextElementPlacementPosition = elementsLocation.position;
         assemblyCenter.SetActive(false);
+    }
+
+    public bool CanReceivePiece(Item item) {
+        return questElementItems.Count < availablePieces.Length && availablePieces.Contains(item.icon);
     }
 
     public void PutOutNextPiece(GameObject piece) {
@@ -91,4 +97,5 @@ public class CupAssembler : MonoBehaviour {
         }
         return allInSpot;
     }
+
 }

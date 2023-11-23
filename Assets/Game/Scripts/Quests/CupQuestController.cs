@@ -28,9 +28,13 @@ public class CupQuestController : MonoBehaviour {
         playerInventory.OnItemActivated += PlayerInventoryOnItemActivated;
     }
 
-    private void PlayerInventoryOnItemActivated(Item item) {
-        var elementGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
-        cupAssembler.PutOutNextPiece(elementGO);
+    private void PlayerInventoryOnItemActivated(int itemIndex) {
+        var item = player.GetComponent<Inventory>().GetItem(itemIndex);
+        if (cupAssembler.CanReceivePiece(item)) {
+            player.GetComponent<Inventory>().PullItem(itemIndex);
+            var elementGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+            cupAssembler.PutOutNextPiece(elementGO);
+        }
     }
 
     private void OnDeactivate() {

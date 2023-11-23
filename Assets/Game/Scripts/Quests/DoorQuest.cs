@@ -15,6 +15,7 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private DoorQuestElement[] questElements;
     [SerializeField] private DoorQuestZone dynamicZone;
     [SerializeField] private Player player;
+    [SerializeField] private Sprite questPieceIcon;
     [SerializeField] private UnityEvent OnQuestFinishedEvent;
 
     private bool active = false;
@@ -40,7 +41,13 @@ public class DoorQuest : MonoBehaviour {
         player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
     }
 
-    private void InventoryOnItemActivated(Item item) {
+    private void InventoryOnItemActivated(int itemIndex) {
+        var inventory = player.GetComponent<Inventory>();
+        if (inventory.GetItem(itemIndex).icon != questPieceIcon) {
+            return;
+        }
+
+        var item = inventory.PullItem(itemIndex);
         var activatedItemGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
         placedElementGO = activatedItemGO;
         dynamicZone.SetResident(activatedItemGO.GetComponent<DoorQuestElement>());

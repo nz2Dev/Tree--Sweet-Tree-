@@ -74,7 +74,12 @@ public class TorchQuest : MonoBehaviour {
     private Item laidOutInventoryItem;
     private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
 
-    private void LaidOutNewItem(Item item) {
+    private void LaidOutNewItem(int itemIndex) {
+        if (laidOutObjectIcon != null) {
+            return;
+        }
+
+        var item = Player.LatestInstance.GetComponent<Inventory>().PullItem(itemIndex);
         laidOutInventoryItem = item;
         laidOutObject = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
         laidOutObject.transform.SetParent(itemHubTransform, false);
@@ -250,6 +255,7 @@ public class TorchQuest : MonoBehaviour {
             } else {
                 StartShakingObject(laidOutObject);
                 ReturnLaidOutToInventory();
+                ForgetLaidOutItem();
             }
         } else {
             StartShakingObject(laidOutObject);

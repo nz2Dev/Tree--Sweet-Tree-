@@ -31,7 +31,7 @@ public class Inventory : MonoBehaviour {
     public event Action OnOpenRequest;
     public event Action<int> OnItemAdded; // notifies at what index a new item was placed
     public event Action<int> OnItemRemoved;
-    public event Action<Item> OnItemActivated;
+    public event Action<int> OnItemActivated;
 
     private void Awake() {
         items = new List<Item>();
@@ -50,11 +50,15 @@ public class Inventory : MonoBehaviour {
 
     public void ActivateItem(int index) {
         if (index < items.Count) {
-            var item = items[index];
-            items.RemoveAt(index);
-            OnItemRemoved?.Invoke(index);
-            OnItemActivated?.Invoke(item);
+            OnItemActivated?.Invoke(index);
         }
+    }
+
+    public Item PullItem(int index) {
+        var item = items[index];
+        items.RemoveAt(index);
+        OnItemRemoved?.Invoke(index);
+        return item;
     }
 
     public Item GetItem(int index) {
