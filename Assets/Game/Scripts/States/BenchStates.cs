@@ -50,9 +50,13 @@ public class BenchStates : MonoBehaviour {
         GetComponentInChildren<Renderer>().material.color = snappedColor;
     }
 
-    public void SetManipulatableStationar() {
+    public void SetManipulatableStationar(bool final) {
         GetComponentInChildren<Renderer>().material = defaultMaterial;
-        StateOnBenchStationar();
+        if (final) {
+            StateOnBenchStationar();
+        } else {
+            SetState(State.Activation);
+        }
     }
 
     private bool CheckCurrentStateIs(State state) {

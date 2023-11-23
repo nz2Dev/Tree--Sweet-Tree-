@@ -51,6 +51,13 @@ public class BenchManipulatorController : MonoBehaviour {
                     manipulating = true;
                 }
             }
+
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape)) {
+                bench.SetManipulatableStationar(final: false);
+                benchManipulator.Stop();
+                manipulating = false;
+                Deactivate();
+            }
         }
 
         if (manipulating) {
@@ -75,7 +82,7 @@ public class BenchManipulatorController : MonoBehaviour {
         if (approving) {
             if (Input.GetMouseButtonDown(0)) {
                 approving = false;
-                bench.SetManipulatableStationar();
+                bench.SetManipulatableStationar(final: true);
                 OnDeactivated();
             }
         }
