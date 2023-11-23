@@ -82,7 +82,7 @@ public class CupQuestController : MonoBehaviour {
                 player.GetComponentInChildren<Animator>(true).gameObject.SetActive(false);
             }
 
-            if (Input.GetMouseButtonDown(1)) {
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape)) {
                 OnDeactivate();
             }
 

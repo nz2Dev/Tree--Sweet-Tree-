@@ -76,7 +76,7 @@ public class DoorQuest : MonoBehaviour {
                 OnQuestFinished();
             }
 
-            if (Input.GetMouseButtonDown(1)) {
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape)) {
                 Deactivate();
             }
 

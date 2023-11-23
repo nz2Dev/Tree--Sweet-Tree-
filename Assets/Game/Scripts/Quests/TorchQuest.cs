@@ -208,7 +208,7 @@ public class TorchQuest : MonoBehaviour {
                 HandleClick();
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape)) {
                 Deactivate();
             }
         }
