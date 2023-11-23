@@ -10,23 +10,34 @@ public class SwingStates : MonoBehaviour {
         Stationar
     }
 
-    [SerializeField] private GameObject activatorState;
-    [SerializeField] private GameObject questState;
-    [SerializeField] private GameObject stationarState;
+    private SelectableObject selectable;
+    
     [SerializeField] private State initState;
+
+    private void Awake() {
+        selectable = GetComponent<SelectableObject>();
+    }
 
     private void Start() {
         SetState(initState);
     }
 
-    private void OnValidate() {
-        SetState(initState);
+    public void SetState(State state) {
+        switch (state) {
+            case State.Activator:
+                SetComponents(selection: true);
+                break;
+            case State.Quest:
+                SetComponents(selection: false);
+                break;
+            case State.Stationar:
+                SetComponents(selection: false);
+                break;
+        }
     }
 
-    public void SetState(State state) {
-        activatorState.SetActive(state == State.Activator);
-        questState.SetActive(state == State.Quest);
-        stationarState.SetActive(state == State.Stationar);
+    private void SetComponents(bool selection = false) {
+        selectable.SetIsDetectable(selection);
     }
 
 }
