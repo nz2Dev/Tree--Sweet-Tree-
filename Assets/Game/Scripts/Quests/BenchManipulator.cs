@@ -43,9 +43,11 @@ public class BenchManipulator : MonoBehaviour {
         } 
         
         benchTransformReference.SetActive(!snapped);
-        manipulated.transform.position = Vector3.Lerp(manipulated.transform.position, movePosition, Time.deltaTime * snapSpeed);
         if (!snapped) {
+            manipulated.transform.position = Vector3.Lerp(manipulated.transform.position, movePosition, Time.deltaTime * snapSpeed);
             manipulated.transform.rotation = Quaternion.Lerp(manipulated.transform.rotation, Quaternion.LookRotation(Vector3.up, Vector3.forward), Time.deltaTime * snapSpeed);
+        } else {
+            manipulated.transform.position = movePosition;
         }
         return snapped;
     }
