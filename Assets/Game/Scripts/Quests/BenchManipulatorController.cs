@@ -25,8 +25,15 @@ public class BenchManipulatorController : MonoBehaviour {
 
     public void Activate(BenchStates bench) {
         this.bench = bench;
-        activated = true;
-        OnActivated();
+        StartCoroutine(NextFrame(() => {
+            activated = true;
+            OnActivated();
+        }));
+    }
+
+    private IEnumerator NextFrame(Action action) {
+        yield return new WaitForEndOfFrame();
+        action?.Invoke();
     }
 
     private void OnActivated() {
