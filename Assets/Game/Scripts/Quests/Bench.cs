@@ -19,6 +19,7 @@ public class Bench : MonoBehaviour {
     [SerializeField] private Transform rotationPivot;
     [SerializeField] private Color snappedColor = Color.blue;
     [SerializeField] private State initState;
+    [SerializeField] private bool debugState = false;
 
     private SelectableObject selectable;
     private ActivationObject activator;
@@ -94,6 +95,9 @@ public class Bench : MonoBehaviour {
     }
 
     private void SetState(State state) {
+        if (debugState) {
+            Debug.Log("Bench state from: " + currentState + " to " + state);
+        }
         currentState = state;
         UpdateStateObjects();
     }

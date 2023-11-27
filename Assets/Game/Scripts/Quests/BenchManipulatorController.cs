@@ -86,7 +86,7 @@ public class BenchManipulatorController : MonoBehaviour {
             if (Input.GetMouseButtonDown(0)) {
                 approving = false;
                 bench.SetManipulatableStationar(final: true);
-                OnDeactivated();
+                Deactivate();
             }
         }
     }
