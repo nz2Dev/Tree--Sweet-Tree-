@@ -12,18 +12,14 @@ public class BenchManipulatorController : MonoBehaviour {
     [SerializeField] private CinemachineVirtualCamera manipulatorVCam;
     [SerializeField] private ObjectSelector objectSelector;
 
-    private BenchStates bench;
+    private Bench bench;
 
     private bool activated;
     private bool manipulating;
     private bool approving;
     private Vector3 raycastPosition;
 
-    private void Start() {
-        benchManipulator.Stop();
-    }
-
-    public void Activate(BenchStates bench) {
+    public void Activate(Bench bench) {
         this.bench = bench;
         StartCoroutine(NextFrame(() => {
             activated = true;
@@ -54,7 +50,7 @@ public class BenchManipulatorController : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (objectSelector.Selected != null && objectSelector.Selected == bench.Selectable) {
                     bench.SetManipulatableMoveable();
-                    benchManipulator.Begin(bench.gameObject);
+                    benchManipulator.Begin(bench);
                     manipulating = true;
                 }
             }
@@ -74,15 +70,15 @@ public class BenchManipulatorController : MonoBehaviour {
                 raycastPosition = cameraRay.GetPoint(enterDist);
             }
 
+            benchManipulator.AlignBase();
             bool isPositionSnapped = benchManipulator.TryMoveToSnap(raycastPosition);
+            bool isRotationSnapped = benchManipulator.TryRotateToSnap(-Input.mouseScrollDelta.y);
 
-            if (isPositionSnapped) {
-                if (benchManipulator.TryRotateToSnap(-Input.mouseScrollDelta.y)) {
-                    benchManipulator.Stop();
-                    bench.SetManipulatableSnapped();
-                    manipulating = false;
-                    approving = true;
-                }
+            if (isPositionSnapped && isRotationSnapped) {
+                benchManipulator.Stop();
+                bench.SetManipulatableSnapped();
+                manipulating = false;
+                approving = true;
             }
         }
 

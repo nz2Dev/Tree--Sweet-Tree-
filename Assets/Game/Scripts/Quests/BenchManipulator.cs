@@ -11,7 +11,8 @@ public class BenchManipulator : MonoBehaviour {
     [SerializeField] private float snapSpeed = 10;
     [SerializeField] private float snapDistance = 0.3f;
 
-    private GameObject manipulated;
+    private Bench manipulated;
+    private float rotationProgress;
 
     public bool IsManipulating => manipulated != null;
     public LayerMask ManipulationSurface => manipulationSurface;
@@ -20,9 +21,10 @@ public class BenchManipulator : MonoBehaviour {
         benchTransformReference.SetActive(false);
     }
 
-    public void Begin(GameObject manipulated) {
+    public void Begin(Bench manipulated) {
         this.manipulated = manipulated;
         benchTransformReference.SetActive(true);
+        rotationProgress = manipulated.GetBaseRotationInDegrees(); 
     }
 
     public void Stop() {
@@ -45,25 +47,29 @@ public class BenchManipulator : MonoBehaviour {
         benchTransformReference.SetActive(!snapped);
         if (!snapped) {
             manipulated.transform.position = Vector3.Lerp(manipulated.transform.position, movePosition, Time.deltaTime * snapSpeed);
-            manipulated.transform.rotation = Quaternion.Lerp(manipulated.transform.rotation, Quaternion.LookRotation(Vector3.up, Vector3.forward), Time.deltaTime * snapSpeed);
         } else {
             manipulated.transform.position = movePosition;
         }
         return snapped;
     }
 
-    public bool TryRotateToSnap(in float rightAxisRotationDelta) {
-        var newRotation = manipulated.transform.rotation * Quaternion.AngleAxis(rightAxisRotationDelta, Vector3.right);
-        var referenceUp = benchTransformReference.transform.TransformDirection(Vector3.up);
-        var manipulatedUp = newRotation * Vector3.up;
-        
+    public void AlignBase() {
+        manipulated.transform.localRotation = Quaternion.Lerp(
+            manipulated.transform.localRotation, 
+            Quaternion.LookRotation(-Vector3.forward, Vector3.up), 
+            Time.deltaTime);
+    }
+
+    public bool TryRotateToSnap(in float rotationInput) {
+        rotationProgress += rotationInput;
+        rotationProgress = Mathf.Clamp(rotationProgress, -90, 0);
+
         var snapped = false;
-        var dotProduct = Vector3.Dot(referenceUp, manipulatedUp);
-        if (dotProduct > 0.9995f) {
+        if (rotationProgress < 10 && rotationProgress > -10) {
             snapped = true;
-            manipulated.transform.rotation = benchTransformReference.transform.rotation;
-        } else if (dotProduct > 0.1f) {
-            manipulated.transform.rotation = newRotation;
+            manipulated.SetBaseRotation(0);
+        } else {
+            manipulated.SetBaseRotation(rotationProgress);
         }
 
         return snapped;

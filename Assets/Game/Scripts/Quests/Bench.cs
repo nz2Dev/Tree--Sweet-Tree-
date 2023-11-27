@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(SelectableObject))]
 [RequireComponent(typeof(ActivationObject))]
-public class BenchStates : MonoBehaviour {
+public class Bench : MonoBehaviour {
 
     public enum State {
         Activation,
@@ -16,6 +16,7 @@ public class BenchStates : MonoBehaviour {
 
     [SerializeField] private BenchManipulatorController manipulatorController;
     [SerializeField] private JumpPlatform stationarPlatform;
+    [SerializeField] private Transform rotationPivot;
     [SerializeField] private Color snappedColor = Color.blue;
     [SerializeField] private State initState;
 
@@ -30,7 +31,7 @@ public class BenchStates : MonoBehaviour {
 
     private void Awake() {
         selectable = GetComponent<SelectableObject>();
-        obstacle = GetComponent<NavMeshObstacle>();
+        obstacle = GetComponentInChildren<NavMeshObstacle>();
         activator = GetComponent<ActivationObject>();
         activator.OnActivated += StateOnBenchActivated;
 
@@ -39,6 +40,19 @@ public class BenchStates : MonoBehaviour {
 
     private void Start() {
         SetState(initState);
+    }
+
+    public void RotateBase(float rotationDegrees) {
+        rotationPivot.localRotation *= Quaternion.AngleAxis(rotationDegrees, Vector3.right);
+    }
+
+    public void SetBaseRotation(float rotationDegrees) {
+        rotationPivot.localRotation = Quaternion.AngleAxis(rotationDegrees, Vector3.right);
+    }
+
+    public float GetBaseRotationInDegrees() {
+        return Vector3.SignedAngle(rotationPivot.parent.up, rotationPivot.up, rotationPivot.parent.right);
+        // return Quaternion.Angle(Quaternion.identity, rotationPivot.localRotation);
     }
 
     public void SetManipulatableMoveable() {
