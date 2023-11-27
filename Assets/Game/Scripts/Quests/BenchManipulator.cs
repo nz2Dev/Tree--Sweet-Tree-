@@ -39,10 +39,14 @@ public class BenchManipulator : MonoBehaviour {
         var snapped = false;
         var movePosition = targetPosition;
         
-        if (Vector3.Distance(movePosition, benchTransformReference.transform.position) < snapDistance) {
+        var distanceToRef = Vector3.Distance(movePosition, benchTransformReference.transform.position);
+        if (distanceToRef < snapDistance) {
             movePosition = benchTransformReference.transform.position;
             snapped = true;
-        } 
+        } else if (distanceToRef > 2) {
+            var refToTarget = targetPosition - benchTransformReference.transform.position;
+            movePosition = benchTransformReference.transform.position + refToTarget.normalized * 2f;
+        }
         
         benchTransformReference.SetActive(!snapped);
         if (!snapped) {
