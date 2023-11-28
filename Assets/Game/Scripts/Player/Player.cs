@@ -332,6 +332,9 @@ public class Player : MonoBehaviour {
         }
         if (TweenUtils.TryFinishSequence(ref jumpSequenceState)) {
             platformUnder.SetPlayerOnTop(true);
+            if (NavMesh.SamplePosition(transform.position, out var navMeshHit, 0.5f, NavMesh.AllAreas)) {
+                navMeshAgent.Warp(navMeshHit.position);
+            }
         }
     }
 
