@@ -6,6 +6,8 @@ using UnityEngine;
 public class ClimbingNode : MonoBehaviour {
     
     [SerializeField] private ClimbingNodeConnector[] connectors;
+    [Space]
+    [SerializeField] private ClimbingNode[] outNodes;
 
     private Collider selectionCollider;
 
@@ -13,6 +15,17 @@ public class ClimbingNode : MonoBehaviour {
         selectionCollider = GetComponent<Collider>();
         foreach (var connector in connectors) {
             connector.dropPlatform.OnPlayerOnTopChanged += NodeDropPlatformOnPlayerOnTopChanged;
+        }
+        foreach (var outNode in outNodes) {
+            foreach (var outConnector in outNode.connectors) {
+                outConnector.hopPlatform.OnPlayerOnTopChanged += OutNodeHopPlatformOnPlayerOnTopChanged;
+            }
+        }
+    }
+
+    private void OutNodeHopPlatformOnPlayerOnTopChanged(bool isPlayerOnTop) {
+        if (isPlayerOnTop) {
+            selectionCollider.enabled = true;
         }
     }
 
