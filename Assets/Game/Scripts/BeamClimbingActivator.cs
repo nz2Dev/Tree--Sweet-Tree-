@@ -14,7 +14,9 @@ public class BeamClimbingActivator : MonoBehaviour {
     }
 
     private void DestinationOnContainObjectIsChanged(bool containObject) {
-        destination.GetComponentInChildren<JumpPlatform>().SetActive(containObject);
+        foreach (var platform in GetComponentsInChildren<JumpPlatform>()) {
+            platform.SetActive(containObject);
+        }
     }
 
 }
