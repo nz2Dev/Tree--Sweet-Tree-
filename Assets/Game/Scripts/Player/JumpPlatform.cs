@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class JumpPlatform : MonoBehaviour {
     public Transform jumpEndPoint;
 
     public bool IsPlayerOnTop { get; private set; }
+
+    public event Action<bool> OnPlayerOnTopChanged;
     
     private void Start() {
         SetActive(initIsActive);
@@ -32,6 +35,8 @@ public class JumpPlatform : MonoBehaviour {
         if (!isOnTop && OnEmptyOnTop != null) {
             OnEmptyOnTop.Invoke();
         }
+
+        OnPlayerOnTopChanged?.Invoke(IsPlayerOnTop);
     }
 
 }

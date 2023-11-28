@@ -7,6 +7,21 @@ public class ClimbingNode : MonoBehaviour {
     
     [SerializeField] private ClimbingNodeConnector[] connectors;
 
+    private Collider selectionCollider;
+
+    private void Awake() {
+        selectionCollider = GetComponent<Collider>();
+        foreach (var connector in connectors) {
+            connector.dropPlatform.OnPlayerOnTopChanged += NodeDropPlatformOnPlayerOnTopChanged;
+        }
+    }
+
+    private void NodeDropPlatformOnPlayerOnTopChanged(bool isOnTop) {
+        if (isOnTop) {
+            selectionCollider.enabled = false;
+        }
+    }
+
     public bool TryGetValidConnector(out ClimbingNodeConnector validConnector) {
         validConnector = default;
 
