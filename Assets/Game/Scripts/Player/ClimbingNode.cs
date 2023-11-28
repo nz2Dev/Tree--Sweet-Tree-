@@ -14,16 +14,26 @@ public class ClimbingNode : MonoBehaviour {
     
     [SerializeField] private ClimbingConnector connectorV1;
     [SerializeField] private ClimbingConnector connectorV2;
+    [SerializeField] private ClimbingConnector[] connectors;
 
-    public bool TryGetValidConnector(out ClimbingConnector connector) {
-        connector = default;
+    public bool TryGetValidConnector(out ClimbingConnector validConnector) {
+        validConnector = default;
+        
         if (IsConnctorValid(connectorV1)) {
-            connector = connectorV1;
+            validConnector = connectorV1;
             return true;
         } else if (IsConnctorValid(connectorV2)) {
-            connector = connectorV2;
+            validConnector = connectorV2;
             return true;
         }
+
+        foreach (var connector in connectors) {
+            if (IsConnctorValid(connector)) {
+                validConnector = connector;
+                return true;
+            }
+        }
+
         return false;
     }
 
