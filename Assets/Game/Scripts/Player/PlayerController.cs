@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
             } else if (raycastForJump) {
                 ExecuteActivity(new PlayerNavigateToJumpActivity(raycastedPlatform));
             } else if (raycastForClimbing) {
-                if (raycastedClimbingNode.TryGetValidConnector(out var connector)) {
+                if (raycastedClimbingNode.TryGetClimbingConnector(player.transform.position, out var connector)) {
                     EnqueueActivity(new PlayerNavigateToJumpActivity(connector.hopPlatform));
                     EnqueueActivity(new PlayerClimbMovePlatformActivity(connector.movePlatform));
                     EnqueueActivity(new PlayerNavigateToJumpActivity(connector.dropPlatform));
