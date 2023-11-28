@@ -215,6 +215,10 @@ public class Player : MonoBehaviour {
         return handledObject == null ? null : handledObject.GetComponent<PickUpable>();
     }
 
+    public void AdjustPositionOnNavMesh() {
+        navMeshAgent.Warp(transform.position);
+    }
+
     public void ActivateNavigation(Vector3 point) {
         if (platformUnder != null) {
             platformUnder.SetPlayerOnTop(false);
