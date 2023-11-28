@@ -3,29 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public struct ClimbingConnector {
-    public JumpPlatform hopPlatform;
-    public MovePlatform movePlatform;
-    public JumpPlatform dropPlatform;
-}
-
 public class ClimbingNode : MonoBehaviour {
     
-    [SerializeField] private ClimbingConnector connectorV1;
-    [SerializeField] private ClimbingConnector connectorV2;
-    [SerializeField] private ClimbingConnector[] connectors;
+    [SerializeField] private ClimbingNodeConnector[] connectors;
 
-    public bool TryGetValidConnector(out ClimbingConnector validConnector) {
+    public bool TryGetValidConnector(out ClimbingNodeConnector validConnector) {
         validConnector = default;
-        
-        if (IsConnctorValid(connectorV1)) {
-            validConnector = connectorV1;
-            return true;
-        } else if (IsConnctorValid(connectorV2)) {
-            validConnector = connectorV2;
-            return true;
-        }
 
         foreach (var connector in connectors) {
             if (IsConnctorValid(connector)) {
@@ -37,7 +20,7 @@ public class ClimbingNode : MonoBehaviour {
         return false;
     }
 
-    private static bool IsConnctorValid(ClimbingConnector connector) {
+    private static bool IsConnctorValid(ClimbingNodeConnector connector) {
         return connector.hopPlatform != null && connector.hopPlatform.IsActive;
     }
 
