@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField] private Texture2D manipulationCursor;
     [SerializeField] private Texture2D navigationCursor;
     [SerializeField] private ObjectSelector selector;
+    [SerializeField] private CursorMode cursorMode;
 
     private Player player;
 
@@ -115,18 +116,18 @@ public class PlayerController : MonoBehaviour {
 
     private void UpdateCursorIcon() {
         if (EventSystem.current.IsPointerOverGameObject()) {
-            Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.ForceSoftware);
+            Cursor.SetCursor(defaultCursor, cursorHotSpot, cursorMode);
             return;
         }
 
-        Cursor.SetCursor(defaultCursor, cursorHotSpot, CursorMode.ForceSoftware);
+        Cursor.SetCursor(defaultCursor, cursorHotSpot, cursorMode);
         if (selector.Selected != null) {
             if (currentActivity is not PlayerPickUpObjectActivity pickUpActivity 
                 || pickUpActivity.TargetPickUpable.gameObject != selector.Selected.gameObject) {
-                Cursor.SetCursor(manipulationCursor, cursorHotSpot, CursorMode.ForceSoftware);                
+                Cursor.SetCursor(manipulationCursor, cursorHotSpot, cursorMode);                
             }
         } else if (raycastForNavigation || raycastForJump || raycastForClimbing) {
-            Cursor.SetCursor(navigationCursor, cursorHotSpot, CursorMode.ForceSoftware);
+            Cursor.SetCursor(navigationCursor, cursorHotSpot, cursorMode);
         }
     }
 
