@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class TorchQuest : MonoBehaviour {
@@ -25,6 +26,7 @@ public class TorchQuest : MonoBehaviour {
     [SerializeField] private float applyingDuration = 0.8f;
     [SerializeField] private AnimationCurve applyingCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private GameObject torch;
+    [SerializeField] private UnityEvent OnQuestDone;
 
     private bool activated;
     private List<GameObject> appliedObjectsList;
@@ -57,6 +59,7 @@ public class TorchQuest : MonoBehaviour {
 
         if (torch.activeSelf) {
             swingStates.SetState(SwingStates.State.Stationar);
+            OnQuestDone?.Invoke();
         } else {
             swingStates.SetState(SwingStates.State.Activator);
         }
