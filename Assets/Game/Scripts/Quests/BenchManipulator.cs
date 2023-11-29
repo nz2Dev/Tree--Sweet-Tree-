@@ -10,6 +10,7 @@ public class BenchManipulator : MonoBehaviour {
     [SerializeField] private LayerMask manipulationSurface;
     [SerializeField] private float snapSpeed = 10;
     [SerializeField] private float snapDistance = 0.3f;
+    [SerializeField] private float rotoationSpeed = 3f;
 
     private Bench manipulated;
     private float rotationProgress;
@@ -61,11 +62,11 @@ public class BenchManipulator : MonoBehaviour {
         manipulated.transform.localRotation = Quaternion.Lerp(
             manipulated.transform.localRotation, 
             Quaternion.LookRotation(-Vector3.forward, Vector3.up), 
-            Time.deltaTime);
+            Time.deltaTime * snapSpeed);
     }
 
     public bool TryRotateToSnap(in float rotationInput) {
-        rotationProgress += rotationInput;
+        rotationProgress += rotationInput * rotoationSpeed;
         rotationProgress = Mathf.Clamp(rotationProgress, -90, 0);
 
         var snapped = false;

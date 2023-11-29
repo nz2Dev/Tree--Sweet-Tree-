@@ -12,6 +12,7 @@ public class CupQuestController : MonoBehaviour {
     [SerializeField] private CupAssembler cupAssembler; 
     [SerializeField] private Player player;
     [SerializeField] private float cameraCutDuration = 0.9f;
+    [SerializeField] private float scrollSpeed = 4f;
 
     private bool activated;
     private float activationStartTime;
@@ -113,7 +114,7 @@ public class CupQuestController : MonoBehaviour {
                 }
 
                 if (rotationStage) {
-                    var rotationDelta = Quaternion.AngleAxis(Input.mouseScrollDelta.y, Vector3.up);
+                    var rotationDelta = Quaternion.AngleAxis(Input.mouseScrollDelta.y * scrollSpeed, Vector3.up);
                     rotationProgres *= rotationDelta;
                     if (rotationProgres.eulerAngles.y > 50 && rotationProgres.eulerAngles.y < 70) {
                         activatedQuestItem.elementGO.transform.rotation = Quaternion.Euler(0, 60, 0);
