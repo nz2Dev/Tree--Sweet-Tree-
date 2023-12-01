@@ -192,7 +192,7 @@ public class Player : MonoBehaviour {
         if (!inventory.IsWorking) {
             // drop object from hands
             pickedUp.transform.SetParent(null, true);
-            pickedUp.Release();
+            pickedUp.transform.position = activePickUpableStartPosition;
 
             notifications.SendNotification(inventorySuggestion);
             return;
