@@ -92,6 +92,11 @@ public class InventoryUI : MonoBehaviour {
     }
 
     private void PlayHighlightOnSlot(int index) {
+        if (playingHighlight) {
+            var playingHighlightSlot = itemsContainer.GetChild(playingHighlightSlotIndex) as RectTransform;
+            playingHighlightSlot.GetComponent<CanvasGroup>().alpha = 1;
+        }
+
         playingHighlight = true;
         playingHighlightStartTime = Time.time + highlightDelay;
         playingHighlightSlotIndex = index;
