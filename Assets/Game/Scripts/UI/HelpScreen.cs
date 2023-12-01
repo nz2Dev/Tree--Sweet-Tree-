@@ -11,6 +11,8 @@ public class HelpScreen : MonoBehaviour, IPointerClickHandler {
     [SerializeField] private Image background;
     [SerializeField] private ScallingEffect helpImageStateEffect;
 
+    private bool isOpen;
+
     private void Awake() {
         background.enabled = false;
         helpImageStateEffect.gameObject.SetActive(false);
@@ -27,16 +29,20 @@ public class HelpScreen : MonoBehaviour, IPointerClickHandler {
     }
 
     private void ShowInternaly() {
+        isOpen = true;
         background.enabled = true;
         background.CrossFadeAlpha(0.6f, 0.2f, true);
         helpImageStateEffect.ScaleUp();
     }
 
     public void Close() {
-        HideInternaly();
+        if (isOpen) {
+            HideInternaly();
+        }
     }
 
     private void HideInternaly() {
+        isOpen = false;
         background.CrossFadeAlpha(0.0f, 0.2f, true);
         this.StartDelayedActionCallback(0.2f, () => background.enabled = false);
         helpImageStateEffect.ScaleDown();
