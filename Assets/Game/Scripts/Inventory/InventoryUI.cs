@@ -125,9 +125,9 @@ public class InventoryUI : MonoBehaviour {
         }
     }
 
-    private void BindSlotToItem(Transform itemSlotTransform, Item item) {
+    private void BindSlotToItem(Transform itemSlotTransform, ItemSO item) {
         var itemSlotImage = itemSlotTransform.GetChild(1).GetComponent<UnityEngine.UI.Image>();
-        itemSlotImage.sprite = item.icon;
+        itemSlotImage.sprite = item.Icon;
     }
 
     private void ChangeActivatorState(bool visible) {

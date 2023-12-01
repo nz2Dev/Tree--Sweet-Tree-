@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3673010244461361471}
   - component: {fileID: 9194873511926215753}
   - component: {fileID: 8330570965462197926}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cup_4_handle_Pickupable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initIsDetectable: 1
 --- !u!114 &8330570965462197926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,10 +60,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickUpRadius: 1
-  inventoryItem:
-    icon: {fileID: 21300000, guid: 9cc3c3314245b2341b63efc7bbc8ba96, type: 3}
-    prefab: {fileID: 117341925045536919, guid: cb000a73da3dc4efea508323e5b629fa, type: 3}
+  itemSO: {fileID: 11400000, guid: 09e158848c4a64e4b88ac934ad10f7ec, type: 2}
   destructionEffectPrefab: {fileID: 0}
+  pickUpPlatform: {fileID: 0}
+  OnConsumed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6630365317172885989
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,6 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectable: {fileID: 9194873511926215753}
+  definedOutline: {fileID: 0}
   selectionColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   highlightWidthCurve:

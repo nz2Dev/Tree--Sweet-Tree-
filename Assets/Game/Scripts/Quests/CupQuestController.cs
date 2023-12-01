@@ -33,7 +33,7 @@ public class CupQuestController : MonoBehaviour {
         var item = player.GetComponent<Inventory>().GetItem(itemIndex);
         if (cupAssembler.CanReceivePiece(item)) {
             player.GetComponent<Inventory>().PullItem(itemIndex);
-            var elementGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+            var elementGO = GameObject.Instantiate(item.TargetPrefab, Vector3.zero, Quaternion.identity);
             cupAssembler.PutOutNextPiece(elementGO);
         }
     }

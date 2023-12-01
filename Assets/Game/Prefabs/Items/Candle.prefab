@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4218907421267717805}
   - component: {fileID: 7108165975850741853}
   - component: {fileID: 938228022639488108}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Candle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initIsDetectable: 1
 --- !u!114 &938228022639488108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,9 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickUpRadius: 1
-  inventoryItem:
-    icon: {fileID: 21300000, guid: 4b91a5b3cb35f7c4095602427fa3d2b5, type: 3}
-    prefab: {fileID: 8102731062588793774, guid: ec4a49bdc5cce45f391cdbf43dcc7301, type: 3}
+  itemSO: {fileID: 11400000, guid: bf3c18a6b2c2a427a8fed2f05f5f6472, type: 2}
   destructionEffectPrefab: {fileID: 0}
   pickUpPlatform: {fileID: 0}
   OnConsumed:
@@ -227,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectable: {fileID: 7108165975850741853}
+  definedOutline: {fileID: 0}
   selectionColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0, g: 0.91935134, b: 1, a: 1}
   highlightWidthCurve:

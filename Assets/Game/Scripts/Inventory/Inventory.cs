@@ -3,19 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public struct Item {
-    public Sprite icon;
-    public GameObject prefab;
-}
-
 public class Inventory : MonoBehaviour {
     
     [SerializeField] private bool initialIsWorkingState;
-    [SerializeField] private Item[] initialItems;
+    [SerializeField] private ItemSO[] initialItems;
 
     private bool working;
-    private List<Item> items;
+    private List<ItemSO> items;
 
     public int ItemsCount => items.Count;
     public bool IsWorking {
@@ -34,12 +28,12 @@ public class Inventory : MonoBehaviour {
     public event Action<int> OnItemActivated;
 
     private void Awake() {
-        items = new List<Item>();
+        items = new List<ItemSO>();
         working = initialIsWorkingState;
         items.AddRange(initialItems);
     }
 
-    public bool Put(Item item) {
+    public bool Put(ItemSO item) {
         if (working) {
             items.Add(item);
             OnItemAdded?.Invoke(items.Count - 1);
@@ -54,14 +48,14 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    public Item PullItem(int index) {
+    public ItemSO PullItem(int index) {
         var item = items[index];
         items.RemoveAt(index);
         OnItemRemoved?.Invoke(index);
         return item;
     }
 
-    public Item GetItem(int index) {
+    public ItemSO GetItem(int index) {
         return items[index];
     }
 

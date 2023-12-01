@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fee0e85996740ddac6ab8fe1ee08b7, type: 3}
+  m_Name: CupPieceItem 4
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 9cc3c3314245b2341b63efc7bbc8ba96, type: 3}
+  targetPrefab: {fileID: 117341925045536919, guid: cb000a73da3dc4efea508323e5b629fa, type: 3}
+  dropPrefab: {fileID: 1608042100743334467, guid: f4a89beebeab94a9fbeabd0b826ab65f, type: 3}

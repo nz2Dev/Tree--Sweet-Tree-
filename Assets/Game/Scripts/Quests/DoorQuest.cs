@@ -43,12 +43,12 @@ public class DoorQuest : MonoBehaviour {
 
     private void InventoryOnItemActivated(int itemIndex) {
         var inventory = player.GetComponent<Inventory>();
-        if (inventory.GetItem(itemIndex).icon != questPieceIcon) {
+        if (inventory.GetItem(itemIndex).Icon != questPieceIcon) {
             return;
         }
 
         var item = inventory.PullItem(itemIndex);
-        var activatedItemGO = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+        var activatedItemGO = GameObject.Instantiate(item.TargetPrefab, Vector3.zero, Quaternion.identity);
         placedElementGO = activatedItemGO;
         dynamicZone.SetResident(activatedItemGO.GetComponent<DoorQuestElement>());
     }

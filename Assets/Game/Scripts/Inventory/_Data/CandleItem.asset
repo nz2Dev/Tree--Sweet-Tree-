@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fee0e85996740ddac6ab8fe1ee08b7, type: 3}
+  m_Name: CandleItem
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 4b91a5b3cb35f7c4095602427fa3d2b5, type: 3}
+  targetPrefab: {fileID: 8102731062588793774, guid: ec4a49bdc5cce45f391cdbf43dcc7301, type: 3}
+  dropPrefab: {fileID: 3976221156887968970, guid: d4fcc2ee0854c44da938a6b8a14cf447, type: 3}

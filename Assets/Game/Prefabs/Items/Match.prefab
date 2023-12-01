@@ -139,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectable: {fileID: 3537893765338308139}
+  definedOutline: {fileID: 0}
   selectionColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 0.06941971, g: 0.88425845, b: 0.9811321, a: 0.74509805}
   highlightWidthCurve:
@@ -187,7 +188,7 @@ GameObject:
   - component: {fileID: 1854240971028737089}
   - component: {fileID: 3537893765338308139}
   - component: {fileID: 6897419332784200817}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Match
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,6 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initIsDetectable: 1
 --- !u!114 &6897419332784200817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,9 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickUpRadius: 1
-  inventoryItem:
-    icon: {fileID: 21300000, guid: 20b9f3b533a11ae4fa249f93f228e3f2, type: 3}
-    prefab: {fileID: 9133527176998485880, guid: 9f5e28feb3dc74ac2871a95298ab9816, type: 3}
+  itemSO: {fileID: 11400000, guid: e7a4d7069d78840518427034d638fb13, type: 2}
   destructionEffectPrefab: {fileID: 0}
   pickUpPlatform: {fileID: 0}
   OnConsumed:

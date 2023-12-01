@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Playables;
 
 public class Player : MonoBehaviour {
     
@@ -196,7 +194,7 @@ public class Player : MonoBehaviour {
             notifications.SendNotification(inventorySuggestion);
         } else {
             // handle object by inventory
-            inventory.Put(pickedUp.InventoryItem);
+            inventory.Put(pickedUp.InventoryItemSO);
             pickedUp.DestroySelf(consumed: true);
         }
     }

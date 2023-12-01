@@ -7,19 +7,19 @@ using UnityEngine.Events;
 public class PickUpable : MonoBehaviour {
     
     [SerializeField] private float pickUpRadius = 1f;
-    [SerializeField] private Item inventoryItem;
+    [SerializeField] private ItemSO itemSO;
     [SerializeField] private GameObject destructionEffectPrefab;
     [SerializeField] private JumpPlatform pickUpPlatform;
     [SerializeField] private UnityEvent OnConsumed;
 
     public float PickUpRadius => pickUpRadius;
     public JumpPlatform PickUpPlatform => pickUpPlatform;
-    public Item InventoryItem => inventoryItem;
+    public ItemSO InventoryItemSO => itemSO;
 
     public event Action OnConsumedEvent;
 
-    public void Setup(Item item) {
-        inventoryItem = item;
+    public void Setup(ItemSO item) {
+        itemSO = item;
     }
 
     public void Release() {

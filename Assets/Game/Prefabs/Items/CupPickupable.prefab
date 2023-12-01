@@ -46,9 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickUpRadius: 1
+  itemSO: {fileID: 11400000, guid: da579499d2efb48ae93b7a67c6c61540, type: 2}
   inventoryItem:
     icon: {fileID: 21300000, guid: 9ad495a9e0f30ed41b59ecc745944bd9, type: 3}
     prefab: {fileID: 5258962099444572903, guid: 0790dcf5a01e4490982c822a352ba665, type: 3}
+    dropPrefab: {fileID: 0}
   destructionEffectPrefab: {fileID: 4891524985456741298, guid: 7afa761b5545c46c78be8bfdde4ab9e0, type: 3}
   pickUpPlatform: {fileID: 0}
   OnConsumed:

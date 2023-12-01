@@ -30,8 +30,8 @@ public class CupAssembler : MonoBehaviour {
         assemblyCenter.SetActive(false);
     }
 
-    public bool CanReceivePiece(Item item) {
-        return questElementItems.Count < availablePieces.Length && availablePieces.Contains(item.icon);
+    public bool CanReceivePiece(ItemSO item) {
+        return questElementItems.Count < availablePieces.Length && availablePieces.Contains(item.Icon);
     }
 
     public void PutOutNextPiece(GameObject piece) {

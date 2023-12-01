@@ -74,7 +74,7 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private GameObject laidOutObject;
-    private Item laidOutInventoryItem;
+    private ItemSO laidOutInventoryItem;
     private Sprite laidOutObjectIcon; // using inventory item sprite specification to identify elements
 
     private void LaidOutNewItem(int itemIndex) {
@@ -84,9 +84,9 @@ public class TorchQuest : MonoBehaviour {
 
         var item = Player.LatestInstance.GetComponent<Inventory>().PullItem(itemIndex);
         laidOutInventoryItem = item;
-        laidOutObject = GameObject.Instantiate(item.prefab, Vector3.zero, Quaternion.identity);
+        laidOutObject = GameObject.Instantiate(item.TargetPrefab, Vector3.zero, Quaternion.identity);
         laidOutObject.transform.SetParent(itemHubTransform, false);
-        laidOutObjectIcon = item.icon;
+        laidOutObjectIcon = item.Icon;
     }
 
     private void HighlightLaidOut() {

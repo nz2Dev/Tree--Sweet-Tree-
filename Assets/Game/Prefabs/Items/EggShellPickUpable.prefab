@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6262792430367568125}
   - component: {fileID: 7057765093293468490}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Egg Selection Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 1198220638277149157}
   - component: {fileID: 6508246678505389040}
   - component: {fileID: 7237761976991211079}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: EggShellPickUpable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe9bd794a0f2a46bfa679b0314f1c31c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initIsDetectable: 1
 --- !u!114 &7237761976991211079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,7 +117,13 @@ MonoBehaviour:
   inventoryItem:
     icon: {fileID: 21300000, guid: 0ee4fa5d9ccd59b4d8d27cbc5e008aad, type: 3}
     prefab: {fileID: 0}
+    dropPrefab: {fileID: 3726587799785254373}
   destructionEffectPrefab: {fileID: 3732551427800355369, guid: 3e2226b0718f88b40ad98d970390f416, type: 3}
+  pickUpPlatform: {fileID: 0}
+  OnConsumed:
+    m_PersistentCalls:
+      m_Calls: []
+  itemSO: {fileID: 11400000, guid: f6c8217a8c9eb446abb6651f16aaabf3, type: 2}
 --- !u!1 &8233606932298563781
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +137,7 @@ GameObject:
   - component: {fileID: 777789755037575505}
   - component: {fileID: 8883761966166904010}
   - component: {fileID: 8541012615146181464}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SM_Egg_shell_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +152,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8233606932298563781}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.307, y: 0.165, z: 0.32999986}
+  m_LocalPosition: {x: 0, y: 0.165, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -233,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectable: {fileID: 6508246678505389040}
+  definedOutline: {fileID: 0}
   selectionColor: {r: 1, g: 1, b: 1, a: 1}
   highlightColor: {r: 1, g: 0, b: 0, a: 1}
   highlightWidthCurve:
