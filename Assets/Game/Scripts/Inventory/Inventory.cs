@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Inventory : MonoBehaviour {
     
@@ -10,6 +12,7 @@ public class Inventory : MonoBehaviour {
 
     private bool working;
     private List<ItemSO> items;
+    private List<Action<int>> itemActivationControlersOrder;
 
     public int ItemsCount => items.Count;
     public bool IsWorking {
@@ -25,12 +28,20 @@ public class Inventory : MonoBehaviour {
     public event Action OnOpenRequest;
     public event Action<int> OnItemAdded; // notifies at what index a new item was placed
     public event Action<int> OnItemRemoved;
-    public event Action<int> OnItemActivated;
 
     private void Awake() {
         items = new List<ItemSO>();
+        itemActivationControlersOrder = new List<Action<int>>();
         working = initialIsWorkingState;
         items.AddRange(initialItems);
+    }
+
+    public void RegisterItemActivationController(Action<int> itemActivationCallback) {
+        itemActivationControlersOrder.Add(itemActivationCallback);
+    }
+
+    public void UnregisterItemActivationController(Action<int> itemActivationCallback) {
+        itemActivationControlersOrder.Remove(itemActivationCallback);
     }
 
     public bool HasSpace() {
@@ -48,7 +59,8 @@ public class Inventory : MonoBehaviour {
 
     public void ActivateItem(int index) {
         if (index < items.Count) {
-            OnItemActivated?.Invoke(index);
+            var currentItemActivationCallback = itemActivationControlersOrder.LastOrDefault();
+            currentItemActivationCallback?.Invoke(index);
         }
     }
 

@@ -66,11 +66,11 @@ public class TorchQuest : MonoBehaviour {
     }
 
     private void BindToInventoryEvents() {
-        Player.LatestInstance.GetComponent<Inventory>().OnItemActivated += LaidOutNewItem;
+        Player.LatestInstance.Inventory.RegisterItemActivationController(LaidOutNewItem);
     }
 
     private void UnbindFromInventoryEvents() {
-        Player.LatestInstance.GetComponent<Inventory>().OnItemActivated -= LaidOutNewItem;
+        Player.LatestInstance.Inventory.UnregisterItemActivationController(LaidOutNewItem);
     }
 
     private GameObject laidOutObject;

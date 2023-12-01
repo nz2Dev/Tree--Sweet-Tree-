@@ -26,7 +26,7 @@ public class CupQuestController : MonoBehaviour {
         activated = true;
         
         var playerInventory = player.GetComponent<Inventory>();
-        playerInventory.OnItemActivated += PlayerInventoryOnItemActivated;
+        playerInventory.RegisterItemActivationController(PlayerInventoryOnItemActivated);
     }
 
     private void PlayerInventoryOnItemActivated(int itemIndex) {
@@ -45,7 +45,7 @@ public class CupQuestController : MonoBehaviour {
         activated = false;
 
         var playerInventory = player.GetComponent<Inventory>();
-        playerInventory.OnItemActivated -= PlayerInventoryOnItemActivated;
+        playerInventory.UnregisterItemActivationController(PlayerInventoryOnItemActivated);
     }
 
     private bool waitForPickUp;

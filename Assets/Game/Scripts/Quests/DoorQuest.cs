@@ -30,7 +30,7 @@ public class DoorQuest : MonoBehaviour {
         vcam.m_Priority += 2;
         door.SetState(DoorStates.State.Quest);
 
-        player.GetComponent<Inventory>().OnItemActivated += InventoryOnItemActivated;
+        player.Inventory.RegisterItemActivationController(InventoryOnItemActivated);
     }
 
     public void Deactivate() {
@@ -38,7 +38,7 @@ public class DoorQuest : MonoBehaviour {
         vcam.m_Priority -= 2;
         door.SetState(DoorStates.State.Activator);
 
-        player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
+        player.Inventory.UnregisterItemActivationController(InventoryOnItemActivated);
     }
 
     private void InventoryOnItemActivated(int itemIndex) {
@@ -58,7 +58,7 @@ public class DoorQuest : MonoBehaviour {
         vcam.m_Priority -= 2;
         door.SetState(DoorStates.State.Stationar);
 
-        player.GetComponent<Inventory>().OnItemActivated -= InventoryOnItemActivated;
+        player.Inventory.UnregisterItemActivationController(InventoryOnItemActivated);
         
         if (OnQuestFinishedEvent != null) {
             OnQuestFinishedEvent.Invoke();

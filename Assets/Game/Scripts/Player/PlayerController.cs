@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void Start() {
-        player.Inventory.OnItemActivated += PlayerInventoryOnItemActivated;
+        player.Inventory.RegisterItemActivationController(PlayerInventoryOnItemActivated);
     }
 
     private void PlayerInventoryOnItemActivated(int itemIndex) {
