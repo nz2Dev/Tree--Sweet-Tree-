@@ -116,19 +116,16 @@ public class Player : MonoBehaviour {
     private Transform pickUpDestination;
     private Vector3 activePickUpableStartPosition;
     private float pickUpActivationStartTime;
-    private bool handleAutomatically;
 
     public bool CanPickUpFromHere(PickUpable pickUpable) {
         return Vector3.Distance(transform.position, pickUpable.transform.position) < pickUpable.PickUpRadius;
     }
 
-    public void CancelPickUp() {
-        // todo probably should call release on pickupable
-        activePickUpable = null;
-    }
+    public void ActivatePickUp(PickUpable pickUpable) {
+        if (activePickUpable != null) {
+            HandlePickedUp();
+        }
 
-    public void ActivatePickUp(PickUpable pickUpable, bool handleAutomatically = false) {
-        this.handleAutomatically = handleAutomatically;
         navMeshAgent.ExtResetDestination();
 
         activePickUpable = pickUpable;
@@ -140,10 +137,6 @@ public class Player : MonoBehaviour {
         } else {
             pickUpDestination = character.BagLocation;
         }
-    }
-
-    public bool IsPickingUp() {
-        return activePickUpable != null;
     }
     
     private void UpdatePickUp() {
@@ -165,22 +158,15 @@ public class Player : MonoBehaviour {
             } else {
                 // Time > pickUpEndTime
                 activePickUpable.transform.position = pickUpDestination.position;
-                activePickUpable.transform.SetParent(pickUpDestination, true);
-                activePickUpable = null;
-
-                if (handleAutomatically) {
-                    HandlePickedUp();
-                }
+                HandlePickedUp();
             }
         }
     }
 
-    public bool HasPickedUp() {
-        return GetHandledObject() != null;
-    }
-
-    public void HandlePickedUp() {
-        var pickedUp = GetHandledObject();
+    private void HandlePickedUp() {
+        var pickedUp = activePickUpable;
+        activePickUpable = null;
+        
         if (pickedUp.name == "Bag") {
             inventory.IsWorking = true;
             character.SetBagEquiped(inventory.IsWorking);
@@ -191,7 +177,6 @@ public class Player : MonoBehaviour {
 
         if (!inventory.IsWorking) {
             // drop object from hands
-            pickedUp.transform.SetParent(null, true);
             pickedUp.transform.position = activePickUpableStartPosition;
 
             notifications.SendNotification(inventorySuggestion);
@@ -199,7 +184,6 @@ public class Player : MonoBehaviour {
         } 
         
         if (!inventory.HasSpace()) {
-            pickedUp.transform.SetParent(null, true);
             pickedUp.transform.position = activePickUpableStartPosition;
 
             notifications.SendNotification(noSpaceSuggestion);
@@ -209,20 +193,6 @@ public class Player : MonoBehaviour {
         // handle object by inventory
         inventory.Put(pickedUp.InventoryItemSO);
         pickedUp.DestroySelf(consumed: true);
-    }
-
-    public void DropPickedUp() {
-        var handledPickUpable = GetHandledObject();
-        handledPickUpable.transform.SetParent(null, true);
-        handledPickUpable.Release();
-    }
-    
-    private PickUpable GetHandledObject() {
-        if (pickUpDestination.transform.childCount == 0) {
-            return null;
-        }
-        var handledObject = pickUpDestination.transform.GetChild(0);
-        return handledObject == null ? null : handledObject.GetComponent<PickUpable>();
     }
 
     public void DropInventoryItem(int itemIndex) {
@@ -243,7 +213,7 @@ public class Player : MonoBehaviour {
         }
         platformUnder = null;
         // cancel all the rest
-        CancelPickUp();        
+        // CancelPickUp();        
 
         navMeshAgent.destination = point;
         navMeshAgent.nextPosition = transform.position;

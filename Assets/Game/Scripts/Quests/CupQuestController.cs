@@ -69,7 +69,7 @@ public class CupQuestController : MonoBehaviour {
         if (waitForPickUp) {
             if (Time.time > waitStartTime + cameraCutDuration) {
                 waitForPickUp = false;
-                player.ActivatePickUp(pickUpable, handleAutomatically: true);
+                player.ActivatePickUp(pickUpable);
             }
         }
         

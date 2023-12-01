@@ -100,7 +100,7 @@ public class TorchQuest : MonoBehaviour {
     private void ReturnLaidOutToInventory() {
         var pickupable = laidOutObject.AddComponent<PickUpable>();
         pickupable.Setup(laidOutInventoryItem);
-        Player.LatestInstance.ActivatePickUp(pickupable, handleAutomatically: true);
+        Player.LatestInstance.ActivatePickUp(pickupable);
     }
 
     private void ForgetLaidOutItem() {
