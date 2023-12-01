@@ -33,6 +33,10 @@ public class Inventory : MonoBehaviour {
         items.AddRange(initialItems);
     }
 
+    public bool HasSpace() {
+        return items.Count < 5;
+    }
+
     public bool Put(ItemSO item) {
         if (working) {
             items.Add(item);

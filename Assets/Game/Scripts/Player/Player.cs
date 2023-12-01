@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class Player : MonoBehaviour {
     
     [SerializeField] private Suggestion inventorySuggestion;
+    [SerializeField] private Suggestion noSpaceSuggestion;
     [SerializeField] private AnimationCurve pickUpCurve;
     [SerializeField] private float pickingUpDuration = 0.4f;
     [SerializeField] private float jumpMaxHight = 1f;
@@ -194,11 +195,20 @@ public class Player : MonoBehaviour {
             pickedUp.Release();
 
             notifications.SendNotification(inventorySuggestion);
-        } else {
-            // handle object by inventory
-            inventory.Put(pickedUp.InventoryItemSO);
-            pickedUp.DestroySelf(consumed: true);
-        }
+            return;
+        } 
+        
+        if (!inventory.HasSpace()) {
+            pickedUp.transform.SetParent(null, true);
+            pickedUp.transform.position = activePickUpableStartPosition;
+
+            notifications.SendNotification(noSpaceSuggestion);
+            return;
+        } 
+        
+        // handle object by inventory
+        inventory.Put(pickedUp.InventoryItemSO);
+        pickedUp.DestroySelf(consumed: true);
     }
 
     public void DropPickedUp() {
