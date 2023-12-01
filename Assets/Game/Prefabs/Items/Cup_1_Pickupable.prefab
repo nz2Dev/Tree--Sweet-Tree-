@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2516679103165401429}
   - component: {fileID: 3109622414524494266}
   - component: {fileID: 2101436434496114835}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: cup_1_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ Transform:
   m_Children:
   - {fileID: 8703996117921483054}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5087293660853211346
 MonoBehaviour:

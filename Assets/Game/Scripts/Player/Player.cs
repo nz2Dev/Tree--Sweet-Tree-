@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour {
 
     public static Player LatestInstance => latestInstance;
     public JumpPlatform PlatformUnder => platformUnder;
+    public Inventory Inventory => inventory;
 
     private void Awake() {
         latestInstance = this;
@@ -211,6 +213,14 @@ public class Player : MonoBehaviour {
         }
         var handledObject = pickUpDestination.transform.GetChild(0);
         return handledObject == null ? null : handledObject.GetComponent<PickUpable>();
+    }
+
+    public void DropInventoryItem(int itemIndex) {
+        if (inventory.GetItem(itemIndex).DropPrefab != null) {
+            var pulledItem = inventory.PullItem(itemIndex);
+            var dropObject = Instantiate(pulledItem.DropPrefab, Vector3.zero, Quaternion.identity);
+            dropObject.transform.position = transform.position + transform.forward * 0.5f;
+        }
     }
 
     public void AdjustPositionOnNavMesh() {

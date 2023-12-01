@@ -42,6 +42,14 @@ public class PlayerController : MonoBehaviour {
         transportationObjectController = new PlayerTransportableObjectController(selector);
     }
 
+    private void Start() {
+        player.Inventory.OnItemActivated += PlayerInventoryOnItemActivated;
+    }
+
+    private void PlayerInventoryOnItemActivated(int itemIndex) {
+        player.DropInventoryItem(itemIndex);
+    }
+
     private void Update() {
         RaycastNavigationPoint();
         UpdateCursorIcon();
