@@ -75,7 +75,7 @@ public class DoorQuest : MonoBehaviour {
 
     private void Update() {
         if (active) {
-            if (Input.GetKeyDown(KeyCode.F)) {
+            if (Application.isEditor && Input.GetKeyDown(KeyCode.F)) {
                 OnQuestFinished();
             }
 

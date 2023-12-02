@@ -74,7 +74,7 @@ public class CupQuestController : MonoBehaviour {
         }
         
         if (activated) {
-            if (Input.GetKeyDown(KeyCode.F)) {
+            if (Application.isEditor && Input.GetKeyDown(KeyCode.F)) {
                 OnFinish();
                 return;
             }
