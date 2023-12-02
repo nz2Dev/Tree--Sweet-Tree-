@@ -1,3 +1,4 @@
+using System;
 using Cinemachine.Utility;
 using UnityEngine;
 using UnityEngine.AI;
@@ -398,5 +399,9 @@ public class Player : MonoBehaviour {
     public void CancelMovePlatform() {
         activeMovePlatform = null;
         character.SetIsWalking(false);
+    }
+
+    public void ActivateEmotion() {
+        character.PlayEmotion();
     }
 }

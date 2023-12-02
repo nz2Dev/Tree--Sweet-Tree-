@@ -70,5 +70,8 @@ public class HovanetsCharacter : MonoBehaviour {
     private void OnRightFootDown() {
         audioPlayer.PlayRightFoot();
     }
-    
+
+    public void PlayEmotion() {
+        animator.SetTrigger("Emotion");
+    }
 }
