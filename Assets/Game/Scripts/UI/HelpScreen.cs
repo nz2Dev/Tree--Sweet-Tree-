@@ -10,12 +10,14 @@ public class HelpScreen : MonoBehaviour, IPointerClickHandler {
     [SerializeField] private ScallingEffect helpButton;
     [SerializeField] private Image background;
     [SerializeField] private ScallingEffect helpImageStateEffect;
+    [SerializeField] private GameObject closeButton;
 
     private bool isOpen;
 
     private void Awake() {
         background.enabled = false;
         helpImageStateEffect.gameObject.SetActive(false);
+        closeButton.SetActive(false);
     }
 
     private void Update() {
@@ -33,6 +35,7 @@ public class HelpScreen : MonoBehaviour, IPointerClickHandler {
         background.enabled = true;
         background.CrossFadeAlpha(0.6f, 0.2f, true);
         helpImageStateEffect.ScaleUp();
+        this.StartDelayedActionCallback(0.2f, () => closeButton.SetActive(true));
     }
 
     public void Close() {
@@ -47,6 +50,11 @@ public class HelpScreen : MonoBehaviour, IPointerClickHandler {
         this.StartDelayedActionCallback(0.2f, () => background.enabled = false);
         helpImageStateEffect.ScaleDown();
         helpButton.ScaleUp();
+        closeButton.SetActive(false);
+    }
+
+    public void OnCloseApplicationClick() {
+
     }
 
     public void OnPointerClick(PointerEventData eventData) {
