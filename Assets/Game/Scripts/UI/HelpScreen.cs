@@ -54,7 +54,7 @@ public class HelpScreen : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnCloseApplicationClick() {
-
+        Application.Quit();
     }
 
     public void OnPointerClick(PointerEventData eventData) {
