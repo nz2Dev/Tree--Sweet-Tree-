@@ -140,7 +140,7 @@ MonoBehaviour:
   selectable: {fileID: 2262656914340010602}
   definedOutline: {fileID: 0}
   selectionColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightColor: {r: 1, g: 0, b: 0, a: 1}
+  highlightColor: {r: 0, g: 0.91935134, b: 1, a: 1}
   highlightWidthCurve:
     serializedVersion: 2
     m_Curve:
@@ -208,7 +208,7 @@ Transform:
   m_Children:
   - {fileID: 2368506807542514042}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -138.38, z: 0}
 --- !u!114 &2262656914340010602
 MonoBehaviour:
