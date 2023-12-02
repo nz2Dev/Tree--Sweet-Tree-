@@ -51,6 +51,7 @@ public class ScallingEffect : MonoBehaviour {
             transform.localScale = Vector3.one * scale;
         }
         if (TweenUtils.TryFinishSequence(ref effectSequenceState)) {
+            transform.localScale = Vector3.one * toScale;
             if (controlGameObjectActiveState) {
                 gameObject.SetActive(endVisibility);
             }
