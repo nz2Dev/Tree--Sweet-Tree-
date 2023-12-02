@@ -5,8 +5,8 @@ using UnityEngine;
 
 public static class CoroutineExtensions {
     
-    public static void StartDelayedActionCallback(this MonoBehaviour monoBehaviour, float delay, Action callback) {
-        monoBehaviour.StartCoroutine(DelayedActionRunner(delay, callback));
+    public static Coroutine StartDelayedActionCallback(this MonoBehaviour monoBehaviour, float delay, Action callback) {
+        return monoBehaviour.StartCoroutine(DelayedActionRunner(delay, callback));
     }
 
     private static IEnumerator DelayedActionRunner(float delay, Action action) {

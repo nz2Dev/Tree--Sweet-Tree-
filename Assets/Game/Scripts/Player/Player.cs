@@ -51,6 +51,34 @@ public class Player : MonoBehaviour {
         UpdateJump();
     }
 
+    private Coroutine hideCoroutine;
+    private Coroutine showCoroutine;
+
+    public void HideCharacterDelayed(float delay) {
+        StopCharacterHideShowCoroutines();
+        hideCoroutine = this.StartDelayedActionCallback(delay, () => {
+            character.gameObject.SetActive(false);
+        });
+    }
+
+    public void ShowCharacterDelayed(float delay) {
+        StopCharacterHideShowCoroutines();
+        showCoroutine = this.StartDelayedActionCallback(delay, () => {
+            character.gameObject.SetActive(true);
+        });
+    }
+
+    private void StopCharacterHideShowCoroutines() {
+        if (hideCoroutine != null) {
+            StopCoroutine(hideCoroutine);
+            hideCoroutine = null;
+        }
+        if (showCoroutine != null) {
+            StopCoroutine(showCoroutine);
+            showCoroutine = null;
+        }
+    }
+
     public void ReceiveNotification(Suggestion suggestion) {
         notifications.SendNotification(suggestion);
     }

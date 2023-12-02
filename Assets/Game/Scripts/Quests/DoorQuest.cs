@@ -29,6 +29,7 @@ public class DoorQuest : MonoBehaviour {
         active = true;
         vcam.m_Priority += 2;
         door.SetState(DoorStates.State.Quest);
+        player.HideCharacterDelayed(0.9f); // camera cut duration
 
         player.Inventory.RegisterItemActivationController(InventoryOnItemActivated);
     }
@@ -37,6 +38,7 @@ public class DoorQuest : MonoBehaviour {
         active = false;
         vcam.m_Priority -= 2;
         door.SetState(DoorStates.State.Activator);
+        player.ShowCharacterDelayed(0.9f); // camera cut duration
 
         player.Inventory.UnregisterItemActivationController(InventoryOnItemActivated);
     }
@@ -57,6 +59,7 @@ public class DoorQuest : MonoBehaviour {
         active = false;
         vcam.m_Priority -= 2;
         door.SetState(DoorStates.State.Stationar);
+        player.ShowCharacterDelayed(0.9f); // camera cut duration
 
         player.Inventory.UnregisterItemActivationController(InventoryOnItemActivated);
         
