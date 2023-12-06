@@ -5,7 +5,6 @@ using UnityEngine;
 public class AmbiencePlayer : MonoBehaviour {
 
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private float playDuration = 100;
     [SerializeField] private float cycleDelaySec = 30;
 
     private bool isActive = true;
@@ -29,7 +28,7 @@ public class AmbiencePlayer : MonoBehaviour {
 
     private IEnumerator SequenceRoutine() {
         audioSource.Play();
-        yield return new WaitForSeconds(playDuration);
+        yield return new WaitForSeconds(audioSource.time);
         audioSource.Stop();
         yield return new WaitForSeconds(cycleDelaySec);
         BeginAmbience();
