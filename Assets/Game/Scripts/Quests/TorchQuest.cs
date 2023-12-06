@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 
 public class TorchQuest : MonoBehaviour {
 
+    [SerializeField] private AudioSource matchActivationSound;
     [SerializeField] private SwingStates swingStates;
     [SerializeField] private ObjectSelector objectSelector;
     [SerializeField] private CinemachineVirtualCamera vcam;
@@ -152,6 +153,7 @@ public class TorchQuest : MonoBehaviour {
             }
 
             torch.SetActive(true);
+            matchActivationSound.Play();
         }
     }
 
@@ -217,6 +219,7 @@ public class TorchQuest : MonoBehaviour {
 
             if (Application.isEditor && Input.GetKeyDown(KeyCode.F)) {
                 torch.SetActive(true);
+                matchActivationSound.Play();
             }
         }
     }
