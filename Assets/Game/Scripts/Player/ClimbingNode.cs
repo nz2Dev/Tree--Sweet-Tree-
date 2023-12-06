@@ -9,10 +9,17 @@ public class ClimbingNode : MonoBehaviour {
     [SerializeField] private ClimbingNodeConnector[] connectors;
     [Space]
     [SerializeField] private ClimbingNode[] outNodes;
+    [SerializeField] private bool initIsClimbable = true;
+    [SerializeField] private Suggestion enablingSuggestion;
 
     private Collider selectionCollider;
+    private bool isClimbable;
+
+    public bool CanClimbeOnto => isClimbable;
+    public Suggestion EnablingSuggestion => enablingSuggestion;
 
     private void Awake() {
+        isClimbable = initIsClimbable;
         selectionCollider = GetComponent<Collider>();
         foreach (var connector in connectors) {
             connector.dropPlatform.OnPlayerOnTopChanged += NodeDropPlatformOnPlayerOnTopChanged;
@@ -22,6 +29,10 @@ public class ClimbingNode : MonoBehaviour {
                 outConnector.hopPlatform.OnPlayerOnTopChanged += OutNodeHopPlatformOnPlayerOnTopChanged;
             }
         }
+    }
+
+    public void SetIsClimbable(bool isClimbable) {
+        this.isClimbable = isClimbable;
     }
 
     private void OutNodeHopPlatformOnPlayerOnTopChanged(bool isPlayerOnTop) {

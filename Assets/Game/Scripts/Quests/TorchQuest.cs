@@ -214,6 +214,10 @@ public class TorchQuest : MonoBehaviour {
             if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape)) {
                 Deactivate();
             }
+
+            if (Application.isEditor && Input.GetKeyDown(KeyCode.F)) {
+                torch.SetActive(true);
+            }
         }
     }
 

@@ -66,12 +66,16 @@ public class PlayerController : MonoBehaviour {
             } else if (raycastForJump) {
                 ExecuteActivity(new PlayerNavigateToJumpActivity(raycastedPlatform));
             } else if (raycastForClimbing) {
-                if (raycastedClimbingNode.TryGetClimbingConnector(player.transform.position, out var connector)) {
-                    EnqueueActivity(new PlayerNavigateToJumpActivity(connector.hopPlatform));
-                    EnqueueActivity(new PlayerClimbMovePlatformActivity(connector.movePlatform));
-                    EnqueueActivity(new PlayerNavigateToJumpActivity(connector.dropPlatform));
+                if (raycastedClimbingNode.CanClimbeOnto) {
+                    if (raycastedClimbingNode.TryGetClimbingConnector(player.transform.position, out var connector)) {
+                        EnqueueActivity(new PlayerNavigateToJumpActivity(connector.hopPlatform));
+                        EnqueueActivity(new PlayerClimbMovePlatformActivity(connector.movePlatform));
+                        EnqueueActivity(new PlayerNavigateToJumpActivity(connector.dropPlatform));
+                    } else {
+                        player.ActivateJump(null);
+                    }
                 } else {
-                    player.ActivateJump(null);
+                    player.ReceiveNotification(raycastedClimbingNode.EnablingSuggestion);
                 }
             }
         }
