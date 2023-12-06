@@ -45,7 +45,14 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
     public void Update(Player player) {
         switch (state) {
             case State.Aproaching:
-                if (player.GetRemainingNavigationDistance() < targetPickUp.PickUpRadius) {
+                if (player.GetRemainingNavigationDistance() < 0.5f) {
+                    var distance = Vector3.Distance(targetPickUp.transform.GetPositionXZ(), player.transform.GetPositionXZ());
+                    if (distance > targetPickUp.PickUpRadius * 2) {
+                        player.ActivateJump(null);
+                        state = State.Finished;
+                        return;
+                    }
+
                     player.StopNavigation();
                     player.ActivatePickUp(targetPickUp);
                     state = State.Finished;
