@@ -17,6 +17,9 @@ public class CupQuestController : MonoBehaviour {
     private bool activated;
     private float activationStartTime;
     private QuestElementItem activatedQuestItem;
+    private bool hasFinished;
+
+    public bool HasFinished => hasFinished;
 
     public event Action OnExit;
 
@@ -53,6 +56,8 @@ public class CupQuestController : MonoBehaviour {
     private PickUpable pickUpable;
 
     private void OnFinish() {
+        hasFinished = true;
+
         OnDeactivate();
 
         cupAssembler.ClearPieces();

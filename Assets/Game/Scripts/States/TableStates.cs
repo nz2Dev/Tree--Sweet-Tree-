@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class TableStates : MonoBehaviour {
@@ -8,7 +9,7 @@ public class TableStates : MonoBehaviour {
         Stationar
     }
     
-    [SerializeField] private PickUpable candlePickupable;
+    [SerializeField] private JumpPlatform benchPlatform;
     [SerializeField] private JumpPlatform jumpPlatform;
     [SerializeField] private ActivationObject activation;
     [SerializeField] private CupQuestController questcontroller;
@@ -18,9 +19,10 @@ public class TableStates : MonoBehaviour {
     private State currentState;
 
     private void Awake() {
-        candlePickupable.OnConsumedEvent += StateOnCandleConsumed;
         activation.OnActivated += StateOnActivateQuest;
         questcontroller.OnExit += StateOnQuestExit;
+        benchPlatform.OnPlayerOnTopChanged += StateOnBenchPlayerOnTopChanged;
+        jumpPlatform.OnPlayerOnTopChanged += StateOnTablePlayerOnTopChanged;
     }
 
     private void Start() {
@@ -34,9 +36,17 @@ public class TableStates : MonoBehaviour {
         return currentState == state;
     }
 
-    private void StateOnCandleConsumed() {
-        if (CheckCurrentStateIs(State.JumpPlatform)) {
-            SetState(State.QuestActivation);
+    private void StateOnTablePlayerOnTopChanged(bool isPlayerOnTable) {
+        if (!isPlayerOnTable) {
+            SetState(questcontroller.HasFinished ? State.JumpPlatform : State.QuestActivation);
+        }
+    }
+
+    private void StateOnBenchPlayerOnTopChanged(bool isPlayerOnBench) {
+        if (isPlayerOnBench) {
+            SetState(State.JumpPlatform);
+        } else {
+            SetState(questcontroller.HasFinished ? State.JumpPlatform : State.QuestActivation);
         }
     }
 
@@ -48,9 +58,7 @@ public class TableStates : MonoBehaviour {
     }
 
     private void StateOnQuestExit() {
-        if (CheckCurrentStateIs(State.Stationar)) {
-            SetState(State.QuestActivation);
-        }
+        SetState(questcontroller.HasFinished ? State.JumpPlatform : State.QuestActivation);
     }
 
     private void SetState(State newState) {
