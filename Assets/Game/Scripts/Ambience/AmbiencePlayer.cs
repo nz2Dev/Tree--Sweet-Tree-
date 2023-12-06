@@ -28,7 +28,7 @@ public class AmbiencePlayer : MonoBehaviour {
 
     private IEnumerator SequenceRoutine() {
         audioSource.Play();
-        yield return new WaitForSeconds(audioSource.time);
+        yield return new WaitForSeconds(audioSource.clip.length);
         audioSource.Stop();
         yield return new WaitForSeconds(cycleDelaySec);
         BeginAmbience();
