@@ -10,6 +10,7 @@ public class StartScreen : MonoBehaviour {
     [SerializeField] private UnityEvent OnPlayActivated;
 
     private void Start() {
+        root.SetActive(true);
         if (Application.isEditor && autoCompleteInEditor) {
             OnPlay();
         }
