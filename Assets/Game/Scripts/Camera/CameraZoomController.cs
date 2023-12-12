@@ -18,12 +18,21 @@ public class CameraZoomController : MonoBehaviour {
 
     private CinemachineFreeLook.Orbit[] initOrbits;
     private float zoomLevel = 1f;
+    private bool isCursorForcedToHide = false;
 
     private void Awake() {
         cameraOffset = GetComponent<CinemachineCameraOffset>();
         freeLook = GetComponent<CinemachineFreeLook>();
         CinemachineCore.GetInputAxis = GetAxisCustom;
         initOrbits = freeLook.m_Orbits.ToArray();
+    }
+
+    public void ForceHideCursor() {
+        isCursorForcedToHide = true;
+    }
+
+    public void ReleaseForceHideCursor() {
+        isCursorForcedToHide = false;
     }
 
     public float GetAxisCustom(string axisName){
@@ -51,6 +60,10 @@ public class CameraZoomController : MonoBehaviour {
         } else {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+        
+        if (isCursorForcedToHide) {
+            Cursor.visible = false;
         }
 
         var scrollDelta = Input.mouseScrollDelta.y;
