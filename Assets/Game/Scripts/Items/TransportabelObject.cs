@@ -27,7 +27,7 @@ public class TransportableObject : MonoBehaviour {
         foreach (var destination in destinations) {
             destination.gameObject.SetActive(false);
         }
-        if (destinations.Length > 0) {
+        if (destinations.Length > 0 && initDestinationIndex >= 0) {
             destinations[initDestinationIndex].SetContainObject(true);
         }
     }
