@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour {
             } else if (raycastForClimbing) {
                 if (raycastedClimbingNode.CanClimbeOnto) {
                     if (raycastedClimbingNode.TryGetClimbingConnector(player.transform.position, out var connector)) {
+                        activitiesQueue.Clear();
                         EnqueueActivity(new PlayerNavigateToJumpActivity(connector.hopPlatform));
                         EnqueueActivity(new PlayerClimbMovePlatformActivity(connector.movePlatform));
                         EnqueueActivity(new PlayerNavigateToJumpActivity(connector.dropPlatform));
