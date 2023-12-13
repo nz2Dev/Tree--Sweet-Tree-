@@ -57,6 +57,7 @@ public class PlayerTransportableObjectController {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
                 transportable.SetDestinationsActive(false);
+                player.ActivateLayOut(transportable.CancelDestination.gameObject);
                 choosing = false;
             }
         }

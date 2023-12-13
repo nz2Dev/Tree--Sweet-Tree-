@@ -12,6 +12,7 @@ public class TransportableObject : MonoBehaviour {
     [SerializeField] private Transform hostOffset;
     [SerializeField] private CinemachineVirtualCamera vcam;
     [SerializeField] private TransportableObjectDestination[] destinations;
+    [SerializeField] private TransportableObjectDestination cancelDestination;
     [SerializeField] private int initDestinationIndex;
     [SerializeField] private UnityEvent OnGrabbedEvent;
     [SerializeField] private UnityEvent OnLayedOutEvent;
@@ -19,6 +20,7 @@ public class TransportableObject : MonoBehaviour {
     private GameObject layOutPlace;
     private bool isGrabbed;
 
+    public TransportableObjectDestination CancelDestination => cancelDestination;
     public Transform Offsets => hostOffset;
     public CinemachineVirtualCamera OverviewCam => vcam;
 
@@ -78,7 +80,7 @@ public class TransportableObject : MonoBehaviour {
     public void LayOut(GameObject destination) {
         isGrabbed = false;
         OnLayedOutEvent?.Invoke();
-        if (destination.TryGetComponent<TransportableObjectDestination>(out var dstCompnent)) {
+        if (destination != null && destination.TryGetComponent<TransportableObjectDestination>(out var dstCompnent)) {
             dstCompnent.SetContainObject(true);
         }
         layOutPlace = destination;
