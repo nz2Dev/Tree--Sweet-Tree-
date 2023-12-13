@@ -27,10 +27,20 @@ public class PlayerTransportableObjectController {
         this.transportable = player.GrabbedObject;
         this.player = player;
         this.vcam = vcam;
+        this.grabbed = false;
         vcam.m_Priority += 2;
     }
 
+    private bool grabbed;
+
     public void OnUpdate() {
+        if (!grabbed) {
+            if (player.GrabbedObject != null) {
+                grabbed = true;
+                StartChoosing();
+            }
+        }
+        
         HandleInput();
     }
 
@@ -53,13 +63,7 @@ public class PlayerTransportableObjectController {
     }
 
     private void HandleClick() {
-        if (!choosing) {
-            if (objectSelector.Selected != null && objectSelector.Selected.transform.parent.gameObject == transportable.gameObject) {
-                transportable.GetComponentInChildren<SelectableObject>().Highlight();
-                transportable.SetDestinationsActive(true);
-                choosing = true;
-            }
-        } else {
+        if (choosing) {    
             if (objectSelector.Selected != null && transportable.IsDestinationTrigger(objectSelector.Selected)) {
                 transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
                 transportable.SetDestinationsActive(false);
@@ -67,5 +71,11 @@ public class PlayerTransportableObjectController {
                 choosing = false;
             }
         }
+    }
+
+    private void StartChoosing() {
+        transportable.GetComponentInChildren<SelectableObject>().Highlight();
+        transportable.SetDestinationsActive(true);
+        choosing = true;
     }
 }
