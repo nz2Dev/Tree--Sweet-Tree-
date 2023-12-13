@@ -10,6 +10,7 @@ public class TransportableObjectDestination : MonoBehaviour {
     [SerializeField] private UnityEvent OnObjectPlaced;
     [SerializeField] private UnityEvent OnObjectRemoved;
     [SerializeField] private float layOutRadius = -1;
+    [SerializeField] private GameObject layOutRadiusGraphics;
 
     private bool includeInActivation;
 
@@ -21,6 +22,13 @@ public class TransportableObjectDestination : MonoBehaviour {
 
     private void Awake() {
         SetIsIncluded(initIsIncluded);
+    }
+
+    public void CheckRadius(Transform checkTransform) {
+        if (layOutRadiusGraphics != null && IsRestrictedByRadius) {
+            var distance = Vector3.Distance(transform.GetPositionXZ(), checkTransform.GetPositionXZ());
+            layOutRadiusGraphics.SetActive(distance > LayOutRadius);
+        }
     }
 
     public void SetContainObject(bool containObject) {
