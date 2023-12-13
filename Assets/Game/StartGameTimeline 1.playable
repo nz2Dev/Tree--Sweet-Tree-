@@ -246,11 +246,11 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 7504282871648809053}
-    m_Duration: 18.057041542138904
+    m_Duration: 35.516666666666666
     m_TimeScale: 1
     m_ParentTrack: {fileID: -6064992466155956418}
-    m_EaseInDuration: 1.74
-    m_EaseOutDuration: 5.55
+    m_EaseInDuration: 0.5333333333333333
+    m_EaseOutDuration: 0.57
     m_BlendInDuration: -1
     m_BlendOutDuration: -1
     m_MixInCurve:
@@ -1263,7 +1263,7 @@ MonoBehaviour:
     m_Start: 12.866038304256886
     m_ClipIn: 0
     m_Asset: {fileID: -3011049993240852555}
-    m_Duration: 5.191003237882018
+    m_Duration: 17.733961695743115
     m_TimeScale: 1
     m_ParentTrack: {fileID: 2316758744459065735}
     m_EaseInDuration: 0
@@ -1372,7 +1372,7 @@ MonoBehaviour:
     m_Start: 14.366038304256891
     m_ClipIn: 0
     m_Asset: {fileID: 1201739911267790159}
-    m_Duration: 3.691003237882013
+    m_Duration: 16.233961695743112
     m_TimeScale: 1
     m_ParentTrack: {fileID: 2596893821724819395}
     m_EaseInDuration: 0
@@ -1900,7 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f10dd60657c6004587f237a7e90f8e4, type: 3}
   m_Name: AudioPlayableAsset(Clone)
   m_EditorClassIdentifier: 
-  m_Clip: {fileID: 8300000, guid: ef2cb301e660c4953adee32ca0eafe2d, type: 3}
+  m_Clip: {fileID: 8300000, guid: 8a430124bc1b74e5a982e443919850cb, type: 3}
   m_Loop: 0
   m_bufferingTime: 0.1
   m_ClipProperties:
@@ -2043,7 +2043,7 @@ MonoBehaviour:
     m_Start: 16.82063984097909
     m_ClipIn: 0
     m_Asset: {fileID: 9002162132388483216}
-    m_Duration: 1.0497866599820576
+    m_Duration: 13.77936015902091
     m_TimeScale: 1
     m_ParentTrack: {fileID: 8969467083779252370}
     m_EaseInDuration: 0
@@ -2145,7 +2145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
   m_Name: Signal Emitter
   m_EditorClassIdentifier: 
-  m_Time: 12.453973174312459
+  m_Time: 30.6
   m_Retroactive: 0
   m_EmitOnce: 0
   m_Asset: {fileID: 11400000, guid: 7e03fbd633aa84ed381efd2a7e00b7e4, type: 2}
