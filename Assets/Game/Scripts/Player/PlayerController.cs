@@ -39,6 +39,9 @@ public class PlayerController : MonoBehaviour {
     private void Awake() {
         player = GetComponent<Player>();
         activitiesQueue = new Queue<IPlayerActivity>();
+    }
+
+    private void OnEnable() {
         transportationObjectController = new PlayerTransportableObjectController(selector);
     }
 
