@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
     [SerializeField] private float jumpStartDelay = 0.25f;
     [SerializeField] private AnimationCurve jumpCurve;
     [SerializeField] private float rotationSpeed = 5;
+    [SerializeField] private float grabDuration = 0.5f;
 
     private NavMeshAgent navMeshAgent;
     private PopUpNotifications notifications;
@@ -98,7 +99,7 @@ public class Player : MonoBehaviour {
             return;
         }
 
-        grabbingSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
+        grabbingSequenceState = TweenUtils.StartSequence(grabDuration, 0.3f);
         grabbingStartTransformCapture = TweenUtils.CaptureTransforms(transportable.transform);
         grabbingDestination = Instantiate(transportable.Offsets, transform, false);
         grabbingObject = transportable;
@@ -121,7 +122,7 @@ public class Player : MonoBehaviour {
     private GameObject layingOutDestination;
 
     public void ActivateLayOut(GameObject layOutDestination) {
-        layingOutSequenceState = TweenUtils.StartSequence(0.8f, 0.3f);
+        layingOutSequenceState = TweenUtils.StartSequence(grabDuration, 0.3f);
         layingOutStartTransformCapture = TweenUtils.CaptureTransforms(grabbingObject.transform);
         layingOutDestination = layOutDestination;
         layingOutObject = grabbingObject;
