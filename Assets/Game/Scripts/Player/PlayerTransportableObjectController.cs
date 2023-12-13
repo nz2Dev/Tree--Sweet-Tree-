@@ -54,7 +54,7 @@ public class PlayerTransportableObjectController {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 HandleClick();
             }
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButton(1)) {
                 transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
                 transportable.SetDestinationsActive(false);
                 player.ActivateLayOut(transportable.CancelDestination.gameObject);
