@@ -65,6 +65,11 @@ public class PlayerTransportableObjectController {
     private void HandleClick() {
         if (choosing) {    
             if (objectSelector.Selected != null && transportable.IsDestinationTrigger(objectSelector.Selected)) {
+                if (!transportable.IsDestinationTriggerInRange(objectSelector.Selected)) {
+                    player.ActivateJump(null);
+                    return;
+                }
+
                 transportable.GetComponentInChildren<SelectableObject>().StopHighlighting();
                 transportable.SetDestinationsActive(false);
                 player.ActivateLayOut(objectSelector.Selected.gameObject);

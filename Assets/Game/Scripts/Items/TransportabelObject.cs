@@ -42,6 +42,16 @@ public class TransportableObject : MonoBehaviour {
         return false;
     }
 
+    public bool IsDestinationTriggerInRange(SelectableObject selectable) {
+        foreach (var destination in destinations) {
+            // todo add selectable object reference in destination component
+            if (destination.GetComponent<SelectableObject>() == selectable && destination.IsRestrictedByRadius) {
+                return Vector3.Distance(destination.transform.GetPositionXZ(), transform.GetPositionXZ()) < destination.LayOutRadius;
+            }
+        }
+        return true;
+    }
+
     public void SetDestinationsActive(bool activeState) {
         foreach (var destination in destinations) {
             destination.gameObject.SetActive(activeState && !destination.IsExcludedFromActivation);
