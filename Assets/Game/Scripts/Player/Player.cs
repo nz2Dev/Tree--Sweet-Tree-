@@ -161,6 +161,10 @@ public class Player : MonoBehaviour {
         activePickUpable = pickUpable;
         activePickUpableStartPosition = pickUpable.transform.position;
         pickUpActivationStartTime = Time.time;
+
+        if (pickUpable.TryGetComponent<SelectableObject>(out var selectable)) {
+            selectable.Highlight();
+        }
         
         if (pickUpable.name == "Bag" || !inventory.IsWorking) {
             pickUpDestination = character.HandsLocation;
@@ -195,6 +199,9 @@ public class Player : MonoBehaviour {
 
     private void HandlePickedUp() {
         var pickedUp = activePickUpable;
+        if (pickedUp.TryGetComponent<SelectableObject>(out var selectable)) {
+            selectable.Highlight();
+        }
         activePickUpable = null;
         
         if (pickedUp.name == "Bag") {

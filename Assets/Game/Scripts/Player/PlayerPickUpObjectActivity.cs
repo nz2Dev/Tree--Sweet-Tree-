@@ -36,10 +36,6 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
             player.ActivateNavigation(targetPickUp.transform.position);
             state = State.Aproaching;
         }
-
-        if (targetPickUp.TryGetComponent<SelectableObject>(out var selectable)) {
-            selectable.Highlight();
-        }
     }
 
     public void Update(Player player) {
@@ -63,10 +59,6 @@ public class PlayerPickUpObjectActivity : IPlayerActivity {
 
     public void Cancel(Player player) {
         player.StopNavigation();
-
-        if (targetPickUp.TryGetComponent<SelectableObject>(out var selectable)) {
-            selectable.StopHighlighting();
-        }
     }
 
 }
