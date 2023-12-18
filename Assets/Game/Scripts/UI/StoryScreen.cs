@@ -11,6 +11,7 @@ public class StoryScreen : MonoBehaviour {
     [SerializeField] private float autoSkipDelaySec = 3f;
     [SerializeField] private bool enableAutoSkip = true;
     [SerializeField] private bool enableSkipInEditor = false;
+    [SerializeField] private bool skip = false;
     [SerializeField] private bool enableCutscene = true;
     [SerializeField] private PlayableDirector storyCutsceneDirector;
 
@@ -23,6 +24,11 @@ public class StoryScreen : MonoBehaviour {
     public void Open() {
         isCompleted = false;
         root.SetActive(true);
+
+        if (skip) {
+            OnSkip();
+            return;
+        }
 
         if (Application.isEditor && enableSkipInEditor) {
             OnSkip();
