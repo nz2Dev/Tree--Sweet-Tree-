@@ -45,7 +45,8 @@ public class StoryScreen : MonoBehaviour {
             isCompleted = true;
             root.SetActive(false);
 
-            if (enableCutscene) {
+            var catscenIsNotSkiped = !Application.isEditor || enableCutscene;
+            if (catscenIsNotSkiped) {
                 storyCutsceneDirector.Play();
             }
         }
