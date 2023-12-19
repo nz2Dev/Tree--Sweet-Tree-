@@ -47,6 +47,7 @@ public class Player : MonoBehaviour {
     private void Update() {
         UpdatePickUp();
         UpdateGrabing();
+        UpdateDroppingItem();
         UpdateLayingOut();
         UpdateNavigation();
         UpdateMovePlatform();
@@ -232,17 +233,60 @@ public class Player : MonoBehaviour {
         pickedUp.DestroySelf(consumed: true);
     }
 
+    private SequenceState dropInventoryItemSequence;
+    private GameObject dropItemObject;
+    private Vector3 dropItemStartPosition;
+    private Vector3 dropItemEndPosition;
+
     public void DropInventoryItem(int itemIndex) {
+        if (dropInventoryItemSequence.active) {
+            HandleDroppingNow();
+        }
+
         if (inventory.GetItem(itemIndex).DropPrefab != null) {
             var pulledItem = inventory.PullItem(itemIndex);
             var dropObject = Instantiate(pulledItem.DropPrefab, Vector3.zero, Quaternion.identity);
+            dropObject.transform.position = character.BagLocation.position;
 
-            var checkedPosition = transform.position + transform.forward * 0.5f;
-            if (NavMesh.SamplePosition(transform.position, out var hit, 3, NavMesh.AllAreas)) {
-                checkedPosition = hit.position;
+            var checkedDropPosition = transform.position + transform.forward * 0.5f;
+            if (NavMesh.SamplePosition(checkedDropPosition, out var hit, 3, NavMesh.AllAreas)) {
+                checkedDropPosition = hit.position;
             }
 
-            dropObject.transform.position = checkedPosition;
+            StartDroppingItem(dropObject, checkedDropPosition);
+        }
+    }
+
+    private void StartDroppingItem(GameObject dropObject, Vector3 destination) {
+        dropInventoryItemSequence = TweenUtils.StartSequence(pickingUpDuration);
+        dropItemStartPosition = dropObject.transform.position;
+        dropItemEndPosition = destination;
+        dropItemObject = dropObject;
+
+        this.StartDelayedActionCallback(0f, () => {
+            if (dropObject.TryGetComponent<SelectableObject>(out var selectable)) {
+                if (!selectable.IsHighlighted) {
+                    selectable.Highlight();
+                }
+            }
+        });
+    }
+
+    private void UpdateDroppingItem() {
+        if (TweenUtils.TryUpdateSequence(dropInventoryItemSequence, out var progress)) {
+            var upDelta = pickUpCurve.Evaluate(progress) * Vector3.up;
+            var itemToDrop = dropItemEndPosition - dropItemStartPosition;
+            dropItemObject.transform.position = dropItemStartPosition + itemToDrop * progress + upDelta;
+        }
+        if (TweenUtils.TryFinishSequence(ref dropInventoryItemSequence)) {
+            HandleDroppingNow();
+        }
+    }
+
+    private void HandleDroppingNow() {
+        dropItemObject.transform.position = dropItemEndPosition;
+        if (dropItemObject.TryGetComponent<SelectableObject>(out var selectable)) {
+            selectable.StopHighlighting();
         }
     }
 
