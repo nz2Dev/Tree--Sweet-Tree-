@@ -200,7 +200,7 @@ public class Player : MonoBehaviour {
     private void HandlePickedUp() {
         var pickedUp = activePickUpable;
         if (pickedUp.TryGetComponent<SelectableObject>(out var selectable)) {
-            selectable.Highlight();
+            selectable.StopHighlighting();
         }
         activePickUpable = null;
         
