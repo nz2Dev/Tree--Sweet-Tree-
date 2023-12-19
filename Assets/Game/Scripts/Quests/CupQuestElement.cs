@@ -70,7 +70,9 @@ public class CupQuestElement : MonoBehaviour {
 
     private void UpdateStateObjects() {
         defaultGraphics.SetActive(!isManipulationState && isDiscovered);
-        manipulationGraphics.SetActive(isManipulationState && isDiscovered);
+        if (manipulationGraphics != null) {
+            manipulationGraphics.SetActive(isManipulationState && isDiscovered);
+        }
         
         emptyIndicationGraphic.SetActive(isIndicationEnabled && !isDiscovered);
         discoveredIndicationGraphic.SetActive(isIndicationEnabled && isDiscovered && !isManipulationState && !isInSpot);
