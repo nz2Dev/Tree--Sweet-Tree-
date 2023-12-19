@@ -15,6 +15,7 @@ public class CupQuestController : MonoBehaviour {
     [SerializeField] private RotationButton clockwiseButton;
     [SerializeField] private RotationButton contrClockwiseButton;
     [SerializeField] private float rotationHoldSpeedDegPerSec = 45;
+    [SerializeField] private GameObject applyCursorArea;
     [SerializeField] private Player player;
     [SerializeField] private float cameraCutDuration = 0.9f;
     [SerializeField] private float scrollSpeed = 4f;
@@ -29,6 +30,7 @@ public class CupQuestController : MonoBehaviour {
 
     private void Start() {
         rotationUI.SetActive(false);
+        applyCursorArea.SetActive(false);
     }
 
     public void OnActivated() {
@@ -102,6 +104,7 @@ public class CupQuestController : MonoBehaviour {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
                 if (cupAssembler.IsQuestElementActivated()) {
                     cupAssembler.HandleManipulationResult();
+                    applyCursorArea.SetActive(false);
                     
                     if (cupAssembler.IsAllPiecesInSpot()) {
                         OnFinish();
@@ -109,6 +112,7 @@ public class CupQuestController : MonoBehaviour {
                 } else if (selector.Selected != null) {
                     if (cupAssembler.TryDetectPieceElement(selector.Selected.gameObject, out var detectedQuestElement)) {
                         cupAssembler.ActivateManipulationState(detectedQuestElement);
+                        applyCursorArea.SetActive(true);
                     }
                 }
             }
