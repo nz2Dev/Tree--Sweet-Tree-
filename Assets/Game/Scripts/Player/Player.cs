@@ -236,7 +236,13 @@ public class Player : MonoBehaviour {
         if (inventory.GetItem(itemIndex).DropPrefab != null) {
             var pulledItem = inventory.PullItem(itemIndex);
             var dropObject = Instantiate(pulledItem.DropPrefab, Vector3.zero, Quaternion.identity);
-            dropObject.transform.position = transform.position + transform.forward * 0.5f;
+
+            var checkedPosition = transform.position + transform.forward * 0.5f;
+            if (NavMesh.SamplePosition(transform.position, out var hit, 3, NavMesh.AllAreas)) {
+                checkedPosition = hit.position;
+            }
+
+            dropObject.transform.position = checkedPosition;
         }
     }
 
