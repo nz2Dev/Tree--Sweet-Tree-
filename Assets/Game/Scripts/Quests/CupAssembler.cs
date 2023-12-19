@@ -82,9 +82,8 @@ public class CupAssembler : MonoBehaviour {
         if (!this.rotationStage && rotationStage) {
             rotationProgres = activatedQuestElement.transform.rotation;
         }
-        this.rotationStage = rotationStage;
 
-        SetAsseblyCenterHighlighted(!rotationStage);
+        this.rotationStage = rotationStage;
     }
 
     public bool IsRotationStage() {
@@ -111,12 +110,12 @@ public class CupAssembler : MonoBehaviour {
     public void HandleManipulationResult() {
         if (activatedQuestElement.IsInSpot) {
             activatedQuestElement.SetSealed();
+            SetIsRotationStage(false);
         } else {
             activatedQuestElement.Reset();
         }
 
         activatedQuestElement = null;
-        SetAsseblyCenterHighlighted(false);
     }
 
     public bool IsQuestElementActivated() {
