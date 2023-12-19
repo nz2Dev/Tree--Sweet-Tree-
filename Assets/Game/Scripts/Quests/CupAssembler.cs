@@ -50,9 +50,9 @@ public class CupAssembler : MonoBehaviour {
         }
     }
 
-    public bool TryDetectPieceElement(GameObject comparisonObject, out CupQuestElement pieceElement) {
+    public bool TryDetectActivatablePieceElement(GameObject comparisonObject, out CupQuestElement pieceElement) {
         foreach (var questElement in questElements) {
-            if (questElement.gameObject == comparisonObject) {
+            if (questElement.IsDiscovered && questElement.gameObject == comparisonObject) {
                 pieceElement = questElement;
                 return true;
             }

@@ -110,7 +110,7 @@ public class CupQuestController : MonoBehaviour {
                         OnFinish();
                     }
                 } else if (selector.Selected != null) {
-                    if (cupAssembler.TryDetectPieceElement(selector.Selected.gameObject, out var detectedQuestElement)) {
+                    if (cupAssembler.TryDetectActivatablePieceElement(selector.Selected.gameObject, out var detectedQuestElement)) {
                         cupAssembler.ActivateManipulationState(detectedQuestElement);
                         applyCursorArea.SetActive(true);
                     }
