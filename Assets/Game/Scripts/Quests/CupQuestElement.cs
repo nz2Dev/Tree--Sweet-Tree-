@@ -89,6 +89,7 @@ public class CupQuestElement : MonoBehaviour {
     }
 
     public void Reset() {
+        transform.localRotation = Quaternion.identity;
         transform.position = initialPosition;
 
         isManipulationState = false;
