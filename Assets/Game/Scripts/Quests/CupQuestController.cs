@@ -14,6 +14,7 @@ public class CupQuestController : MonoBehaviour {
     [SerializeField] private GameObject rotationUI;
     [SerializeField] private RotationButton clockwiseButton;
     [SerializeField] private RotationButton contrClockwiseButton;
+    [SerializeField] private float rotationHoldSpeedDegPerSec = 45;
     [SerializeField] private Player player;
     [SerializeField] private float cameraCutDuration = 0.9f;
     [SerializeField] private float scrollSpeed = 4f;
@@ -112,29 +113,34 @@ public class CupQuestController : MonoBehaviour {
                 }
             }
 
+            rotationUI.SetActive(cupAssembler.IsQuestElementActivated());
+
             if (cupAssembler.IsQuestElementActivated()) {
-                var mousePointer = Camera.main.ScreenPointToRay(Input.mousePosition);
-                var assemblyPlane = cupAssembler.GetAssemblyPlane();
-                if (assemblyPlane.Raycast(mousePointer, out float enter)) {
-                    var raycastPoint = mousePointer.GetPoint(enter);
-                    var finalTranslationPoint = raycastPoint;
-                    var isSnappedToAssemblyCenter = Vector3.Distance(raycastPoint, cupAssembler.GetAssemblyCenter()) < 0.3;
-                    cupAssembler.SetIsRotationStage(isSnappedToAssemblyCenter);
-                    rotationUI.SetActive(isSnappedToAssemblyCenter);
-                    
-                    if (isSnappedToAssemblyCenter) {
-                        finalTranslationPoint = cupAssembler.GetAssemblyCenter();
-                    } else {
-                        cupAssembler.ResetManipulatedRotationInSpot();
-                    }
-
-                    cupAssembler.MoveManipulated(finalTranslationPoint);
-                }
-
                 if (cupAssembler.IsRotationStage()) {
-                    cupAssembler.RotateManipulated(Input.mouseScrollDelta.y * scrollSpeed);
+                    var rotationInput = clockwiseButton.IsHolding ? 1 : contrClockwiseButton.IsHolding ? -1 : 0;
+                    cupAssembler.RotateManipulated(Time.deltaTime * rotationHoldSpeedDegPerSec * rotationInput);
                 }
             }
+        }
+    }
+
+    private void HandleMovement() {
+        var mousePointer = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var assemblyPlane = cupAssembler.GetAssemblyPlane();
+        if (assemblyPlane.Raycast(mousePointer, out float enter)) {
+            var raycastPoint = mousePointer.GetPoint(enter);
+            var finalTranslationPoint = raycastPoint;
+            var isSnappedToAssemblyCenter = Vector3.Distance(raycastPoint, cupAssembler.GetAssemblyCenter()) < 0.3;
+            cupAssembler.SetIsRotationStage(isSnappedToAssemblyCenter);
+            rotationUI.SetActive(isSnappedToAssemblyCenter);
+            
+            if (isSnappedToAssemblyCenter) {
+                finalTranslationPoint = cupAssembler.GetAssemblyCenter();
+            } else {
+                cupAssembler.ResetManipulatedRotationInSpot();
+            }
+
+            cupAssembler.MoveManipulated(finalTranslationPoint);
         }
     }
 

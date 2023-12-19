@@ -69,8 +69,9 @@ public class CupAssembler : MonoBehaviour {
     public void ActivateManipulationState(CupQuestElement questElement) {
         activatedQuestElement = questElement;
         activatedQuestElement.SetIsManipulationVisuals();
-        
-        SetAsseblyCenterHighlighted(true);
+
+        activatedQuestElement.transform.position = assemblyCenter.transform.position;
+        SetIsRotationStage(true);
     }
 
     public void MoveManipulated(Vector3 position) {
