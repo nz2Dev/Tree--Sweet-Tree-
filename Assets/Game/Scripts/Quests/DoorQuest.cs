@@ -43,6 +43,8 @@ public class DoorQuest : MonoBehaviour {
         player.ShowCharacterDelayed(0.9f); // camera cut duration
 
         player.Inventory.UnregisterItemActivationController(InventoryOnItemActivated);
+        selector.CancelOverrideMask();
+        UnsetChosenElement();
     }
 
     private void InventoryOnItemActivated(int itemIndex) {
@@ -64,6 +66,8 @@ public class DoorQuest : MonoBehaviour {
         player.ShowCharacterDelayed(0.9f); // camera cut duration
 
         player.Inventory.UnregisterItemActivationController(InventoryOnItemActivated);
+        selector.CancelOverrideMask();
+        UnsetChosenElement();
         
         if (OnQuestFinishedEvent != null) {
             OnQuestFinishedEvent.Invoke();
