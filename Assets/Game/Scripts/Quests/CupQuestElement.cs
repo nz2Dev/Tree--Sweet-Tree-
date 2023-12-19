@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class CupQuestElement : MonoBehaviour {
 
     [SerializeField] private GameObject emptyIndicationGraphic;
+    [SerializeField] private GameObject discoveredIndicationGraphic;
     [SerializeField] private ItemSO discoveringItemSO;
 
     private GameObject defaultGraphics;
@@ -72,6 +73,7 @@ public class CupQuestElement : MonoBehaviour {
         manipulationGraphics.SetActive(isManipulationState && isDiscovered);
         
         emptyIndicationGraphic.SetActive(isIndicationEnabled && !isDiscovered);
+        discoveredIndicationGraphic.SetActive(isIndicationEnabled && isDiscovered && !isManipulationState && !isInSpot);
     }
 
     public void SetIsInSpot(bool isInSpot) {
