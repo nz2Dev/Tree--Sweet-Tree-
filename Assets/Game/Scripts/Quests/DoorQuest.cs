@@ -17,6 +17,7 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private Player player;
     [SerializeField] private Sprite questPieceIcon;
     [SerializeField] private UnityEvent OnQuestFinishedEvent;
+    [SerializeField] private float transportationDuration = 0.5f;
 
     private bool active = false;
     private GameObject placedElementGO;
@@ -139,7 +140,7 @@ public class DoorQuest : MonoBehaviour {
     private void StartTransportation(DoorQuestElement element, DoorQuestZone zone) {
         transportationDestination = zone;
         transportationElement = element;
-        transportationTweenState = TweenUtils.StartTween(element.transform, zone.transform, 1.0f);
+        transportationTweenState = TweenUtils.StartTween(element.transform, zone.transform, transportationDuration);
         element.SetTransported();
     }
 
