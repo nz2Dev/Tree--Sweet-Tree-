@@ -12,7 +12,7 @@ public class StoryScreen : MonoBehaviour {
     [SerializeField] private bool enableAutoSkip = true;
     [SerializeField] private bool enableSkipInEditor = false;
     [SerializeField] private bool skip = false;
-    [SerializeField] private bool enableCutscene = true;
+    [SerializeField] private bool skipCutsceneInEditor = true;
     [SerializeField] private PlayableDirector storyCutsceneDirector;
 
     private bool isCompleted;
@@ -51,7 +51,7 @@ public class StoryScreen : MonoBehaviour {
             isCompleted = true;
             root.SetActive(false);
 
-            var catscenIsNotSkiped = !Application.isEditor || enableCutscene;
+            var catscenIsNotSkiped = !Application.isEditor || !skipCutsceneInEditor;
             if (catscenIsNotSkiped) {
                 storyCutsceneDirector.Play();
             }
