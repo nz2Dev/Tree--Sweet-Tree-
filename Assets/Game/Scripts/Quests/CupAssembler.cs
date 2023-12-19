@@ -118,6 +118,15 @@ public class CupAssembler : MonoBehaviour {
         activatedQuestElement = null;
     }
 
+    public void CancelActivated() {
+        if (activatedQuestElement != null) {
+            SetIsRotationStage(false);
+            activatedQuestElement.Reset();
+        }
+        
+        activatedQuestElement = null;
+    }
+
     public bool IsQuestElementActivated() {
         return activatedQuestElement != null;
     }

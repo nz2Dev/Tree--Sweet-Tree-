@@ -60,6 +60,9 @@ public class CupQuestController : MonoBehaviour {
         playerInventory.UnregisterItemActivationController(PlayerInventoryOnItemActivated);
 
         cupAssembler.TurnOffIndication();
+        cupAssembler.CancelActivated();
+        applyCursorArea.SetActive(false);    
+        rotationUI.SetActive(false);
     }
 
     private bool waitForPickUp;
