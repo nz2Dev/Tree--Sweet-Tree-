@@ -10,6 +10,10 @@ public class CupAssembler : MonoBehaviour {
     [SerializeField] private GameObject assemblyCenter;
     [SerializeField] private GameObject assembledCupPickupablePrefab;
     [SerializeField] private CupQuestElement[] questElements;
+    [SerializeField] private AudioSource effectsAudioSource;
+    [SerializeField] private AudioClip movementAudioClip;
+    [SerializeField] private AudioClip rotationAudioClip;
+    [SerializeField] private AudioClip applyAudioClip;
 
     private CupQuestElement activatedQuestElement;
     private Quaternion rotationProgres;
@@ -90,6 +94,8 @@ public class CupAssembler : MonoBehaviour {
         return this.rotationStage;
     }
 
+    private float rotationStackForSFX;
+
     public void RotateManipulated(float rotationAmount) {
         var rotationDelta = Quaternion.AngleAxis(rotationAmount, Vector3.up);
 
@@ -101,6 +107,13 @@ public class CupAssembler : MonoBehaviour {
             activatedQuestElement.transform.rotation = rotationProgres;
             activatedQuestElement.SetIsInSpot(false);
         }
+
+        rotationStackForSFX += Mathf.Abs(rotationAmount);
+        if (rotationStackForSFX > 5) {
+            rotationStackForSFX = 0;
+            effectsAudioSource.clip = rotationAudioClip;
+            effectsAudioSource.Play();
+        }
     }
 
     public void ResetManipulatedRotationInSpot() {
@@ -109,9 +122,11 @@ public class CupAssembler : MonoBehaviour {
 
     public void HandleManipulationResult() {
         if (activatedQuestElement.IsInSpot) {
+            effectsAudioSource.PlayOneShot(applyAudioClip);
             activatedQuestElement.SetSealed();
             SetIsRotationStage(false);
         } else {
+            effectsAudioSource.PlayOneShot(movementAudioClip);
             activatedQuestElement.Reset();
         }
 
