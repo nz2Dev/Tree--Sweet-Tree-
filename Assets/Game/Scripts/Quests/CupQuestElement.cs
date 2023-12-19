@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class CupQuestElement : MonoBehaviour {
 
+    [SerializeField] private GameObject emptyIndicationGraphic;
+    [SerializeField] private ItemSO discoveringItemSO;
+
     private GameObject defaultGraphics;
     private GameObject manipulationGraphics;
 
@@ -14,8 +17,18 @@ public class CupQuestElement : MonoBehaviour {
     private Material inSpotMaterial;
     private bool isManipulationState;
 
+    private bool isDiscovered;
+    private Vector3 initialPosition;
+    private bool isInSpot;
+    private bool isIndicationEnabled;
+
+    public bool IsDiscovered => isDiscovered;
+    public ItemSO DiscoveringItemSO => discoveringItemSO;
+    public bool IsInSpot => isInSpot;
+
     private void Awake() {
         defaultGraphics = GetComponentInChildren<MeshRenderer>().gameObject;
+        initialPosition = transform.position;
     }
 
     private void Start() {
@@ -34,27 +47,48 @@ public class CupQuestElement : MonoBehaviour {
         UpdateStateObjects();
     }
 
+    public void ShowQuestIndication() {
+        isIndicationEnabled = true;
+        UpdateStateObjects();
+    }
+
+    public void HideQuestIndication() {
+        isIndicationEnabled = false;
+        UpdateStateObjects();
+    }
+
+    public void SetIsDiscovered() {
+        isDiscovered = true;
+        UpdateStateObjects();
+    }
+
     public void SetIsManipulationVisuals() {
         isManipulationState = true;
         UpdateStateObjects();
     }
 
     private void UpdateStateObjects() {
-        defaultGraphics.SetActive(!isManipulationState);
-        manipulationGraphics.SetActive(isManipulationState);
+        defaultGraphics.SetActive(!isManipulationState && isDiscovered);
+        manipulationGraphics.SetActive(isManipulationState && isDiscovered);
+        
+        emptyIndicationGraphic.SetActive(isIndicationEnabled && !isDiscovered);
     }
 
-    public void SetIsInSpotVisuals(bool isInSpot) {
+    public void SetIsInSpot(bool isInSpot) {
+        this.isInSpot = isInSpot;
         manipulationGraphics.GetComponent<MeshRenderer>().material = isInSpot ? inSpotMaterial : isManipulatedMaterial;
     }
 
     public void SetSealed() {
         isManipulationState = false;
+
         UpdateStateObjects();
         defaultGraphics.GetComponentInChildren<BoxCollider>().enabled = false; // so SelectableObject stop beeing selected
     }
 
     public void Reset() {
+        transform.position = initialPosition;
+
         isManipulationState = false;
         UpdateStateObjects();
     }

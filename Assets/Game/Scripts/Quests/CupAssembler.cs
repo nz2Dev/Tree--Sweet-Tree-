@@ -5,65 +5,121 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class QuestElementItem {
-    public GameObject elementGO;
-    public Vector3 initialPosition;
-    public bool isInSpot;
-}
-
 public class CupAssembler : MonoBehaviour {
-    [SerializeField] private Transform elementsLocation;
+    [SerializeField] private Transform elementsContainer;
     [SerializeField] private GameObject assemblyCenter;
-    [SerializeField] private float elementsPlacementsOffset = 0.25f;
     [SerializeField] private GameObject assembledCupPickupablePrefab;
-    [SerializeField] private Sprite[] availablePieces;
+    [SerializeField] private CupQuestElement[] questElements;
 
-    private Vector3 nextElementPlacementPosition;
-    private List<QuestElementItem> questElementItems;
-
-    private void Awake() {
-        questElementItems = new List<QuestElementItem>();
-    }
+    private CupQuestElement activatedQuestElement;
+    private Quaternion rotationProgres;
+    private bool rotationStage;
 
     private void Start() {
-        nextElementPlacementPosition = elementsLocation.position;
         assemblyCenter.SetActive(false);
+        TurnOffIndication();
+    }
+
+    public void TurnOnIndication() {
+        foreach (var questElement in questElements) {
+            questElement.ShowQuestIndication();
+        }
+    }
+
+    public void TurnOffIndication() {
+        foreach (var questElement in questElements) {
+            questElement.HideQuestIndication();
+        }
     }
 
     public bool CanReceivePiece(ItemSO item) {
-        return questElementItems.Count < availablePieces.Length && availablePieces.Contains(item.Icon);
-    }
-
-    public void PutOutNextPiece(GameObject piece) {
-        var placementPosition = nextElementPlacementPosition;
-        piece.transform.position = placementPosition;
-
-        questElementItems.Add(new QuestElementItem {
-            elementGO = piece,
-            initialPosition = placementPosition,
-            isInSpot = false,
-        });
-
-        nextElementPlacementPosition = placementPosition + elementsLocation.forward * elementsPlacementsOffset;
-    }
-
-    public bool TryGetAssocicatedPieceItem(GameObject comparisonObject, out QuestElementItem associatedItem) {
-        foreach (var questItem in questElementItems) {
-            if (questItem.elementGO == comparisonObject) {
-                associatedItem = questItem;
+        foreach (var questElement in questElements) {
+            if (!questElement.IsDiscovered && questElement.DiscoveringItemSO == item) {
                 return true;
             }
         }
 
-        associatedItem = default;
+        return false;
+    }
+
+    public void DiscoverNextPiece(ItemSO piece) {
+        foreach (var questElement in questElements) {
+            if (questElement.DiscoveringItemSO == piece) {
+                questElement.SetIsDiscovered();
+            }
+        }
+    }
+
+    public bool TryDetectPieceElement(GameObject comparisonObject, out CupQuestElement pieceElement) {
+        foreach (var questElement in questElements) {
+            if (questElement.gameObject == comparisonObject) {
+                pieceElement = questElement;
+                return true;
+            }
+        }
+
+        pieceElement = null;
         return false;
     }
 
     public void ClearPieces() {
-        foreach (var item in questElementItems) {
-            Destroy(item.elementGO);
+        elementsContainer.gameObject.SetActive(false);
+    }
+
+    public void ActivateManipulationState(CupQuestElement questElement) {
+        activatedQuestElement = questElement;
+        activatedQuestElement.SetIsManipulationVisuals();
+        
+        SetAsseblyCenterHighlighted(true);
+    }
+
+    public void MoveManipulated(Vector3 position) {
+        activatedQuestElement.transform.position = position;
+    }
+
+    public void SetIsRotationStage(bool rotationStage) {
+        if (!this.rotationStage && rotationStage) {
+            rotationProgres = activatedQuestElement.transform.rotation;
         }
-        questElementItems.Clear();
+        this.rotationStage = rotationStage;
+
+        SetAsseblyCenterHighlighted(!rotationStage);
+    }
+
+    public bool IsRotationStage() {
+        return this.rotationStage;
+    }
+
+    public void RotateManipulated(float rotationAmount) {
+        var rotationDelta = Quaternion.AngleAxis(rotationAmount, Vector3.up);
+
+        rotationProgres *= rotationDelta;
+        if (rotationProgres.eulerAngles.y > 50 && rotationProgres.eulerAngles.y < 70) {
+            activatedQuestElement.transform.rotation = Quaternion.Euler(0, 60, 0);
+            activatedQuestElement.SetIsInSpot(true);
+        } else {
+            activatedQuestElement.transform.rotation = rotationProgres;
+            activatedQuestElement.SetIsInSpot(false);
+        }
+    }
+
+    public void ResetManipulatedRotationInSpot() {
+        activatedQuestElement.SetIsInSpot(false);
+    }
+
+    public void HandleManipulationResult() {
+        if (activatedQuestElement.IsInSpot) {
+            activatedQuestElement.SetSealed();
+        } else {
+            activatedQuestElement.Reset();
+        }
+
+        activatedQuestElement = null;
+        SetAsseblyCenterHighlighted(false);
+    }
+
+    public bool IsQuestElementActivated() {
+        return activatedQuestElement != null;
     }
 
     public Plane GetAssemblyPlane() {
@@ -84,18 +140,12 @@ public class CupAssembler : MonoBehaviour {
     }
 
     public bool IsAllPiecesInSpot() {
-        var allInSpot = true;
-        if (questElementItems.Count < 4) {
-            allInSpot = false;
-        }
-        
-        foreach (var questElementItem in questElementItems) {
-            if (!questElementItem.isInSpot) {
-                allInSpot = false;
-                break;
+        foreach (var questElementItem in questElements) {
+            if (!questElementItem.IsInSpot) {
+                return false;
             }
         }
-        return allInSpot;
+        return true;
     }
 
 }
