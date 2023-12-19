@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CupQuestController : MonoBehaviour {
 
     [SerializeField] private ObjectSelector selector;
     [SerializeField] private CinemachineVirtualCamera questCamera;   
     [SerializeField] private CupAssembler cupAssembler; 
+    [SerializeField] private GameObject rotationUI;
+    [SerializeField] private RotationButton clockwiseButton;
+    [SerializeField] private RotationButton contrClockwiseButton;
     [SerializeField] private Player player;
     [SerializeField] private float cameraCutDuration = 0.9f;
     [SerializeField] private float scrollSpeed = 4f;
@@ -21,6 +25,10 @@ public class CupQuestController : MonoBehaviour {
     public bool HasFinished => hasFinished;
 
     public event Action OnExit;
+
+    private void Start() {
+        rotationUI.SetActive(false);
+    }
 
     public void OnActivated() {
         activationStartTime = Time.time;
@@ -112,6 +120,7 @@ public class CupQuestController : MonoBehaviour {
                     var finalTranslationPoint = raycastPoint;
                     var isSnappedToAssemblyCenter = Vector3.Distance(raycastPoint, cupAssembler.GetAssemblyCenter()) < 0.3;
                     cupAssembler.SetIsRotationStage(isSnappedToAssemblyCenter);
+                    rotationUI.SetActive(isSnappedToAssemblyCenter);
                     
                     if (isSnappedToAssemblyCenter) {
                         finalTranslationPoint = cupAssembler.GetAssemblyCenter();
