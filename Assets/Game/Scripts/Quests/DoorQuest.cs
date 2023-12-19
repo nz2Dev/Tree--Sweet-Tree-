@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -18,6 +17,8 @@ public class DoorQuest : MonoBehaviour {
     [SerializeField] private Sprite questPieceIcon;
     [SerializeField] private UnityEvent OnQuestFinishedEvent;
     [SerializeField] private float transportationDuration = 0.5f;
+    [SerializeField] private AudioSource soundFXSource;
+    [SerializeField] private AudioClip elementMoveSFX;
 
     private bool active = false;
     private GameObject placedElementGO;
@@ -142,6 +143,8 @@ public class DoorQuest : MonoBehaviour {
         transportationElement = element;
         transportationTweenState = TweenUtils.StartTween(element.transform, zone.transform, transportationDuration);
         element.SetTransported();
+        soundFXSource.pitch = 1.5f + Random.Range(-0.1f, 0.05f);
+        soundFXSource.PlayOneShot(elementMoveSFX);
     }
 
     private void UpdateTransportation() {
