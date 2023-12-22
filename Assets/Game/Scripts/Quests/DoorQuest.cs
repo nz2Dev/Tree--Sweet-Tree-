@@ -138,7 +138,9 @@ public class DoorQuest : MonoBehaviour {
     }
 
     private void UnsetChosenElement() {
-        chosenElement.GetComponent<SelectableObject>().StopHighlighting();
+        if (chosenElement != null) {
+            chosenElement.GetComponent<SelectableObject>().StopHighlighting();
+        }
         chosenElement = null; 
     }
 
